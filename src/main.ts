@@ -2,6 +2,7 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { ConfigService } from '@nestjs/config';
 import { Logger } from '@nestjs/common';
+import { ResponseInterceptor } from './common/interceptors/response.interceptor';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -23,6 +24,7 @@ async function bootstrap() {
   logger.log(`App listening on port: ${port}`);
   logger.log(`Log level: ${logLevel}`);
   app.useLogger(levels);
+  app.useGlobalInterceptors(new ResponseInterceptor());
   await app.listen(port);
 }
 bootstrap();
