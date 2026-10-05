@@ -1,0 +1,11 @@
+import * as z from 'zod';
+
+export const envValidationSchema = z.object({
+  DATABASE_URL: z.string(),
+  DB_HOST: z.string(),
+  DB_USER: z.string(),
+  DB_PASSWORD: z.string(),
+  DB_PORT: z.string(),
+  DB_NAME: z.string(),
+  LOG_LEVEL: z.enum(['log', 'debug']),
+});
