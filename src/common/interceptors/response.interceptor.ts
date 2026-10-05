@@ -19,11 +19,11 @@ export class ResponseInterceptor<T> implements NestInterceptor<T, Response<T>> {
   ): Observable<Response<T>> {
     const startTime = Date.now();
     const ctx = context.switchToHttp();
-    const req = ctx.getRequest<Request>();
+    const request = ctx.getRequest<Request>();
     return next.handle().pipe(
       map((data: T) => ({
         timestamp: new Date().toLocaleString(),
-        path: req.url,
+        path: request.url,
         success: true,
         response_time: `${Date.now() - startTime}ms`,
         content: data,
