@@ -17,13 +17,7 @@ export class HttpExceptionFilter implements ExceptionFilter {
       timestamp: new Date().toLocaleString(),
       path: request.url,
       success: false,
-      error: {
-        code: status,
-        stack: exception.stack,
-        cause: exception.cause,
-        name: exception.name,
-        message: exception.message,
-      },
+      error: exception,
     });
   }
 }
