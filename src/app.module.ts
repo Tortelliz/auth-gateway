@@ -10,7 +10,6 @@ import { envValidationSchema } from './config/env-validation.schema';
     ConfigModule.forRoot({
       isGlobal: true,
       validationSchema: envValidationSchema,
-      envFilePath: '.env.development',
     }),
     PrismaModule,
   ],

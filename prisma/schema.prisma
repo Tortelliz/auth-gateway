@@ -12,11 +12,77 @@ datasource db {
   provider = "postgresql"
 }
 
-model User {
-  id         String @id @default(dbgenerated()) @db.Uuid
-  email      String @unique
-  first_name String @db.VarChar(50)
-  last_name  String @db.VarChar(50)
+model Company {
+  id               String           @id @default(dbgenerated()) @db.Uuid
+  cnpj             String           @db.Char(14)
+  code             String           @db.VarChar(15)
+  name             String           @db.VarChar(100)
+  created_at       DateTime         @db.Timestamptz()
+  updated_at       DateTime?        @updatedAt
+  companyAddresses CompanyAddress[]
 
+  @@index([id, code])
+  @@map("company")
+}
+
+model CompanyAddress {
+  id           String    @id @default(dbgenerated()) @db.Uuid
+  company_id   String    @db.Uuid
+  company      Company   @relation(fields: [company_id], references: [id])
+  cep          String    @db.Char(8)
+  street       String    @db.VarChar(150)
+  neighborhood String    @db.VarChar(100)
+  city         String    @db.VarChar(100)
+  state        String    @db.VarChar(50)
+  uf           String    @db.Char(2)
+  number       String    @db.VarChar(15)
+  created_at   DateTime  @db.Timestamptz()
+  updated_at   DateTime? @updatedAt
+
+  @@index([id, company_id])
+  @@map("company_address")
+}
+
+model User {
+  id                    String     @id @default(dbgenerated()) @db.Uuid
+  email                 String     @unique
+  password              String     @db.VarChar(255)
+  first_name            String     @db.VarChar(50)
+  last_name             String     @db.VarChar(50)
+  active                Boolean    @db.Boolean
+  last_login_at         DateTime?  @db.Timestamptz()
+  failed_login_attempts Int        @db.SmallInt
+  must_change_password  Boolean    @db.Boolean
+  created_at            DateTime   @db.Timestamptz()
+  updated_at            DateTime?  @updatedAt
+  userRoles             UserRole[]
+
+  @@index([id, email, password])
   @@map("user")
+}
+
+model Role {
+  id          String     @id @default(dbgenerated()) @db.Uuid
+  code        String     @db.VarChar(15)
+  name        String     @db.VarChar(50)
+  description String?    @db.VarChar(255)
+  created_at  DateTime   @db.Timestamptz()
+  updated_at  DateTime?  @updatedAt
+  userRoles   UserRole[]
+
+  @@index([id, code])
+  @@map("role")
+}
+
+model UserRole {
+  id         String    @id @default(dbgenerated()) @db.Uuid
+  user_id    String    @db.Uuid
+  role_id    String    @db.Uuid
+  user       User      @relation(fields: [user_id], references: [id])
+  role       Role      @relation(fields: [role_id], references: [id])
+  created_at DateTime  @db.Timestamptz()
+  updated_at DateTime? @updatedAt
+
+  @@index([id, user_id, role_id])
+  @@map("user_role")
 }
