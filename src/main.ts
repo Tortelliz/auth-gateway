@@ -27,7 +27,12 @@ async function bootstrap() {
   app.useLogger(levels);
   app.useGlobalInterceptors(new ResponseInterceptor());
   app.useGlobalFilters(new HttpExceptionFilter());
-  app.useGlobalPipes(new ValidationPipe({ whitelist: true }));
+  app.useGlobalPipes(
+    new ValidationPipe({
+      forbidNonWhitelisted: true,
+      whitelist: true,
+    }),
+  );
   await app.listen(port);
 }
 bootstrap();

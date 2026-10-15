@@ -1,32 +1,32 @@
 import { CompanyEntity } from './company.entity';
 import { Injectable } from '@nestjs/common';
-import { CreateDAO } from './daos/create.dao';
+import { CompanyDAO } from './daos/company.dao';
 
 abstract class CompanyContract {
   abstract create(company: CompanyEntity): Promise<CompanyEntity>;
   abstract findAll(): Promise<CompanyEntity[]>;
   abstract findById(id: string): Promise<CompanyEntity>;
-  abstract update(company: CompanyEntity): Promise<CompanyEntity>;
+  abstract update(id: string, company: CompanyEntity): Promise<CompanyEntity>;
   abstract delete(id: string): Promise<CompanyEntity>;
 }
 
 @Injectable()
 export class CompanyRepository implements CompanyContract {
-  constructor(private readonly createDAO: CreateDAO) {}
+  constructor(private readonly companyDAO: CompanyDAO) {}
 
   async create(company: CompanyEntity): Promise<CompanyEntity> {
-    return await this.createDAO.execute(company);
+    return await this.companyDAO.create(company);
   }
   async findAll(): Promise<CompanyEntity[]> {
-    throw Error('Not implemented');
+    return await this.companyDAO.findAll();
   }
   async findById(id: string): Promise<CompanyEntity> {
-    throw Error('Not implemented');
+    return await this.companyDAO.findById(id);
   }
-  async update(company: CompanyEntity): Promise<CompanyEntity> {
-    throw Error('Not implemented');
+  async update(id: string, company: CompanyEntity): Promise<CompanyEntity> {
+    return await this.companyDAO.update(id, company);
   }
   async delete(id: string): Promise<CompanyEntity> {
-    throw Error('Not implemented');
+    return await this.companyDAO.delete(id);
   }
 }

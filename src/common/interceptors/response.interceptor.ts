@@ -6,6 +6,7 @@ import {
 } from '@nestjs/common';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { Request } from 'express';
 
 export interface Response<T> {
   content: T;
@@ -18,12 +19,14 @@ export class ResponseInterceptor<T> implements NestInterceptor<T, Response<T>> {
     next: CallHandler,
   ): Observable<Response<T>> {
     const startTime = Date.now();
-    const ctx = context.switchToHttp();
-    const request = ctx.getRequest<Request>();
+    const timestamp = new Date().toLocaleString();
+    const request = context.switchToHttp().getRequest<Request>();
     return next.handle().pipe(
       map((data: T) => ({
-        timestamp: new Date().toLocaleString(),
+        timestamp,
+        target: request.host,
         path: request.url,
+        requester_ip: request.ip?.split(':')[3] || null,
         success: true,
         response_time: `${Date.now() - startTime}ms`,
         content: data,

@@ -6,6 +6,14 @@ import { CreateDAO } from './daos/create.dao';
 import { CreateService } from './services/create.service';
 import { PrismaModule } from '../../infra/prisma/prisma.module';
 import { CompanyRepository } from './company.repository';
+import { FindAllDAO } from './daos/find-all.dao';
+import { FindAllService } from './services/find-all.service';
+import { UpdateDAO } from './daos/update.dao';
+import { UpdateService } from './services/update.service';
+import { FindByIdDAO } from './daos/find-by-id.dao';
+import { FindByIdService } from './services/find-by-id.service';
+import { DeleteDAO } from './daos/delete.dao';
+import { DeleteService } from './services/delete.service';
 
 @Module({
   imports: [PrismaModule],
@@ -14,8 +22,16 @@ import { CompanyRepository } from './company.repository';
     CompanyRepository,
     CompanyDAO,
     CreateDAO,
+    FindAllDAO,
+    FindByIdDAO,
+    UpdateDAO,
+    DeleteDAO,
     CompanyService,
     CreateService,
+    FindAllService,
+    FindByIdService,
+    UpdateService,
+    DeleteService
   ],
 })
 export class CompanyModule {}
