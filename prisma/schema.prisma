@@ -13,13 +13,13 @@ datasource db {
 }
 
 model Company {
-  id               String           @id @default(uuid(7)) @db.Uuid
-  cnpj             String           @unique @db.Char(14)
-  code             String           @unique @db.VarChar(15)
-  name             String           @db.VarChar(100)
-  created_at       DateTime         @db.Timestamptz()
-  updated_at       DateTime?        @updatedAt
-  companyAddresses CompanyAddress[]
+  id         String          @id @default(uuid(7)) @db.Uuid
+  cnpj       String          @unique @db.Char(14)
+  code       String          @unique @db.VarChar(15)
+  name       String          @db.VarChar(100)
+  created_at DateTime        @db.Timestamptz()
+  updated_at DateTime?       @updatedAt
+  address    CompanyAddress?
 
   @@index([id, code])
   @@map("company")
@@ -27,8 +27,8 @@ model Company {
 
 model CompanyAddress {
   id           String    @id @default(uuid(7)) @db.Uuid
-  company_id   String    @db.Uuid
-  company      Company   @relation(fields: [company_id], references: [id])
+  company_id   String    @unique @db.Uuid
+  company      Company   @relation(fields: [company_id], references: [id], onDelete: Cascade)
   cep          String    @db.Char(8)
   street       String    @db.VarChar(150)
   neighborhood String    @db.VarChar(100)
@@ -55,7 +55,7 @@ model User {
   must_change_password  Boolean    @db.Boolean
   created_at            DateTime   @db.Timestamptz()
   updated_at            DateTime?  @updatedAt
-  userRoles             UserRole[]
+  user_roles            UserRole[]
 
   @@index([id, email, password])
   @@map("user")
@@ -68,7 +68,7 @@ model Role {
   description String?    @db.VarChar(255)
   created_at  DateTime   @db.Timestamptz()
   updated_at  DateTime?  @updatedAt
-  userRoles   UserRole[]
+  user_roles  UserRole[]
 
   @@index([id, code])
   @@map("role")

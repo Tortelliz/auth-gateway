@@ -1,6 +1,8 @@
-import { IsDate, IsString, MaxLength } from 'class-validator';
+import { IsDate, IsString, IsUUID, MaxLength } from 'class-validator';
 
 export class CompanyEntity {
+  @IsUUID()
+  id?: string;
   @IsString()
   cnpj: string;
   @IsString()
