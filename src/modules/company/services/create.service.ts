@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { CompanyRepository } from '../company.repository';
 import { CompanyEntity } from '../company.entity';
 import { CompanyDTO, CreateCompanyDTO } from '../company.dto';
+import { MapperService } from './mapper.service';
 
 @Injectable()
 export class CreateService {
@@ -9,7 +10,8 @@ export class CreateService {
 
   async execute(company: CreateCompanyDTO): Promise<CompanyDTO> {
     const builtCompany = this.build(company);
-    return await this.companyRepository.create(builtCompany);
+    const createdCompany = await this.companyRepository.create(builtCompany);
+    return MapperService.fromEntityToDTO(createdCompany);
   }
 
   private build(company: CreateCompanyDTO): CompanyEntity {

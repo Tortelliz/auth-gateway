@@ -3,6 +3,7 @@ import {
   IsNotEmpty,
   IsObject,
   IsString,
+  IsUUID,
   Length,
   MaxLength,
   ValidateNested,
@@ -10,6 +11,8 @@ import {
 import { Type } from 'class-transformer';
 
 export class CompanyAddressDTO {
+  @IsUUID()
+  id?: string;
   @IsString()
   @Length(8, 8)
   cep: string;
@@ -37,6 +40,8 @@ export class CompanyAddressDTO {
 }
 
 export class CompanyDTO {
+  @IsUUID()
+  id?: string;
   @IsString()
   cnpj: string;
   @IsString()
