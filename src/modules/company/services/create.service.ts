@@ -13,9 +13,14 @@ export class CreateService {
   }
 
   private build(company: CreateCompanyDTO): CompanyEntity {
+    const timestamp = new Date();
     return {
       ...company,
-      created_at: new Date(),
+      created_at: timestamp,
+      address: {
+        ...company.address,
+        created_at: timestamp,
+      },
     };
   }
 }

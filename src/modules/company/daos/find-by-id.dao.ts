@@ -9,6 +9,7 @@ export class FindByIdDAO {
   async execute(id: string): Promise<CompanyEntity> {
     return await this.prismaService.company.findUniqueOrThrow({
       where: { id },
+      include: { address: true },
     });
   }
 }

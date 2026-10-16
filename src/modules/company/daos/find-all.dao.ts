@@ -9,6 +9,7 @@ export class FindAllDAO {
   async execute(): Promise<CompanyEntity[]> {
     return await this.prismaService.company.findMany({
       orderBy: { name: 'asc' },
+      include: { address: true },
     });
   }
 }

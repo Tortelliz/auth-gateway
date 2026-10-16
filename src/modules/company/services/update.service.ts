@@ -20,6 +20,10 @@ export class UpdateService {
     return {
       ...newCompany,
       created_at: oldCompany.created_at,
+      address: {
+        ...newCompany.address,
+        created_at: oldCompany.created_at,
+      },
     };
   }
 }

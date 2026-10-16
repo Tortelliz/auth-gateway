@@ -7,6 +7,20 @@ export class CreateDAO {
   constructor(private readonly prismaService: PrismaService) {}
 
   async execute(company: CompanyEntity): Promise<CompanyEntity> {
-    return await this.prismaService.company.create({ data: company });
+    const { address, ...rest } = company;
+    const createdCompany = await this.prismaService.company.create({
+      data: rest,
+    });
+    const createdCompanyAddress =
+      await this.prismaService.companyAddress.create({
+        data: {
+          ...address!,
+          company_id: createdCompany.id,
+        },
+      });
+    return {
+      ...createdCompany,
+      address: createdCompanyAddress,
+    };
   }
 }
