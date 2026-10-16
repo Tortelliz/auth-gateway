@@ -14,7 +14,7 @@ export class PrismaService
   implements OnModuleInit, OnModuleDestroy
 {
   private readonly logger = new Logger(PrismaService.name);
-  constructor(configService: ConfigService) {
+  constructor(private readonly configService: ConfigService) {
     const adapter = new PrismaPg({
       user: configService.getOrThrow<string>('DB_USER'),
       password: configService.getOrThrow<string>('DB_PASSWORD'),
@@ -25,8 +25,17 @@ export class PrismaService
     super({ adapter });
   }
   async onModuleInit(): Promise<void> {
-    await this.$connect();
-    this.logger.log('Database successfully connected');
+    try {
+      const database = this.configService.getOrThrow<string>('DB_NAME');
+      await this.$connect();
+      await this.$queryRawUnsafe(
+        'SELECT EXISTS (SELECT 1 FROM pg_database WHERE datname = $1) AS db_exists',
+        database,
+      );
+      this.logger.log('Database successfully connected');
+    } catch (error) {
+      this.logger.error(error);
+    }
   }
   async onModuleDestroy(): Promise<void> {
     await this.$disconnect();
