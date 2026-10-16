@@ -12,7 +12,7 @@ import { CompanyAddressDTO } from './company.dto';
 
 export class CompanyEntity {
   @IsUUID()
-  id?: string;
+  id: string;
   @IsString()
   @Length(14, 14)
   cnpj: string;
@@ -26,15 +26,15 @@ export class CompanyEntity {
   @IsObject()
   @ValidateNested()
   @Type(() => CompanyAddressDTO)
-  address?: CompanyAddressEntity | null;
+  address: CompanyAddressEntity | null;
   created_at: Date;
   @IsDate()
-  updated_at?: Date | null;
+  updated_at: Date | null;
 }
 
 export class CompanyAddressEntity {
   @IsUUID()
-  id?: string;
+  id: string;
   @IsUUID()
   company_id?: string;
   @IsString()
@@ -60,5 +60,5 @@ export class CompanyAddressEntity {
   @IsDate()
   created_at: Date;
   @IsDate()
-  updated_at?: Date | null;
+  updated_at: Date | null;
 }

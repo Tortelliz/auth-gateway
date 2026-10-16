@@ -3,6 +3,7 @@ import { CompanyRepository } from '../company.repository';
 import { CompanyEntity } from '../company.entity';
 import { CompanyDTO, CreateCompanyDTO } from '../company.dto';
 import { MapperService } from './mapper.service';
+import { generateUUIDUtil } from '../../../utils/generate-uuid.util';
 
 @Injectable()
 export class CreateService {
@@ -18,10 +19,14 @@ export class CreateService {
     const timestamp = new Date();
     return {
       ...company,
+      id: generateUUIDUtil(),
       created_at: timestamp,
+      updated_at: null,
       address: {
         ...company.address,
+        id: generateUUIDUtil(),
         created_at: timestamp,
+        updated_at: null,
       },
     };
   }

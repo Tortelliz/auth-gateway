@@ -13,12 +13,12 @@ datasource db {
 }
 
 model Company {
-  id         String          @id @default(uuid(7)) @db.Uuid
+  id         String          @id @db.Uuid
   cnpj       String          @unique @db.Char(14)
   code       String          @unique @db.VarChar(15)
   name       String          @db.VarChar(100)
   created_at DateTime        @db.Timestamptz()
-  updated_at DateTime?       @updatedAt
+  updated_at DateTime?       @db.Timestamptz()
   address    CompanyAddress?
 
   @@index([id, code])
@@ -26,7 +26,7 @@ model Company {
 }
 
 model CompanyAddress {
-  id           String    @id @default(uuid(7)) @db.Uuid
+  id           String    @id @db.Uuid
   company_id   String    @unique @db.Uuid
   company      Company   @relation(fields: [company_id], references: [id], onDelete: Cascade)
   cep          String    @db.Char(8)
@@ -37,14 +37,14 @@ model CompanyAddress {
   uf           String    @db.Char(2)
   number       String    @db.VarChar(15)
   created_at   DateTime  @db.Timestamptz()
-  updated_at   DateTime? @updatedAt
+  updated_at   DateTime? @db.Timestamptz()
 
   @@index([id, company_id])
   @@map("company_address")
 }
 
 model User {
-  id                    String     @id @default(uuid(7)) @db.Uuid
+  id                    String     @id @db.Uuid
   email                 String     @unique
   password              String     @db.VarChar(255)
   first_name            String     @db.VarChar(50)
@@ -54,7 +54,7 @@ model User {
   failed_login_attempts Int        @db.SmallInt
   must_change_password  Boolean    @db.Boolean
   created_at            DateTime   @db.Timestamptz()
-  updated_at            DateTime?  @updatedAt
+  updated_at            DateTime?  @db.Timestamptz()
   user_roles            UserRole[]
 
   @@index([id, email, password])
@@ -62,12 +62,12 @@ model User {
 }
 
 model Role {
-  id          String     @id @default(uuid(7)) @db.Uuid
+  id          String     @id @db.Uuid
   code        String     @unique @db.VarChar(15)
   name        String     @db.VarChar(50)
   description String?    @db.VarChar(255)
   created_at  DateTime   @db.Timestamptz()
-  updated_at  DateTime?  @updatedAt
+  updated_at  DateTime?  @db.Timestamptz()
   user_roles  UserRole[]
 
   @@index([id, code])
@@ -75,13 +75,13 @@ model Role {
 }
 
 model UserRole {
-  id         String    @id @default(uuid(7)) @db.Uuid
+  id         String    @id @db.Uuid
   user_id    String    @db.Uuid
   role_id    String    @db.Uuid
   user       User      @relation(fields: [user_id], references: [id])
   role       Role      @relation(fields: [role_id], references: [id])
   created_at DateTime  @db.Timestamptz()
-  updated_at DateTime? @updatedAt
+  updated_at DateTime? @db.Timestamptz()
 
   @@index([id, user_id, role_id])
   @@map("user_role")

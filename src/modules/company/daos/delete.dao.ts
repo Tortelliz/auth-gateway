@@ -9,6 +9,7 @@ export class DeleteDAO {
   async execute(id: string): Promise<CompanyEntity> {
     return await this.prismaService.company.delete({
       where: { id },
+      include: { address: true },
     });
   }
 }

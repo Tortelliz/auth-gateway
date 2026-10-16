@@ -12,7 +12,7 @@ import { Type } from 'class-transformer';
 
 export class CompanyAddressDTO {
   @IsUUID()
-  id?: string;
+  id: string;
   @IsString()
   @Length(8, 8)
   cep: string;
@@ -36,13 +36,14 @@ export class CompanyAddressDTO {
   @IsDate()
   created_at: Date;
   @IsDate()
-  updated_at?: Date | null;
+  updated_at: Date | null;
 }
 
 export class CompanyDTO {
   @IsUUID()
-  id?: string;
+  id: string;
   @IsString()
+  @Length(14, 14)
   cnpj: string;
   @IsString()
   @MaxLength(15)
@@ -53,11 +54,11 @@ export class CompanyDTO {
   @IsObject()
   @ValidateNested()
   @Type(() => CompanyAddressDTO)
-  address?: CompanyAddressDTO | null;
+  address: CompanyAddressDTO | null;
   @IsDate()
   created_at: Date;
   @IsDate()
-  updated_at?: Date | null;
+  updated_at: Date | null;
 }
 
 export class CreateCompanyAddressDTO {
@@ -93,6 +94,7 @@ export class CreateCompanyAddressDTO {
 export class CreateCompanyDTO {
   @IsNotEmpty()
   @IsString()
+  @Length(14, 14)
   cnpj: string;
   @IsNotEmpty()
   @IsString()

@@ -22,12 +22,18 @@ export class UpdateService {
     newCompany: UpdateCompanyDTO,
   ): Promise<CompanyEntity> {
     const oldCompany = await this.companyRepository.findById(id);
+    const timestamp = new Date();
     return {
       ...newCompany,
+      id,
       created_at: oldCompany.created_at,
+      updated_at: timestamp,
       address: {
         ...newCompany.address,
+        id: oldCompany.address!.id,
+        company_id: id,
         created_at: oldCompany.created_at,
+        updated_at: timestamp,
       },
     };
   }
