@@ -55,7 +55,7 @@ model User {
   must_change_password  Boolean    @db.Boolean
   created_at            DateTime   @db.Timestamptz()
   updated_at            DateTime?  @db.Timestamptz()
-  user_roles            UserRole[]
+  roles                 UserRole[]
 
   @@index([id, email, password])
   @@map("user")
