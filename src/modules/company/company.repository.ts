@@ -2,6 +2,7 @@ import { CompanyEntity } from './company.entity';
 import { Injectable } from '@nestjs/common';
 import { CompanyDAO } from './daos/company.dao';
 
+@Injectable()
 abstract class CompanyContract {
   abstract create(company: CompanyEntity): Promise<CompanyEntity>;
   abstract findAll(): Promise<CompanyEntity[]>;

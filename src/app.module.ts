@@ -5,6 +5,7 @@ import { ConfigModule } from '@nestjs/config';
 import { PrismaModule } from './infra/prisma/prisma.module';
 import { envValidationSchema } from './config/env-validation.schema';
 import { CompanyModule } from './modules/company/company.module';
+import { RoleModule } from './modules/role/role.module';
 
 @Module({
   imports: [
@@ -14,6 +15,7 @@ import { CompanyModule } from './modules/company/company.module';
     }),
     PrismaModule,
     CompanyModule,
+    RoleModule,
   ],
   controllers: [AppController],
   providers: [AppService],
