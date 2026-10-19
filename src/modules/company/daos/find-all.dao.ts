@@ -1,14 +1,25 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../../../infra/prisma/prisma.service';
 import { CompanyEntity } from '../company.entity';
+import {
+  PaginationRequestDTO,
+  PaginationResponseDTO,
+} from '../../../common/pagination/pagination.dto';
+import { PaginationService } from '../../../common/pagination/pagination.service';
 
 @Injectable()
 export class FindAllDAO {
-  constructor(private readonly prismaService: PrismaService) {}
+  constructor(
+    private readonly prismaService: PrismaService,
+    private readonly paginationService: PaginationService,
+  ) {}
 
-  async execute(): Promise<CompanyEntity[]> {
-    return await this.prismaService.company.findMany({
-      orderBy: { name: 'asc' },
+  async execute(
+    pagination: PaginationRequestDTO,
+  ): Promise<PaginationResponseDTO<CompanyEntity[]>> {
+    const query = this.paginationService.buildToFind(pagination);
+    const result = await this.prismaService.company.findMany({
+      ...query,
       include: {
         address: {
           omit: {
@@ -17,5 +28,6 @@ export class FindAllDAO {
         },
       },
     });
+    return this.paginationService.buildToReturn(pagination, result);
   }
 }

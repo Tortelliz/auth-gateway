@@ -5,6 +5,11 @@ import { FindAllService } from './find-all.service';
 import { UpdateService } from './update.service';
 import { FindByIdService } from './find-by-id.service';
 import { DeleteService } from './delete.service';
+import {
+  PaginationRequestDTO,
+  PaginationResponseDTO,
+} from '../../../common/pagination/pagination.dto';
+import { CompanyEntity } from '../company.entity';
 
 @Injectable()
 export class CompanyService {
@@ -20,8 +25,10 @@ export class CompanyService {
     return await this.createService.execute(company);
   }
 
-  async findAll(): Promise<CompanyDTO[]> {
-    return await this.findAllService.execute();
+  async findAll(
+    pagination: PaginationRequestDTO,
+  ): Promise<PaginationResponseDTO<CompanyEntity[]>> {
+    return await this.findAllService.execute(pagination);
   }
 
   async findById(id: string): Promise<CompanyDTO> {

@@ -8,9 +8,15 @@ import {
   ParseUUIDPipe,
   Post,
   Put,
+  Query,
 } from '@nestjs/common';
 import { CompanyService } from './services/company.service';
 import { CompanyDTO, CreateCompanyDTO, UpdateCompanyDTO } from './company.dto';
+import {
+  PaginationRequestDTO,
+  PaginationResponseDTO,
+} from '../../common/pagination/pagination.dto';
+import { CompanyEntity } from './company.entity';
 
 @Controller('company')
 export class CompanyController {
@@ -26,9 +32,11 @@ export class CompanyController {
   }
 
   @Get()
-  async findAll(): Promise<CompanyDTO[]> {
+  async findAll(
+    @Query() query: PaginationRequestDTO,
+  ): Promise<PaginationResponseDTO<CompanyEntity[]>> {
     try {
-      return await this.companyService.findAll();
+      return await this.companyService.findAll(query);
     } catch (error) {
       throw new BadRequestException(error);
     }

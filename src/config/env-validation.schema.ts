@@ -8,4 +8,5 @@ export const envValidationSchema = z.object({
   DB_PORT: z.string(),
   DB_NAME: z.string(),
   LOG_LEVEL: z.enum(['log', 'debug']),
+  PAGINATION_DEFAULT_PAGE_SIZE: z.string(),
 });

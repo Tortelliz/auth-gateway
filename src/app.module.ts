@@ -6,6 +6,7 @@ import { PrismaModule } from './infra/prisma/prisma.module';
 import { envValidationSchema } from './config/env-validation.schema';
 import { CompanyModule } from './modules/company/company.module';
 import { RoleModule } from './modules/role/role.module';
+import { PaginationModule } from './common/pagination/pagination.module';
 
 @Module({
   imports: [
@@ -14,6 +15,7 @@ import { RoleModule } from './modules/role/role.module';
       validationSchema: envValidationSchema,
     }),
     PrismaModule,
+    PaginationModule,
     CompanyModule,
     RoleModule,
   ],

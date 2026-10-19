@@ -5,6 +5,10 @@ import { FindAllDAO } from './find-all.dao';
 import { UpdateDAO } from './update.dao';
 import { FindByIdDAO } from './find-by-id.dao';
 import { DeleteDAO } from './delete.dao';
+import {
+  PaginationRequestDTO,
+  PaginationResponseDTO,
+} from '../../../common/pagination/pagination.dto';
 
 @Injectable()
 export class CompanyDAO {
@@ -20,8 +24,10 @@ export class CompanyDAO {
     return await this.createDAO.execute(company);
   }
 
-  async findAll(): Promise<CompanyEntity[]> {
-    return await this.findAllDAO.execute();
+  async findAll(
+    pagination: PaginationRequestDTO,
+  ): Promise<PaginationResponseDTO<CompanyEntity[]>> {
+    return await this.findAllDAO.execute(pagination);
   }
 
   async update(id: string, company: CompanyEntity): Promise<CompanyEntity> {

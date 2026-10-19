@@ -1,12 +1,18 @@
 import { Injectable } from '@nestjs/common';
 import { CompanyRepository } from '../company.repository';
-import { CompanyDTO } from '../company.dto';
+import {
+  PaginationRequestDTO,
+  PaginationResponseDTO,
+} from '../../../common/pagination/pagination.dto';
+import { CompanyEntity } from '../company.entity';
 
 @Injectable()
 export class FindAllService {
   constructor(private readonly companyRepository: CompanyRepository) {}
 
-  async execute(): Promise<CompanyDTO[]> {
-    return await this.companyRepository.findAll();
+  async execute(
+    pagination: PaginationRequestDTO,
+  ): Promise<PaginationResponseDTO<CompanyEntity[]>> {
+    return await this.companyRepository.findAll(pagination);
   }
 }

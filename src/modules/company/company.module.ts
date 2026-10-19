@@ -15,9 +15,10 @@ import { FindByIdService } from './services/find-by-id.service';
 import { DeleteDAO } from './daos/delete.dao';
 import { DeleteService } from './services/delete.service';
 import { MapperService } from './services/mapper.service';
+import { PaginationModule } from '../../common/pagination/pagination.module';
 
 @Module({
-  imports: [PrismaModule],
+  imports: [PrismaModule, PaginationModule],
   controllers: [CompanyController],
   providers: [
     CompanyRepository,
