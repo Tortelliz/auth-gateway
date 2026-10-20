@@ -1,43 +1,42 @@
-import { Injectable } from '@nestjs/common';
-import { OrderBy, PaginationRequestDTO } from './pagination.dto';
+import { Injectable, Logger } from '@nestjs/common';
+import { PaginationRequestDTO, PaginationResponseDTO } from './pagination.dto';
 import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class PaginationService {
+  private readonly logger = new Logger(PaginationService.name);
   constructor(private readonly configService: ConfigService) {}
 
   buildToFind(pagination: PaginationRequestDTO) {
-    const defaultPageSize = this.getDefaultPageSize();
-    const orderBy =
-      !pagination.order_by_field || !pagination.order_by_type
-        ? { created_at: 'desc' as const }
-        : { [pagination.order_by_field]: pagination.order_by_type };
-    const take = pagination?.size || defaultPageSize;
-    const skip =
-      !pagination.size || !pagination.page
-        ? 0
-        : (pagination.page - 1) * pagination.size;
-    const filterFields = pagination.filter_fields?.split(',');
-    const where = filterFields
-      ? {
-          OR: filterFields?.map((field: string) => ({
-            [field]: {
-              contains: pagination.filter_search,
-              mode: 'insensitive',
-            },
-          })),
-        }
-      : {};
+    const res = this.execute(pagination);
+    const take = res.size;
+    const skip = (res.page - 1) * res.size;
     return {
-      orderBy,
-      where,
+      orderBy: res.order_by,
+      where: res.filter,
       take,
       skip,
     };
   }
 
-  buildToReturn(pagination: PaginationRequestDTO, result: Array<any>) {
-    const rows = result.length;
+  buildToReturn(
+    pagination: PaginationRequestDTO,
+    result: Array<any>,
+  ): PaginationResponseDTO<any> {
+    return this.execute(pagination, result);
+  }
+
+  private getDefaultPageSize(): number {
+    return Number(
+      this.configService.getOrThrow<number>('PAGINATION_DEFAULT_PAGE_SIZE'),
+    );
+  }
+
+  private execute(
+    pagination: PaginationRequestDTO,
+    result?: Array<any>,
+  ): PaginationResponseDTO<any> {
+    const rows = result?.length || 0;
     const page = pagination.page || 1;
     const defaultPageSize = this.getDefaultPageSize();
     const pagesSize = pagination.size || defaultPageSize;
@@ -46,6 +45,22 @@ export class PaginationService {
     const hasPrevPage = page > realPages && realPages !== 0;
     const nextPage = hasNextPage ? page + 1 : null;
     const prevPage = hasPrevPage ? page - 1 : null;
+    const filterFields = pagination.filter_fields?.split(',') || [];
+    const orderBy =
+      !pagination.order_by_field || !pagination.order_by_type
+        ? [{ created_at: 'desc' as const }]
+        : { [pagination.order_by_field]: pagination.order_by_type };
+    const filter =
+      filterFields.length > 0
+        ? {
+            OR: filterFields.map((field: string) => ({
+              [field]: {
+                contains: pagination.filter_search,
+                mode: 'insensitive',
+              },
+            })),
+          }
+        : {};
     return {
       page,
       size: defaultPageSize,
@@ -55,17 +70,9 @@ export class PaginationService {
       has_prev_page: hasPrevPage,
       next_page: nextPage,
       prev_page: prevPage,
-      filter_search: pagination.filter_search || '',
-      filter_fields: pagination.filter_fields || '',
-      order_by_type: (pagination.order_by_type as OrderBy) || '',
-      order_by_field: pagination.order_by_field || '',
+      order_by: orderBy,
+      filter,
       pages: result,
     };
-  }
-
-  private getDefaultPageSize(): number {
-    return Number(
-      this.configService.getOrThrow<number>('PAGINATION_DEFAULT_PAGE_SIZE'),
-    );
   }
 }

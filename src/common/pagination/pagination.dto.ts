@@ -3,6 +3,7 @@ import {
   IsBoolean,
   IsEnum,
   IsNumber,
+  IsObject,
   IsOptional,
   IsString,
 } from 'class-validator';
@@ -56,13 +57,25 @@ export class PaginationResponseDTO<T> {
   prev_page: number | null;
   @IsArray()
   pages: T;
-  @IsString()
-  filter_search: string;
-  @IsString()
-  filter_fields: string;
-  @IsString()
-  @IsEnum(OrderBy)
-  order_by_type: 'asc' | 'desc';
-  @IsString()
-  order_by_field: string;
+  @IsObject()
+  filter:
+    | {
+        OR: {
+          [p: string]: {
+            contains: string | undefined;
+            mode: string;
+          };
+        }[];
+      }
+    | {
+        OR?: undefined;
+      };
+  @IsArray()
+  order_by:
+    | {
+        created_at: 'desc';
+      }[]
+    | {
+        [x: string]: 'asc' | 'desc';
+      };
 }
