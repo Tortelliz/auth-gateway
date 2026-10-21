@@ -4,7 +4,7 @@ import { ConfigService } from '@nestjs/config';
 import { generateCNPJUtil } from '../../../utils/generate-cnpj.util';
 import { generateCEPUtil } from '../../../utils/generate-cep.util';
 import { CreateCompanyDTO } from '../company.dto';
-import { ExceptionDTO } from '../../../common/dtos/exception.dto';
+import { ExceptionDTO } from '../../../common/filters/exception.dto';
 
 @Injectable()
 export class CreateManyTest {

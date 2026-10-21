@@ -1,7 +1,7 @@
 import { applyDecorators, HttpStatus, Type } from '@nestjs/common';
 import { ApiExtraModels, ApiResponse, getSchemaPath } from '@nestjs/swagger';
-import { ResponseDTO } from '../../common/dtos/response.dto';
-import { ExceptionDTO } from '../../common/dtos/exception.dto';
+import { ResponseDTO } from '../../common/interceptors/response.dto';
+import { ExceptionDTO } from '../../common/filters/exception.dto';
 
 export const ApiDefaultResponse = <TModel extends Type<any>>(
   model: TModel,

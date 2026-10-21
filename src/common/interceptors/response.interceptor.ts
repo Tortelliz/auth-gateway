@@ -7,7 +7,7 @@ import {
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Request } from 'express';
-import { ResponseDTO } from '../dtos/response.dto';
+import { ResponseDTO } from './response.dto';
 
 export interface Response<T> {
   content: T;
