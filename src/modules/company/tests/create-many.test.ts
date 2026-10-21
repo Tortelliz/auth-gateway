@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable, Logger } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { faker } from '@faker-js/faker';
 import { ConfigService } from '@nestjs/config';
 import { generateCNPJUtil } from '../../../utils/generate-cnpj.util';
