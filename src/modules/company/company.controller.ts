@@ -3,6 +3,7 @@ import {
   Controller,
   Delete,
   Get,
+  HttpStatus,
   Param,
   ParseUUIDPipe,
   Post,
@@ -15,30 +16,34 @@ import {
   PaginationRequestDTO,
   PaginationResponseDTO,
 } from '../../common/pagination/pagination.dto';
-import { CompanyEntity } from './company.entity';
+import { ApiDefaultResponse } from '../../infra/swagger/api-response.decorator';
 
 @Controller('company')
 export class CompanyController {
   constructor(private readonly companyService: CompanyService) {}
 
   @Post()
+  @ApiDefaultResponse(CompanyDTO, false, HttpStatus.CREATED)
   async create(@Body() company: CreateCompanyDTO): Promise<CompanyDTO> {
     return await this.companyService.create(company);
   }
 
   @Get()
+  @ApiDefaultResponse(PaginationResponseDTO<CompanyDTO[]>)
   async findAll(
     @Query() pagination: PaginationRequestDTO,
-  ): Promise<PaginationResponseDTO<CompanyEntity[]>> {
+  ): Promise<PaginationResponseDTO<CompanyDTO[]>> {
     return await this.companyService.findAll(pagination);
   }
 
   @Get(':id')
+  @ApiDefaultResponse(CompanyDTO)
   async findById(@Param('id') id: string): Promise<CompanyDTO> {
     return await this.companyService.findById(id);
   }
 
   @Put(':id')
+  @ApiDefaultResponse(CompanyDTO)
   async update(
     @Param('id', ParseUUIDPipe) id: string,
     @Body() company: UpdateCompanyDTO,
@@ -47,6 +52,7 @@ export class CompanyController {
   }
 
   @Delete(':id')
+  @ApiDefaultResponse(CompanyDTO)
   async delete(@Param('id', ParseUUIDPipe) id: string): Promise<CompanyDTO> {
     return await this.companyService.delete(id);
   }

@@ -16,6 +16,7 @@ export class PaginationService {
     result?: Array<any>,
   ): PaginationResponseDTO<any> {
     this.checkMatches(pagination);
+    const effResult = result && result.length > 0 ? result : [];
     const rows = totalRows || 0;
     const page = pagination.page || 1;
     const defaultPageSize = this.getDefaultPageSize();
@@ -53,7 +54,7 @@ export class PaginationService {
       prev_page: prevPage,
       order_by: orderBy,
       filter,
-      pages: result,
+      pages: effResult,
     };
   }
 

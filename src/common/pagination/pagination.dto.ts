@@ -8,6 +8,7 @@ import {
   IsString,
 } from 'class-validator';
 import { Type } from 'class-transformer';
+import { ApiProperty } from '@nestjs/swagger';
 
 export enum OrderBy {
   asc = 'asc',
@@ -58,6 +59,7 @@ export class PaginationResponseDTO<T> {
   @IsNumber()
   prev_page: number | null;
   @IsArray()
+  @ApiProperty({ type: 'array', items: { type: 'object' } })
   pages: T;
   @IsObject()
   filter:

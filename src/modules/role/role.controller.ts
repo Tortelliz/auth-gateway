@@ -3,6 +3,7 @@ import {
   Controller,
   Delete,
   Get,
+  HttpStatus,
   Param,
   ParseUUIDPipe,
   Post,
@@ -16,17 +17,20 @@ import {
   PaginationRequestDTO,
   PaginationResponseDTO,
 } from '../../common/pagination/pagination.dto';
+import { ApiDefaultResponse } from '../../infra/swagger/api-response.decorator';
 
 @Controller('role')
 export class RoleController {
   constructor(private readonly roleService: RoleService) {}
 
   @Post()
+  @ApiDefaultResponse(RoleDTO, false, HttpStatus.CREATED)
   async create(@Body() role: CreateRoleDTO): Promise<RoleDTO> {
     return await this.roleService.create(role);
   }
 
   @Get()
+  @ApiDefaultResponse(PaginationResponseDTO<RoleDTO[]>)
   async findAll(
     @Query() pagination: PaginationRequestDTO,
   ): Promise<PaginationResponseDTO<RoleDTO[]>> {
@@ -34,11 +38,13 @@ export class RoleController {
   }
 
   @Get(':id')
+  @ApiDefaultResponse(RoleDTO)
   async findById(@Param('id') id: string): Promise<RoleDTO> {
     return await this.roleService.findById(id);
   }
 
   @Put(':id')
+  @ApiDefaultResponse(RoleDTO)
   async update(
     @Param('id', ParseUUIDPipe) id: string,
     @Body() role: UpdateRoleDTO,
@@ -47,6 +53,7 @@ export class RoleController {
   }
 
   @Delete(':id')
+  @ApiDefaultResponse(RoleDTO)
   async delete(@Param('id', ParseUUIDPipe) id: string): Promise<RoleDTO> {
     return await this.roleService.delete(id);
   }
