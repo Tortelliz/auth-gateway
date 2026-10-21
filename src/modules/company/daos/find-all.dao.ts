@@ -17,6 +17,11 @@ export class FindAllDAO {
   async execute(
     pagination: PaginationRequestDTO,
   ): Promise<PaginationResponseDTO<CompanyEntity[]>> {
+    this.paginationService.checkFields(
+      pagination,
+      ['cnpj', 'code', 'name'],
+      ['id', 'cnpj', 'code', 'name', 'created_at', 'updated_at'],
+    );
     const query = this.paginationService.buildToFind(pagination);
     const result = await this.prismaService.company.findMany({
       ...query,
@@ -28,7 +33,9 @@ export class FindAllDAO {
         },
       },
     });
-    const count = await this.prismaService.company.count();
+    const count = await this.prismaService.company.count({
+      where: query.where,
+    });
     return this.paginationService.buildToReturn(pagination, count, result);
   }
 }
