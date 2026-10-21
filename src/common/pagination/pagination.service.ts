@@ -1,4 +1,4 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { ForbiddenException, Injectable, Logger } from '@nestjs/common';
 import { PaginationRequestDTO, PaginationResponseDTO } from './pagination.dto';
 import { ConfigService } from '@nestjs/config';
 
@@ -21,9 +21,10 @@ export class PaginationService {
 
   buildToReturn(
     pagination: PaginationRequestDTO,
+    totalRows: number,
     result: Array<any>,
   ): PaginationResponseDTO<any> {
-    return this.execute(pagination, result);
+    return this.execute(pagination, totalRows, result);
   }
 
   private getDefaultPageSize(): number {
@@ -34,15 +35,32 @@ export class PaginationService {
 
   private execute(
     pagination: PaginationRequestDTO,
+    totalRows?: number,
     result?: Array<any>,
   ): PaginationResponseDTO<any> {
-    const rows = result?.length || 0;
+    if (
+      (!pagination.order_by_type && pagination.order_by_field) ||
+      (!pagination.order_by_field && pagination.order_by_type)
+    ) {
+      throw new ForbiddenException(
+        'The two parameters (order_by_type) and (order_by_field) must be provided to use order by',
+      );
+    }
+    if (
+      (!pagination.filter_search && pagination.filter_fields) ||
+      (!pagination.filter_fields && pagination.filter_search)
+    ) {
+      throw new ForbiddenException(
+        'The two parameters (filter_search) and (filter_fields) must be provided to use filters',
+      );
+    }
+    const rows = totalRows || 0;
     const page = pagination.page || 1;
     const defaultPageSize = this.getDefaultPageSize();
-    const pagesSize = pagination.size || defaultPageSize;
-    const realPages = Math.ceil(rows / pagesSize);
-    const hasNextPage = page < realPages && realPages !== 0;
-    const hasPrevPage = page > realPages && realPages !== 0;
+    const pageSize = pagination.size || defaultPageSize;
+    const realPages = Math.ceil(rows / pageSize);
+    const hasNextPage = page + 1 <= realPages;
+    const hasPrevPage = page - 1 > 0 && page - 1 < realPages;
     const nextPage = hasNextPage ? page + 1 : null;
     const prevPage = hasPrevPage ? page - 1 : null;
     const filterFields = pagination.filter_fields?.split(',') || [];
@@ -63,7 +81,8 @@ export class PaginationService {
         : {};
     return {
       page,
-      size: defaultPageSize,
+      size: pageSize,
+      items: result?.length || 0,
       total_items: rows,
       total_pages: realPages,
       has_next_page: hasNextPage,

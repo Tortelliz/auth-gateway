@@ -44,6 +44,8 @@ export class PaginationResponseDTO<T> {
   @IsNumber()
   size: number;
   @IsNumber()
+  items: number;
+  @IsNumber()
   total_items: number;
   @IsNumber()
   total_pages: number;

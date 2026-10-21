@@ -1,5 +1,4 @@
 import {
-  BadRequestException,
   Body,
   Controller,
   Delete,
@@ -24,31 +23,19 @@ export class CompanyController {
 
   @Post()
   async create(@Body() company: CreateCompanyDTO): Promise<CompanyDTO> {
-    try {
-      return await this.companyService.create(company);
-    } catch (error) {
-      throw new BadRequestException(error);
-    }
+    return await this.companyService.create(company);
   }
 
   @Get()
   async findAll(
-    @Query() query: PaginationRequestDTO,
+    @Query() pagination: PaginationRequestDTO,
   ): Promise<PaginationResponseDTO<CompanyEntity[]>> {
-    try {
-      return await this.companyService.findAll(query);
-    } catch (error) {
-      throw new BadRequestException(error);
-    }
+    return await this.companyService.findAll(pagination);
   }
 
   @Get(':id')
   async findById(@Param('id') id: string): Promise<CompanyDTO> {
-    try {
-      return await this.companyService.findById(id);
-    } catch (error) {
-      throw new BadRequestException(error);
-    }
+    return await this.companyService.findById(id);
   }
 
   @Put(':id')
@@ -56,19 +43,11 @@ export class CompanyController {
     @Param('id', ParseUUIDPipe) id: string,
     @Body() company: UpdateCompanyDTO,
   ): Promise<CompanyDTO> {
-    try {
-      return await this.companyService.update(id, company);
-    } catch (error) {
-      throw new BadRequestException(error);
-    }
+    return await this.companyService.update(id, company);
   }
 
   @Delete(':id')
   async delete(@Param('id', ParseUUIDPipe) id: string): Promise<CompanyDTO> {
-    try {
-      return await this.companyService.delete(id);
-    } catch (error) {
-      throw new BadRequestException(error);
-    }
+    return await this.companyService.delete(id);
   }
 }

@@ -28,6 +28,7 @@ export class FindAllDAO {
         },
       },
     });
-    return this.paginationService.buildToReturn(pagination, result);
+    const count = await this.prismaService.company.count();
+    return this.paginationService.buildToReturn(pagination, count, result);
   }
 }

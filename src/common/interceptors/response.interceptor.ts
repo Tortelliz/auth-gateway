@@ -7,17 +7,21 @@ import {
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Request } from 'express';
+import { ResponseDTO } from '../dtos/response.dto';
 
 export interface Response<T> {
   content: T;
 }
 
 @Injectable()
-export class ResponseInterceptor<T> implements NestInterceptor<T, Response<T>> {
+export class ResponseInterceptor<T> implements NestInterceptor<
+  T,
+  ResponseDTO<T>
+> {
   intercept(
     context: ExecutionContext,
     next: CallHandler,
-  ): Observable<Response<T>> {
+  ): Observable<ResponseDTO<T>> {
     const startTime = Date.now();
     const timestamp = new Date().toLocaleString();
     const request = context.switchToHttp().getRequest<Request>();

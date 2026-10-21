@@ -16,10 +16,12 @@ import { DeleteDAO } from './daos/delete.dao';
 import { DeleteService } from './services/delete.service';
 import { MapperService } from './services/mapper.service';
 import { PaginationModule } from '../../common/pagination/pagination.module';
+import { CreateManyTest } from './tests/create-many.test';
+import { CompanyTestController } from './tests/test.controller';
 
 @Module({
   imports: [PrismaModule, PaginationModule],
-  controllers: [CompanyController],
+  controllers: [CompanyController, CompanyTestController],
   providers: [
     CompanyRepository,
     CompanyDAO,
@@ -35,6 +37,7 @@ import { PaginationModule } from '../../common/pagination/pagination.module';
     UpdateService,
     DeleteService,
     MapperService,
+    CreateManyTest,
   ],
 })
 export class CompanyModule {}

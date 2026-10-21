@@ -1,9 +1,9 @@
-import { NestFactory } from '@nestjs/core';
+import { HttpAdapterHost, NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { ConfigService } from '@nestjs/config';
 import { Logger, ValidationPipe } from '@nestjs/common';
 import { ResponseInterceptor } from './common/interceptors/response.interceptor';
-import { HttpExceptionFilter } from './common/filters/http-exception.filter';
+import { CatchEverythingFilter } from './common/filters/catch-everything.filter';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -26,7 +26,8 @@ async function bootstrap() {
   logger.log(`Log level: ${logLevel}`);
   app.useLogger(levels);
   app.useGlobalInterceptors(new ResponseInterceptor());
-  app.useGlobalFilters(new HttpExceptionFilter());
+  const httpAdapterHost = app.get(HttpAdapterHost);
+  app.useGlobalFilters(new CatchEverythingFilter(httpAdapterHost));
   app.useGlobalPipes(
     new ValidationPipe({
       forbidNonWhitelisted: true,
