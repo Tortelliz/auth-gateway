@@ -1,4 +1,5 @@
 import { IsBoolean, IsString } from 'class-validator';
+import { ApiHideProperty } from '@nestjs/swagger';
 
 export class ResponseDTO<T> {
   @IsString()
@@ -13,5 +14,6 @@ export class ResponseDTO<T> {
   success: boolean;
   @IsString()
   response_time: string;
+  @ApiHideProperty()
   content: T;
 }

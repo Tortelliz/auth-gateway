@@ -4,6 +4,7 @@ import { ConfigService } from '@nestjs/config';
 import { Logger, ValidationPipe } from '@nestjs/common';
 import { ResponseInterceptor } from './common/interceptors/response.interceptor';
 import { CatchEverythingFilter } from './common/filters/catch-everything.filter';
+import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -34,6 +35,15 @@ async function bootstrap() {
       whitelist: true,
     }),
   );
+  const config = new DocumentBuilder()
+    .setTitle('GRAFCET Auth Gateway')
+    .setDescription(
+      'The auth gateway API description, requests and responses types',
+    )
+    .setVersion('1.0')
+    .build();
+  const documentFactory = () => SwaggerModule.createDocument(app, config);
+  SwaggerModule.setup('api', app, documentFactory);
   await app.listen(port);
 }
 bootstrap();
