@@ -1,13 +1,19 @@
 import { Injectable } from '@nestjs/common';
 import { RoleEntity } from './role.entity';
 import { RoleDAO } from './daos/role.dao';
+import {
+  PaginationRequestDTO,
+  PaginationResponseDTO,
+} from '../../common/pagination/pagination.dto';
 
 @Injectable()
 abstract class RoleContract {
   abstract create(role: RoleEntity): Promise<RoleEntity>;
   abstract update(id: string, role: RoleEntity): Promise<RoleEntity>;
   abstract delete(id: string): Promise<RoleEntity>;
-  abstract findAll(): Promise<RoleEntity[]>;
+  abstract findAll(
+    pagination: PaginationRequestDTO,
+  ): Promise<PaginationResponseDTO<RoleEntity[]>>;
   abstract findById(id: string): Promise<RoleEntity>;
 }
 
@@ -24,8 +30,10 @@ export class RoleRepository implements RoleContract {
   async delete(id: string): Promise<RoleEntity> {
     return await this.roleDAO.delete(id);
   }
-  async findAll(): Promise<RoleEntity[]> {
-    return await this.roleDAO.findAll();
+  async findAll(
+    pagination: PaginationRequestDTO,
+  ): Promise<PaginationResponseDTO<RoleEntity[]>> {
+    return await this.roleDAO.findAll(pagination);
   }
   async findById(id: string): Promise<RoleEntity> {
     return await this.roleDAO.findById(id);

@@ -23,7 +23,7 @@ export class FindAllDAO {
       ['id', 'cnpj', 'code', 'name', 'created_at', 'updated_at'],
     );
     const query = this.paginationService.buildToFind(pagination);
-    const result = await this.prismaService.company.findMany({
+    const result: CompanyEntity[] = await this.prismaService.company.findMany({
       ...query,
       include: {
         address: {

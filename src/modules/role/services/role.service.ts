@@ -5,6 +5,10 @@ import { DeleteService } from './delete.service';
 import { FindAllService } from './find-all.service';
 import { CreateRoleDTO, RoleDTO, UpdateRoleDTO } from '../role.dto';
 import { FindByIdService } from './find-by-id.service';
+import {
+  PaginationRequestDTO,
+  PaginationResponseDTO,
+} from '../../../common/pagination/pagination.dto';
 
 @Injectable()
 export class RoleService {
@@ -28,8 +32,10 @@ export class RoleService {
     return await this.deleteService.execute(id);
   }
 
-  async findAll(): Promise<RoleDTO[]> {
-    return await this.findAllService.execute();
+  async findAll(
+    pagination: PaginationRequestDTO,
+  ): Promise<PaginationResponseDTO<RoleDTO[]>> {
+    return await this.findAllService.execute(pagination);
   }
 
   async findById(id: string): Promise<RoleDTO> {

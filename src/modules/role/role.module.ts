@@ -14,9 +14,10 @@ import { FindAllDAO } from './daos/find-all.dao';
 import { RoleRepository } from './role.repository';
 import { DeleteDAO } from './daos/delete.dao';
 import { DeleteService } from './services/delete.service';
+import { PaginationModule } from '../../common/pagination/pagination.module';
 
 @Module({
-  imports: [PrismaModule],
+  imports: [PrismaModule, PaginationModule],
   controllers: [RoleController],
   providers: [
     RoleRepository,

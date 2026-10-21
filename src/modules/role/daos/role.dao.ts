@@ -5,6 +5,7 @@ import { DeleteDAO } from './delete.dao';
 import { FindAllDAO } from './find-all.dao';
 import { RoleEntity } from '../role.entity';
 import { FindByIdDAO } from './find-by-id.dao';
+import { PaginationRequestDTO, PaginationResponseDTO } from '../../../common/pagination/pagination.dto';
 
 @Injectable()
 export class RoleDAO {
@@ -28,8 +29,10 @@ export class RoleDAO {
     return await this.deleteDAO.execute(id);
   }
 
-  async findAll(): Promise<RoleEntity[]> {
-    return await this.findAllDAO.execute();
+  async findAll(
+    pagination: PaginationRequestDTO,
+  ): Promise<PaginationResponseDTO<RoleEntity[]>> {
+    return await this.findAllDAO.execute(pagination);
   }
 
   async findById(id: string): Promise<RoleEntity> {
