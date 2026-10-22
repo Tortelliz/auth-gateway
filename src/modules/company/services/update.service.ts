@@ -60,8 +60,6 @@ export class UpdateService {
         number: oldCompany.address!.number,
       },
     };
-    if (JSON.stringify(mappedOldCompany) === JSON.stringify(newCompany))
-      return false;
-    return true;
+    return JSON.stringify(mappedOldCompany) !== JSON.stringify(newCompany);
   }
 }

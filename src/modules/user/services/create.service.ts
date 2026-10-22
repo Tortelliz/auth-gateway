@@ -21,21 +21,25 @@ export class CreateService {
     const company: CompanyDTO = await this.companyService.findById(
       user.company_id,
     );
-    const roles: RoleDTO[] = await Promise.all(
-      user.role_ids.map(async (item) => {
-        return await this.roleService.findById(item);
-      }),
+    const userId = crypto.randomUUID();
+    const userRoles = await this.getUserRoles(userId, user);
+    const builtUser: UserEntity = await this.build(
+      userId,
+      user,
+      userRoles.entity,
     );
-    const userRoles: UserRoleEntity[] = roles.map((item) => ({
-      id: crypto.randomUUID(),
-      user_id: builtUser.id,
-      role_id: item.id,
-      created_at: new Date(),
-      updated_at: null,
-    }));
-    const builtUser: UserEntity = {
+    const createdUser = await this.userRepository.create(builtUser);
+    return MapperService.fromEntityToDTO(createdUser, userRoles.dto, company);
+  }
+
+  private async build(
+    userId: string,
+    user: CreateUserDTO,
+    roles: UserRoleEntity[],
+  ): Promise<UserEntity> {
+    return {
       ...user,
-      id: crypto.randomUUID(),
+      id: userId,
       password: await generateRandomPasswordService(),
       active: true,
       last_login_at: null,
@@ -43,9 +47,31 @@ export class CreateService {
       must_change_password: true,
       created_at: new Date(),
       updated_at: null,
-      roles: userRoles,
+      roles,
     };
-    const createdUser = await this.userRepository.create(builtUser);
-    return MapperService.fromEntityToDTO(createdUser, roles, company);
+  }
+
+  private async getUserRoles(
+    userId: string,
+    user: CreateUserDTO,
+  ): Promise<{
+    entity: UserRoleEntity[];
+    dto: RoleDTO[];
+  }> {
+    const roles: RoleDTO[] = await Promise.all(
+      user.role_ids.map(async (item) => {
+        return await this.roleService.findById(item);
+      }),
+    );
+    return {
+      entity: roles.map((item) => ({
+        id: item.id,
+        user_id: userId,
+        role_id: item.id,
+        created_at: item.created_at,
+        updated_at: new Date(),
+      })),
+      dto: roles,
+    };
   }
 }
