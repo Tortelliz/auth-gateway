@@ -20,6 +20,7 @@ model Company {
   created_at DateTime        @db.Timestamptz()
   updated_at DateTime?       @db.Timestamptz()
   address    CompanyAddress?
+  users      User[]
 
   @@index([id, code])
   @@map("company")
@@ -45,6 +46,8 @@ model CompanyAddress {
 
 model User {
   id                    String     @id @db.Uuid
+  company_id            String     @unique @db.Uuid
+  company               Company    @relation(fields: [company_id], references: [id], onDelete: Cascade)
   email                 String     @unique
   password              String     @db.VarChar(255)
   first_name            String     @db.VarChar(50)

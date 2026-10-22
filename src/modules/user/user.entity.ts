@@ -1,4 +1,5 @@
 import {
+  IsArray,
   IsBoolean,
   IsDate,
   IsEmail,
@@ -7,10 +8,13 @@ import {
   IsUUID,
   MaxLength,
 } from 'class-validator';
+import { Type } from 'class-transformer';
 
 export class UserEntity {
   @IsUUID()
   id: string;
+  @IsUUID()
+  company_id: string;
   @IsEmail()
   email: string;
   @IsString()
@@ -29,6 +33,22 @@ export class UserEntity {
   failed_login_attempts: number;
   @IsBoolean()
   must_change_password: boolean;
+  @IsArray()
+  @Type(() => UserRoleEntity)
+  roles: UserRoleEntity[];
+  @IsDate()
+  created_at: Date;
+  @IsDate()
+  updated_at: Date | null;
+}
+
+export class UserRoleEntity {
+  @IsUUID()
+  id: string;
+  @IsUUID()
+  user_id: string;
+  @IsUUID()
+  role_id: string;
   @IsDate()
   created_at: Date;
   @IsDate()

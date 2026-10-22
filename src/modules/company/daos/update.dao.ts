@@ -13,7 +13,7 @@ export class UpdateDAO {
       data: rest,
     });
     const updatedAddress = await this.prismaService.companyAddress.update({
-      where: { id: company.address!.id! },
+      where: { id: company.address!.id },
       data: address!,
     });
     return {
