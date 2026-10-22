@@ -17,7 +17,7 @@ import {
   PaginationRequestDTO,
   PaginationResponseDTO,
 } from '../../common/pagination/pagination.dto';
-import { ApiDefaultResponse } from '../../infra/swagger/api-response.decorator';
+import { ApiDefaultResponse } from '../../lib/swagger/api-response.decorator';
 
 @Controller('role')
 export class RoleController {
