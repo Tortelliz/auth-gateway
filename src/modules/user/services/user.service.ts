@@ -42,7 +42,7 @@ export class UserService {
   }
 
   async findByEmail(email: string): Promise<UserDTO> {
-    return await this.findByIdService.execute(email);
+    return await this.findByEmailService.execute(email);
   }
 
   async delete(id: string): Promise<UserDTO> {

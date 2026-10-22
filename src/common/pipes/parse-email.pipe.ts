@@ -5,6 +5,7 @@ import { isEmail } from 'class-validator';
 export class ParseEmailPipe implements PipeTransform {
   transform(value: string) {
     const email = value.trim().toLowerCase();
-    return isEmail(email);
+    isEmail(email);
+    return email;
   }
 }

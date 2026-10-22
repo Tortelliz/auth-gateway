@@ -48,7 +48,7 @@ model User {
   id                    String     @id @db.Uuid
   company_id            String     @db.Uuid
   company               Company    @relation(fields: [company_id], references: [id], onDelete: Cascade)
-  email                 String     @unique
+  email                 String     @unique @db.VarChar(255)
   password              String     @db.VarChar(255)
   first_name            String     @db.VarChar(50)
   last_name             String     @db.VarChar(50)

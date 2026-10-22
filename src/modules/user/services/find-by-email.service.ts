@@ -16,7 +16,9 @@ export class FindByEmailService {
   async execute(email: string): Promise<UserDTO> {
     const user = await this.userRepository.findByEmail(email);
     const roles = await Promise.all(
-      user.roles.map(async (item) => await this.roleService.findById(item.id)),
+      user.roles.map(
+        async (item) => await this.roleService.findById(item.role_id),
+      ),
     );
     const company = await this.companyService.findById(user.company_id);
     return MapperService.fromEntityToDTO(user, roles, company);
