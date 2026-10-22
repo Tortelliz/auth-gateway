@@ -12,14 +12,14 @@ export class UpdateDAO {
       where: { id },
       data: rest,
     });
-    const updatedUserRoles =
-      await this.prismaService.userRole.updateManyAndReturn({
-        where: { user_id: updatedUser.id },
+    await this.prismaService.userRole.deleteMany({ where: { user_id: id } });
+    const createdUserRoles =
+      await this.prismaService.userRole.createManyAndReturn({
         data: roles,
       });
     return {
       ...updatedUser,
-      roles: updatedUserRoles,
+      roles: createdUserRoles,
     };
   }
 }

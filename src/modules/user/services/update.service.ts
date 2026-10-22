@@ -1,4 +1,4 @@
-import { ForbiddenException, Injectable } from '@nestjs/common';
+import { ForbiddenException, Injectable, Logger } from '@nestjs/common';
 import { UpdateUserDTO, UserDTO } from '../user.dto';
 import { UserEntity, UserRoleEntity } from '../user.entity';
 import { RoleService } from '../../role/services/role.service';
@@ -10,6 +10,7 @@ import { MapperService } from './mapper.service';
 
 @Injectable()
 export class UpdateService {
+  private readonly logger = new Logger(UpdateService.name);
   constructor(
     private readonly roleService: RoleService,
     private readonly companyService: CompanyService,
@@ -34,8 +35,9 @@ export class UpdateService {
     newUser: UpdateUserDTO,
     userRoles: UserRoleEntity[],
   ): UserEntity {
+    const { role_ids, ...rest } = newUser;
     return {
-      ...newUser,
+      ...rest,
       id: oldUser.id,
       password: oldUser.password,
       active: oldUser.active,
@@ -61,12 +63,12 @@ export class UpdateService {
       }),
     );
     return {
-      entity: roles.map((item) => ({
-        id: item.id,
+      entity: roles.map((role) => ({
+        id: crypto.randomUUID(),
+        role_id: role.id,
         user_id: userId,
-        role_id: item.id,
-        created_at: item.created_at,
-        updated_at: new Date(),
+        created_at: new Date(),
+        updated_at: null,
       })),
       dto: roles,
     };
@@ -74,12 +76,12 @@ export class UpdateService {
 
   private checkIsChange(oldUser: UserEntity, newUser: UpdateUserDTO): boolean {
     const mappedOldUser: UpdateUserDTO = {
+      email: oldUser.email,
       first_name: oldUser.first_name,
       last_name: oldUser.last_name,
-      email: oldUser.email,
       company_id: oldUser.company_id,
       role_ids: oldUser.roles.map((item) => {
-        return item.id;
+        return item.role_id;
       }),
     };
     return JSON.stringify(mappedOldUser) !== JSON.stringify(newUser);
