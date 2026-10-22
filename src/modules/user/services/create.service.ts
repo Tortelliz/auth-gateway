@@ -37,8 +37,9 @@ export class CreateService {
     user: CreateUserDTO,
     roles: UserRoleEntity[],
   ): Promise<UserEntity> {
+    const { role_ids, ...rest } = user;
     return {
-      ...user,
+      ...rest,
       id: userId,
       password: await generateRandomPasswordService(),
       active: true,
@@ -65,7 +66,7 @@ export class CreateService {
     );
     return {
       entity: roles.map((item) => ({
-        id: item.id,
+        id: crypto.randomUUID(),
         user_id: userId,
         role_id: item.id,
         created_at: item.created_at,

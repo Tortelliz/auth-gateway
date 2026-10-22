@@ -38,7 +38,7 @@ export class CompanyController {
 
   @Get(':id')
   @ApiDefaultResponse(CompanyDTO)
-  async findById(@Param('id') id: string): Promise<CompanyDTO> {
+  async findById(@Param('id', ParseUUIDPipe) id: string): Promise<CompanyDTO> {
     return await this.companyService.findById(id);
   }
 

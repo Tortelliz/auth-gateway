@@ -46,7 +46,7 @@ model CompanyAddress {
 
 model User {
   id                    String     @id @db.Uuid
-  company_id            String     @unique @db.Uuid
+  company_id            String     @db.Uuid
   company               Company    @relation(fields: [company_id], references: [id], onDelete: Cascade)
   email                 String     @unique
   password              String     @db.VarChar(255)
@@ -81,8 +81,8 @@ model UserRole {
   id         String    @id @db.Uuid
   user_id    String    @db.Uuid
   role_id    String    @db.Uuid
-  user       User      @relation(fields: [user_id], references: [id])
-  role       Role      @relation(fields: [role_id], references: [id])
+  user       User      @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  role       Role      @relation(fields: [role_id], references: [id], onDelete: Cascade)
   created_at DateTime  @db.Timestamptz()
   updated_at DateTime? @db.Timestamptz()
 

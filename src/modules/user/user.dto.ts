@@ -3,6 +3,7 @@ import {
   IsBoolean,
   IsDate,
   IsEmail,
+  IsNotEmpty,
   IsNumber,
   IsObject,
   IsString,
@@ -48,16 +49,21 @@ export class UserDTO {
 
 export class CreateUserDTO {
   @IsEmail()
+  @IsNotEmpty()
   email: string;
   @IsString()
   @MaxLength(50)
+  @IsNotEmpty()
   first_name: string;
   @IsString()
   @MaxLength(50)
+  @IsNotEmpty()
   last_name: string;
   @IsUUID()
+  @IsNotEmpty()
   company_id: string;
   @IsArray()
+  @IsNotEmpty()
   role_ids: string[];
 }
 

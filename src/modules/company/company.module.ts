@@ -39,5 +39,6 @@ import { CompanyTestController } from './tests/test.controller';
     MapperService,
     CreateManyTest,
   ],
+  exports: [CompanyService],
 })
 export class CompanyModule {}

@@ -9,7 +9,7 @@ import { CompanyDTO } from '../../company/company.dto';
 import { MapperService } from './mapper.service';
 
 @Injectable()
-export class CreateService {
+export class UpdateService {
   constructor(
     private readonly roleService: RoleService,
     private readonly companyService: CompanyService,

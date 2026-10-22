@@ -39,7 +39,7 @@ export class RoleController {
 
   @Get(':id')
   @ApiDefaultResponse(RoleDTO)
-  async findById(@Param('id') id: string): Promise<RoleDTO> {
+  async findById(@Param('id', ParseUUIDPipe) id: string): Promise<RoleDTO> {
     return await this.roleService.findById(id);
   }
 

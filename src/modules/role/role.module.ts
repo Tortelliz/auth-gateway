@@ -34,5 +34,6 @@ import { PaginationModule } from '../../common/pagination/pagination.module';
     FindByIdService,
     FindAllService,
   ],
+  exports: [RoleService],
 })
 export class RoleModule {}
