@@ -11,6 +11,9 @@ import { FindAllByCompanyIdDAO } from './find-all-by-company-id.dao';
 import { FindByEmailDAO } from './find-by-email.dao';
 import { UserEntity } from '../user.entity';
 import { UserDTO } from '../user.dto';
+import { DeactiveDAO } from './deactive.dao';
+import { AddLoginFailAttemptDAO } from './add-login-fail-attempt.dao';
+import { SetMustChangePasswordDAO } from './set-must-change-password.dao';
 
 @Injectable()
 export class UserDAO {
@@ -21,6 +24,9 @@ export class UserDAO {
     private readonly findAllDAO: FindAllByCompanyIdDAO,
     private readonly findByIdDAO: FindByIdDAO,
     private readonly findByEmailDAO: FindByEmailDAO,
+    private readonly deactiveDAO: DeactiveDAO,
+    private readonly addLoginFailAttemptDAO: AddLoginFailAttemptDAO,
+    private readonly setMustChangePasswordDAO: SetMustChangePasswordDAO,
   ) {}
 
   async create(role: UserEntity): Promise<UserEntity> {
@@ -48,5 +54,17 @@ export class UserDAO {
 
   async findByEmail(email: string): Promise<UserEntity> {
     return await this.findByEmailDAO.execute(email);
+  }
+
+  async deactive(id: string): Promise<UserEntity> {
+    return await this.deactiveDAO.execute(id);
+  }
+
+  async addLoginFailAttempt(id: string): Promise<UserEntity> {
+    return await this.addLoginFailAttemptDAO.execute(id);
+  }
+
+  async setMustChangePassword(id: string): Promise<UserEntity> {
+    return await this.setMustChangePasswordDAO.execute(id);
   }
 }
