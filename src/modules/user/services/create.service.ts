@@ -5,22 +5,17 @@ import { generateRandomPasswordService } from '../../../lib/bcrypt/generate-rand
 import { RoleService } from '../../role/services/role.service';
 import { UserRepository } from '../user.repository';
 import { RoleDTO } from '../../role/role.dto';
-import { CompanyService } from '../../company/services/company.service';
-import { CompanyDTO } from '../../company/company.dto';
-import { MapperService } from './mapper.service';
+import { UserMapper } from '../user.mapper';
 
 @Injectable()
 export class CreateService {
   constructor(
     private readonly roleService: RoleService,
-    private readonly companyService: CompanyService,
     private readonly userRepository: UserRepository,
+    private readonly userMapper: UserMapper,
   ) {}
 
   async execute(user: CreateUserDTO): Promise<UserDTO> {
-    const company: CompanyDTO = await this.companyService.findById(
-      user.company_id,
-    );
     const userId = crypto.randomUUID();
     const userRoles = await this.getUserRoles(userId, user);
     const builtUser: UserEntity = await this.build(
@@ -29,7 +24,7 @@ export class CreateService {
       userRoles.entity,
     );
     const createdUser = await this.userRepository.create(builtUser);
-    return MapperService.fromEntityToDTO(createdUser, userRoles.dto, company);
+    return await this.userMapper.fromEntityToDTO(createdUser);
   }
 
   private async build(

@@ -3,7 +3,7 @@ import { PrismaService } from '../../../infra/prisma/prisma.service';
 import { UserEntity } from '../user.entity';
 
 @Injectable()
-export class DeactiveDAO {
+export class DeactivateDAO {
   constructor(private readonly prismaService: PrismaService) {}
 
   async execute(id: string): Promise<UserEntity> {

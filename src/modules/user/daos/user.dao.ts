@@ -11,7 +11,7 @@ import { FindAllByCompanyIdDAO } from './find-all-by-company-id.dao';
 import { FindByEmailDAO } from './find-by-email.dao';
 import { UserEntity } from '../user.entity';
 import { UserDTO } from '../user.dto';
-import { DeactiveDAO } from './deactive.dao';
+import { DeactivateDAO } from './deactivate.dao';
 import { AddLoginFailAttemptDAO } from './add-login-fail-attempt.dao';
 import { SetMustChangePasswordDAO } from './set-must-change-password.dao';
 
@@ -24,7 +24,7 @@ export class UserDAO {
     private readonly findAllDAO: FindAllByCompanyIdDAO,
     private readonly findByIdDAO: FindByIdDAO,
     private readonly findByEmailDAO: FindByEmailDAO,
-    private readonly deactiveDAO: DeactiveDAO,
+    private readonly deactivateDAO: DeactivateDAO,
     private readonly addLoginFailAttemptDAO: AddLoginFailAttemptDAO,
     private readonly setMustChangePasswordDAO: SetMustChangePasswordDAO,
   ) {}
@@ -56,8 +56,8 @@ export class UserDAO {
     return await this.findByEmailDAO.execute(email);
   }
 
-  async deactive(id: string): Promise<UserEntity> {
-    return await this.deactiveDAO.execute(id);
+  async deactivate(id: string): Promise<UserEntity> {
+    return await this.deactivateDAO.execute(id);
   }
 
   async addLoginFailAttempt(id: string): Promise<UserEntity> {

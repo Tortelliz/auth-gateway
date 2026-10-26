@@ -4,30 +4,25 @@ import { UserEntity, UserRoleEntity } from '../user.entity';
 import { RoleService } from '../../role/services/role.service';
 import { UserRepository } from '../user.repository';
 import { RoleDTO } from '../../role/role.dto';
-import { CompanyService } from '../../company/services/company.service';
-import { CompanyDTO } from '../../company/company.dto';
-import { MapperService } from './mapper.service';
+import { UserMapper } from '../user.mapper';
 
 @Injectable()
 export class UpdateService {
   private readonly logger = new Logger(UpdateService.name);
   constructor(
     private readonly roleService: RoleService,
-    private readonly companyService: CompanyService,
     private readonly userRepository: UserRepository,
+    private readonly userMapper: UserMapper,
   ) {}
 
   async execute(id: string, user: UpdateUserDTO): Promise<UserDTO> {
     const oldUser = await this.userRepository.findById(id);
     const isChange = this.checkIsChange(oldUser, user);
     if (!isChange) throw new ForbiddenException('Changes not detected');
-    const company: CompanyDTO = await this.companyService.findById(
-      user.company_id,
-    );
     const userRoles = await this.getUserRoles(id, user);
     const builtUser = this.build(oldUser, user, userRoles.entity);
     const updatedUser = await this.userRepository.update(id, builtUser);
-    return MapperService.fromEntityToDTO(updatedUser, userRoles.dto, company);
+    return await this.userMapper.fromEntityToDTO(updatedUser);
   }
 
   private build(

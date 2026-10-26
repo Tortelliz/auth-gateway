@@ -29,7 +29,11 @@ export class UserController {
   @Post()
   @ApiDefaultResponse(CreateUserDTO, false, HttpStatus.CREATED)
   async create(@Body() user: CreateUserDTO): Promise<UserDTO> {
-    return await this.userService.create(user);
+    try {
+      return await this.userService.create(user);
+    } catch (error) {
+      throw new BadRequestException(error);
+    }
   }
 
   @Get('find-all-by-company-id/:id')
@@ -62,6 +66,12 @@ export class UserController {
     @Body() company: UpdateUserDTO,
   ): Promise<UserDTO> {
     return await this.userService.update(id, company);
+  }
+
+  @Delete('deactivate/:id')
+  @ApiDefaultResponse(UserDTO)
+  async deactivate(@Param('id', ParseUUIDPipe) id: string): Promise<UserDTO> {
+    return await this.userService.deactivate(id);
   }
 
   @Delete(':id')

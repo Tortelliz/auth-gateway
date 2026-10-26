@@ -18,6 +18,9 @@ abstract class UserContract {
   ): Promise<PaginationResponseDTO<UserDTO[]>>;
   abstract findById(id: string): Promise<UserEntity>;
   abstract findByEmail(email: string): Promise<UserEntity>;
+  abstract deactivate(id: string): Promise<UserEntity>;
+  abstract addLoginFailAttempt(id: string): Promise<UserEntity>;
+  abstract setMustChangePasswordDAO(id: string): Promise<UserEntity>;
 }
 
 @Injectable()
@@ -45,5 +48,17 @@ export class UserRepository implements UserContract {
 
   async findByEmail(email: string): Promise<UserEntity> {
     return await this.userDAO.findByEmail(email);
+  }
+
+  async deactivate(id: string): Promise<UserEntity> {
+    return await this.userDAO.deactivate(id);
+  }
+
+  async addLoginFailAttempt(id: string): Promise<UserEntity> {
+    return await this.userDAO.addLoginFailAttempt(id);
+  }
+
+  async setMustChangePasswordDAO(id: string): Promise<UserEntity> {
+    return await this.userDAO.setMustChangePassword(id);
   }
 }

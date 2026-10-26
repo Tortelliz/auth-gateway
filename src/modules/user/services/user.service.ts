@@ -10,6 +10,9 @@ import {
   PaginationRequestDTO,
   PaginationResponseDTO,
 } from '../../../common/pagination/pagination.dto';
+import { AddLoginFailAttemptService } from './add-login-fail-attempt.service';
+import { SetMustChangePasswordService } from './set-must-change-password.service';
+import { DeactivateService } from './deactivate.service';
 
 @Injectable()
 export class UserService {
@@ -20,6 +23,9 @@ export class UserService {
     private readonly findByIdService: FindByIdService,
     private readonly findByEmailService: FindByEmailService,
     private readonly deleteService: DeleteService,
+    private readonly addLoginFailAttemptService: AddLoginFailAttemptService,
+    private readonly setMustChangePasswordService: SetMustChangePasswordService,
+    private readonly deactivateService: DeactivateService,
   ) {}
 
   async create(user: CreateUserDTO): Promise<UserDTO> {
@@ -47,5 +53,17 @@ export class UserService {
 
   async delete(id: string): Promise<UserDTO> {
     return await this.deleteService.execute(id);
+  }
+
+  async addLoginFailAttempt(id: string): Promise<UserDTO> {
+    return await this.addLoginFailAttemptService.execute(id);
+  }
+
+  async setMustChangePassword(id: string): Promise<UserDTO> {
+    return await this.setMustChangePasswordService.execute(id);
+  }
+
+  async deactivate(id: string): Promise<UserDTO> {
+    return await this.deactivateService.execute(id);
   }
 }

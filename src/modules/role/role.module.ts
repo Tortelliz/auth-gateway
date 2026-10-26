@@ -15,6 +15,8 @@ import { RoleRepository } from './role.repository';
 import { DeleteDAO } from './daos/delete.dao';
 import { DeleteService } from './services/delete.service';
 import { PaginationModule } from '../../common/pagination/pagination.module';
+import { FindByUserIdDAO } from './daos/find-by-user-id.dao';
+import { FindByUserIdService } from './services/find-by-user-id.service';
 
 @Module({
   imports: [PrismaModule, PaginationModule],
@@ -26,6 +28,7 @@ import { PaginationModule } from '../../common/pagination/pagination.module';
     UpdateDAO,
     DeleteDAO,
     FindByIdDAO,
+    FindByUserIdDAO,
     FindAllDAO,
     RoleService,
     CreateService,
@@ -33,6 +36,7 @@ import { PaginationModule } from '../../common/pagination/pagination.module';
     DeleteService,
     FindByIdService,
     FindAllService,
+    FindByUserIdService,
   ],
   exports: [RoleService],
 })

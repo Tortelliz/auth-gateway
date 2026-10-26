@@ -12,7 +12,12 @@ import {
 } from '@nestjs/common';
 
 import { RoleService } from './services/role.service';
-import { CreateRoleDTO, RoleDTO, UpdateRoleDTO } from './role.dto';
+import {
+  CreateRoleDTO,
+  RoleDTO,
+  RoleDTOForUser,
+  UpdateRoleDTO,
+} from './role.dto';
 import {
   PaginationRequestDTO,
   PaginationResponseDTO,
@@ -37,10 +42,18 @@ export class RoleController {
     return await this.roleService.findAll(pagination);
   }
 
-  @Get(':id')
+  @Get('find-by-id/:id')
   @ApiDefaultResponse(RoleDTO)
   async findById(@Param('id', ParseUUIDPipe) id: string): Promise<RoleDTO> {
     return await this.roleService.findById(id);
+  }
+
+  @Get('find-by-user-id/:id')
+  @ApiDefaultResponse(RoleDTOForUser, true)
+  async findByUserId(
+    @Param('id', ParseUUIDPipe) id: string,
+  ): Promise<{ role: RoleDTO }[]> {
+    return await this.roleService.findByUserId(id);
   }
 
   @Put(':id')

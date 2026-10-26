@@ -17,12 +17,15 @@ import { DeleteService } from './services/delete.service';
 import { FindAllByCompanyIdService } from './services/find-all-by-company-id.service';
 import { FindByIdService } from './services/find-by-id.service';
 import { FindByEmailService } from './services/find-by-email.service';
-import { MapperService } from './services/mapper.service';
+import { UserMapper } from './user.mapper';
 import { PaginationModule } from '../../common/pagination/pagination.module';
 import { UserRepository } from './user.repository';
 import { AddLoginFailAttemptDAO } from './daos/add-login-fail-attempt.dao';
 import { SetMustChangePasswordDAO } from './daos/set-must-change-password.dao';
-import { DeactiveDAO } from './daos/deactive.dao';
+import { DeactivateDAO } from './daos/deactivate.dao';
+import { DeactivateService } from './services/deactivate.service';
+import { SetMustChangePasswordService } from './services/set-must-change-password.service';
+import { AddLoginFailAttemptService } from './services/add-login-fail-attempt.service';
 
 @Module({
   imports: [CompanyModule, PrismaModule, RoleModule, PaginationModule],
@@ -38,15 +41,19 @@ import { DeactiveDAO } from './daos/deactive.dao';
     FindByEmailDAO,
     AddLoginFailAttemptDAO,
     SetMustChangePasswordDAO,
-    DeactiveDAO,
+    DeactivateDAO,
     CreateService,
     UpdateService,
     DeleteService,
     FindAllByCompanyIdService,
     FindByIdService,
     FindByEmailService,
-    MapperService,
+    UserMapper,
     UserRepository,
+    DeactivateService,
+    SetMustChangePasswordService,
+    AddLoginFailAttemptService,
+    UserMapper,
   ],
   exports: [UserService],
 })

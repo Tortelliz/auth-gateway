@@ -1,6 +1,7 @@
 import {
   IsDate,
   IsNotEmpty,
+  IsObject,
   IsString,
   IsUUID,
   MaxLength,
@@ -22,6 +23,11 @@ export class RoleDTO {
   created_at: Date;
   @IsDate()
   updated_at: Date | null;
+}
+
+export class RoleDTOForUser {
+  @IsObject()
+  role: RoleDTO;
 }
 
 export class CreateRoleDTO {

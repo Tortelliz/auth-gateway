@@ -5,7 +5,11 @@ import { DeleteDAO } from './delete.dao';
 import { FindAllDAO } from './find-all.dao';
 import { RoleEntity } from '../role.entity';
 import { FindByIdDAO } from './find-by-id.dao';
-import { PaginationRequestDTO, PaginationResponseDTO } from '../../../common/pagination/pagination.dto';
+import {
+  PaginationRequestDTO,
+  PaginationResponseDTO,
+} from '../../../common/pagination/pagination.dto';
+import { FindByUserIdDAO } from './find-by-user-id.dao';
 
 @Injectable()
 export class RoleDAO {
@@ -15,6 +19,7 @@ export class RoleDAO {
     private readonly deleteDAO: DeleteDAO,
     private readonly findAllDAO: FindAllDAO,
     private readonly findByIdDAO: FindByIdDAO,
+    private readonly findByUserIdDAO: FindByUserIdDAO,
   ) {}
 
   async create(role: RoleEntity): Promise<RoleEntity> {
@@ -37,5 +42,9 @@ export class RoleDAO {
 
   async findById(id: string): Promise<RoleEntity> {
     return await this.findByIdDAO.execute(id);
+  }
+
+  async findByUserId(id: string): Promise<{ role: RoleEntity }[]> {
+    return await this.findByUserIdDAO.execute(id);
   }
 }
