@@ -20,6 +20,9 @@ import { FindByEmailService } from './services/find-by-email.service';
 import { MapperService } from './services/mapper.service';
 import { PaginationModule } from '../../common/pagination/pagination.module';
 import { UserRepository } from './user.repository';
+import { AddLoginFailAttemptDAO } from './daos/add-login-fail-attempt.dao';
+import { SetMustChangePasswordDAO } from './daos/set-must-change-password.dao';
+import { DeactiveDAO } from './daos/deactive.dao';
 
 @Module({
   imports: [CompanyModule, PrismaModule, RoleModule, PaginationModule],
@@ -33,6 +36,9 @@ import { UserRepository } from './user.repository';
     FindAllByCompanyIdDAO,
     FindByIdDAO,
     FindByEmailDAO,
+    AddLoginFailAttemptDAO,
+    SetMustChangePasswordDAO,
+    DeactiveDAO,
     CreateService,
     UpdateService,
     DeleteService,
