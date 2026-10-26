@@ -26,6 +26,12 @@ import { DeactivateDAO } from './daos/deactivate.dao';
 import { DeactivateService } from './services/deactivate.service';
 import { SetMustChangePasswordService } from './services/set-must-change-password.service';
 import { AddLoginFailAttemptService } from './services/add-login-fail-attempt.service';
+import { FindPasswordByEmailService } from './services/find-password-by-email.service';
+import { FindPasswordByEmailDAO } from './daos/find-password-by-email.dao';
+import { SetPasswordDAO } from './daos/set-password.dao';
+import { SetPasswordService } from './services/set-password.service';
+import { ResetLoginFailsAttemptsDAO } from './daos/reset-login-fails-attempts.dao';
+import { ResetLoginFailsAttemptsService } from './services/reset-login-fails-attempts.service';
 
 @Module({
   imports: [CompanyModule, PrismaModule, RoleModule, PaginationModule],
@@ -41,6 +47,9 @@ import { AddLoginFailAttemptService } from './services/add-login-fail-attempt.se
     FindByEmailDAO,
     AddLoginFailAttemptDAO,
     SetMustChangePasswordDAO,
+    SetPasswordDAO,
+    FindPasswordByEmailDAO,
+    ResetLoginFailsAttemptsDAO,
     DeactivateDAO,
     CreateService,
     UpdateService,
@@ -53,6 +62,9 @@ import { AddLoginFailAttemptService } from './services/add-login-fail-attempt.se
     DeactivateService,
     SetMustChangePasswordService,
     AddLoginFailAttemptService,
+    ResetLoginFailsAttemptsService,
+    FindPasswordByEmailService,
+    SetPasswordService,
     UserMapper,
   ],
   exports: [UserService],

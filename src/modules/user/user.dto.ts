@@ -68,3 +68,15 @@ export class CreateUserDTO {
 }
 
 export class UpdateUserDTO extends CreateUserDTO {}
+
+export class SetPasswordDTO {
+  @IsUUID()
+  @IsNotEmpty()
+  user_id: string;
+  @IsString()
+  @IsNotEmpty()
+  password: string;
+  @IsString()
+  @IsNotEmpty()
+  password_confirmation: string;
+}

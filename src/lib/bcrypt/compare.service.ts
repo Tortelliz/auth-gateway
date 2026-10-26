@@ -1,6 +1,6 @@
 import bcrypt from 'bcrypt';
 
-export async function CompareService(
+export async function compareService(
   rawString: string,
   hashedString: string,
 ): Promise<boolean> {

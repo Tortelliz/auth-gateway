@@ -10,4 +10,6 @@ export const envValidationSchema = z.object({
   LOG_LEVEL: z.enum(['log', 'debug']),
   PAGINATION_DEFAULT_PAGE_SIZE: z.string(),
   TEST_URL: z.string(),
+  SESSION_TOKEN_EXPIRES_IN_DAYS: z.string(),
+  LIMIT_LOGIN_ATTEMPTS: z.string(),
 });

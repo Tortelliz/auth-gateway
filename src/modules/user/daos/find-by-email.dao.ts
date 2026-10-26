@@ -6,8 +6,8 @@ import { UserEntity } from '../user.entity';
 export class FindByEmailDAO {
   constructor(private readonly prismaService: PrismaService) {}
 
-  async execute(email: string): Promise<UserEntity> {
-    return await this.prismaService.user.findUniqueOrThrow({
+  async execute(email: string): Promise<UserEntity | null> {
+    return await this.prismaService.user.findUnique({
       where: { email },
       include: { roles: true },
     });

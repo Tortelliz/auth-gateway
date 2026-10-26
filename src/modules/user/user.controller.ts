@@ -8,6 +8,7 @@ import {
   Logger,
   Param,
   ParseUUIDPipe,
+  Patch,
   Post,
   Put,
   Query,
@@ -18,7 +19,12 @@ import {
 } from '../../common/pagination/pagination.dto';
 import { ApiDefaultResponse } from '../../lib/swagger/api-response.decorator';
 import { UserService } from './services/user.service';
-import { CreateUserDTO, UpdateUserDTO, UserDTO } from './user.dto';
+import {
+  CreateUserDTO,
+  SetPasswordDTO,
+  UpdateUserDTO,
+  UserDTO,
+} from './user.dto';
 import { ParseEmailPipe } from '../../common/pipes/parse-email.pipe';
 
 @Controller('user')
@@ -55,7 +61,7 @@ export class UserController {
   @ApiDefaultResponse(UserDTO)
   async findByEmail(
     @Param('email', ParseEmailPipe) email: string,
-  ): Promise<UserDTO> {
+  ): Promise<UserDTO | null> {
     return await this.userService.findByEmail(email);
   }
 
@@ -78,5 +84,11 @@ export class UserController {
   @ApiDefaultResponse(UserDTO)
   async delete(@Param('id', ParseUUIDPipe) id: string): Promise<UserDTO> {
     return await this.userService.delete(id);
+  }
+
+  @Patch('set-password')
+  @ApiDefaultResponse(UserDTO)
+  async register(@Body() data: SetPasswordDTO): Promise<UserDTO> {
+    return await this.userService.setPassword(data);
   }
 }

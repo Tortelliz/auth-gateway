@@ -11,7 +11,7 @@ export class SetMustChangePasswordService {
   ) {}
 
   async execute(id: string): Promise<UserDTO> {
-    const updatedUser = await this.userRepository.setMustChangePasswordDAO(id);
+    const updatedUser = await this.userRepository.setMustChangePassword(id);
     return await this.userMapper.fromEntityToDTO(updatedUser);
   }
 }

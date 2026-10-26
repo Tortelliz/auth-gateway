@@ -10,8 +10,9 @@ export class FindByEmailService {
     private readonly userMapper: UserMapper,
   ) {}
 
-  async execute(email: string): Promise<UserDTO> {
+  async execute(email: string): Promise<UserDTO | null> {
     const user = await this.userRepository.findByEmail(email);
+    if (!user) return null;
     return await this.userMapper.fromEntityToDTO(user);
   }
 }

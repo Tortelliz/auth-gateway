@@ -1,11 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import { CreateUserDTO, UserDTO } from '../user.dto';
 import { UserEntity, UserRoleEntity } from '../user.entity';
-import { generateRandomPasswordService } from '../../../lib/bcrypt/generate-random-password.service';
 import { RoleService } from '../../role/services/role.service';
 import { UserRepository } from '../user.repository';
 import { RoleDTO } from '../../role/role.dto';
 import { UserMapper } from '../user.mapper';
+import { generateRandomHashStringService } from '../../../lib/bcrypt/generate-random-hash-string.service';
 
 @Injectable()
 export class CreateService {
@@ -36,7 +36,7 @@ export class CreateService {
     return {
       ...rest,
       id: userId,
-      password: await generateRandomPasswordService(),
+      password: await generateRandomHashStringService(),
       active: true,
       last_login_at: null,
       failed_login_attempts: 0,

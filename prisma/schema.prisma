@@ -95,9 +95,10 @@ model Session {
   id         String    @id @db.Uuid
   user_id    String    @db.Uuid
   user       User      @relation(fields: [user_id], references: [id], onDelete: Cascade)
-  hash_token String
+  hash_token String    @unique
   revoked    Boolean
   created_at DateTime  @db.Timestamptz()
+  expires_at DateTime  @db.Timestamptz()
   revoked_at DateTime? @db.Timestamptz()
 
   @@index([id, user_id, hash_token])

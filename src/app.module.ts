@@ -8,6 +8,7 @@ import { CompanyModule } from './modules/company/company.module';
 import { RoleModule } from './modules/role/role.module';
 import { PaginationModule } from './common/pagination/pagination.module';
 import { UserModule } from './modules/user/user.module';
+import { AuthModule } from './modules/auth/auth.module';
 
 @Module({
   imports: [
@@ -20,6 +21,7 @@ import { UserModule } from './modules/user/user.module';
     CompanyModule,
     RoleModule,
     UserModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],

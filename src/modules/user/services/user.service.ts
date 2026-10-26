@@ -4,7 +4,12 @@ import { FindAllByCompanyIdService } from './find-all-by-company-id.service';
 import { FindByIdService } from './find-by-id.service';
 import { FindByEmailService } from './find-by-email.service';
 import { DeleteService } from './delete.service';
-import { CreateUserDTO, UpdateUserDTO, UserDTO } from '../user.dto';
+import {
+  CreateUserDTO,
+  SetPasswordDTO,
+  UpdateUserDTO,
+  UserDTO,
+} from '../user.dto';
 import { UpdateService } from './update.service';
 import {
   PaginationRequestDTO,
@@ -13,6 +18,9 @@ import {
 import { AddLoginFailAttemptService } from './add-login-fail-attempt.service';
 import { SetMustChangePasswordService } from './set-must-change-password.service';
 import { DeactivateService } from './deactivate.service';
+import { FindPasswordByEmailService } from './find-password-by-email.service';
+import { SetPasswordService } from './set-password.service';
+import { ResetLoginFailsAttemptsService } from './reset-login-fails-attempts.service';
 
 @Injectable()
 export class UserService {
@@ -26,6 +34,9 @@ export class UserService {
     private readonly addLoginFailAttemptService: AddLoginFailAttemptService,
     private readonly setMustChangePasswordService: SetMustChangePasswordService,
     private readonly deactivateService: DeactivateService,
+    private readonly findPasswordByEmailService: FindPasswordByEmailService,
+    private readonly setPasswordService: SetPasswordService,
+    private readonly resetLoginFailsAttemptsService: ResetLoginFailsAttemptsService,
   ) {}
 
   async create(user: CreateUserDTO): Promise<UserDTO> {
@@ -47,7 +58,7 @@ export class UserService {
     return await this.findByIdService.execute(id);
   }
 
-  async findByEmail(email: string): Promise<UserDTO> {
+  async findByEmail(email: string): Promise<UserDTO | null> {
     return await this.findByEmailService.execute(email);
   }
 
@@ -65,5 +76,19 @@ export class UserService {
 
   async deactivate(id: string): Promise<UserDTO> {
     return await this.deactivateService.execute(id);
+  }
+
+  async findPasswordByEmail(
+    email: string,
+  ): Promise<{ password: string } | null> {
+    return await this.findPasswordByEmailService.execute(email);
+  }
+
+  async setPassword(data: SetPasswordDTO): Promise<UserDTO> {
+    return await this.setPasswordService.execute(data);
+  }
+
+  async resetPasswordFailsAttempts(id: string): Promise<UserDTO> {
+    return this.resetLoginFailsAttemptsService.execute(id);
   }
 }
