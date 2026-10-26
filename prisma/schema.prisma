@@ -59,6 +59,7 @@ model User {
   created_at            DateTime   @db.Timestamptz()
   updated_at            DateTime?  @db.Timestamptz()
   roles                 UserRole[]
+  sessions              Session[]
 
   @@index([id, email, password])
   @@map("user")
@@ -88,4 +89,17 @@ model UserRole {
 
   @@index([id, user_id, role_id])
   @@map("user_role")
+}
+
+model Session {
+  id         String    @id @db.Uuid
+  user_id    String    @db.Uuid
+  user       User      @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  hash_token String
+  revoked    Boolean
+  created_at DateTime  @db.Timestamptz()
+  revoked_at DateTime? @db.Timestamptz()
+
+  @@index([id, user_id, hash_token])
+  @@map("session")
 }
