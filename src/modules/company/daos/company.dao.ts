@@ -9,6 +9,7 @@ import {
   PaginationRequestDTO,
   PaginationResponseDTO,
 } from '../../../common/pagination/pagination.dto';
+import { Company, CompanyAddress } from '../../../../generated/prisma/client';
 
 @Injectable()
 export class CompanyDAO {
@@ -20,7 +21,9 @@ export class CompanyDAO {
     private readonly deleteDAO: DeleteDAO,
   ) {}
 
-  async create(company: CompanyEntity): Promise<CompanyEntity> {
+  async create(
+    company: Company & { address: CompanyAddress },
+  ): Promise<Company & { address: CompanyAddress }> {
     return await this.createDAO.execute(company);
   }
 
@@ -30,11 +33,16 @@ export class CompanyDAO {
     return await this.findAllDAO.execute(pagination);
   }
 
-  async update(id: string, company: CompanyEntity): Promise<CompanyEntity> {
+  async update(
+    id: string,
+    company: Company & { address: CompanyAddress },
+  ): Promise<Company & { address: CompanyAddress }> {
     return await this.updateDAO.execute(id, company);
   }
 
-  async findById(id: string): Promise<CompanyEntity> {
+  async findById(
+    id: string,
+  ): Promise<Company & { address: CompanyAddress }> {
     return await this.findByIdDAO.execute(id);
   }
 

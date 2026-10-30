@@ -3,6 +3,8 @@ import { CompanyDTO, UpdateCompanyDTO } from '../company.dto';
 import { CompanyEntity } from '../company.entity';
 import { ForbiddenException, Injectable, Logger } from '@nestjs/common';
 import { MapperService } from './mapper.service';
+import { Company, CompanyAddress } from '../../../../generated/prisma/client';
+import { isEqual } from 'lodash';
 
 @Injectable()
 export class UpdateService {
@@ -13,7 +15,7 @@ export class UpdateService {
     const oldCompany = await this.companyRepository.findById(id);
     const isChange = this.checkIsChange(oldCompany, company);
     if (!isChange) throw new ForbiddenException('Changes not detected');
-    const builtCompany = this.build(id, oldCompany, company);
+    const builtCompany = this.build(oldCompany, company);
     const updatedCompany = await this.companyRepository.update(
       id,
       builtCompany,
@@ -22,20 +24,19 @@ export class UpdateService {
   }
 
   private build(
-    id: string,
-    oldCompany: CompanyEntity,
+    oldCompany: Company & { address: CompanyAddress },
     newCompany: UpdateCompanyDTO,
-  ): CompanyEntity {
+  ): Company & { address: CompanyAddress } {
     const timestamp = new Date();
     return {
       ...newCompany,
-      id,
+      id: oldCompany.id,
       created_at: oldCompany.created_at,
       updated_at: timestamp,
       address: {
         ...newCompany.address,
-        id: oldCompany.address!.id,
-        company_id: id,
+        id: oldCompany.address.id,
+        company_id: oldCompany.id,
         created_at: oldCompany.created_at,
         updated_at: timestamp,
       },
@@ -60,6 +61,6 @@ export class UpdateService {
         number: oldCompany.address!.number,
       },
     };
-    return JSON.stringify(mappedOldCompany) !== JSON.stringify(newCompany);
+    return !isEqual(mappedOldCompany, newCompany);
   }
 }

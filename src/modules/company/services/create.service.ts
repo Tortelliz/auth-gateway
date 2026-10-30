@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { CompanyRepository } from '../company.repository';
-import { CompanyEntity } from '../company.entity';
 import { CompanyDTO, CreateCompanyDTO } from '../company.dto';
 import { MapperService } from './mapper.service';
 import { generateUUIDUtil } from '../../../utils/generate-uuid.util';
+import { Company, CompanyAddress } from '../../../../generated/prisma/client';
 
 @Injectable()
 export class CreateService {
@@ -15,16 +15,20 @@ export class CreateService {
     return MapperService.fromEntityToDTO(createdCompany);
   }
 
-  private build(company: CreateCompanyDTO): CompanyEntity {
+  private build(
+    company: CreateCompanyDTO,
+  ): Company & { address: CompanyAddress } {
     const timestamp = new Date();
+    const companyId = generateUUIDUtil();
     return {
       ...company,
-      id: generateUUIDUtil(),
+      id: companyId,
       created_at: timestamp,
       updated_at: null,
       address: {
         ...company.address,
         id: generateUUIDUtil(),
+        company_id: companyId,
         created_at: timestamp,
         updated_at: null,
       },
