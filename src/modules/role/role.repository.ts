@@ -15,6 +15,7 @@ abstract class RoleContract {
     pagination: PaginationRequestDTO,
   ): Promise<PaginationResponseDTO<RoleEntity[]>>;
   abstract findById(id: string): Promise<RoleEntity>;
+  abstract findByUserId(userId: string): Promise<RoleEntity[]>;
 }
 
 @Injectable()
@@ -41,5 +42,9 @@ export class RoleRepository implements RoleContract {
 
   async findById(id: string): Promise<RoleEntity> {
     return this.roleDao.findById(id);
+  }
+
+  async findByUserId(userId: string): Promise<RoleEntity[]> {
+    return this.roleDao.findByUserId(userId);
   }
 }

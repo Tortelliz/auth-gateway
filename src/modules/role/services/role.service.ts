@@ -9,6 +9,7 @@ import {
   PaginationRequestDTO,
   PaginationResponseDTO,
 } from '../../../common/pagination/pagination.dto';
+import { FindByUserService } from './find-by-user.service';
 
 @Injectable()
 export class RoleService {
@@ -18,6 +19,7 @@ export class RoleService {
     private readonly deleteService: DeleteService,
     private readonly findAllService: FindAllService,
     private readonly findOneService: FindOneService,
+    private readonly findByUserService: FindByUserService,
   ) {}
 
   async create(role: CreateRoleDto): Promise<RoleDto> {
@@ -40,5 +42,9 @@ export class RoleService {
 
   async findOne(id: string): Promise<RoleDto> {
     return await this.findOneService.execute(id);
+  }
+
+  async findByUserId(userId: string): Promise<RoleDto[]> {
+    return await this.findByUserService.execute(userId);
   }
 }

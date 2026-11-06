@@ -7,6 +7,7 @@ import { PaginationModule } from './common/pagination/pagination.module';
 import z from 'zod';
 import { RoleModule } from './modules/role/role.module';
 import { CompanyModule } from './modules/company/company.module';
+import { UserModule } from './modules/user/user.module';
 
 @Module({
   imports: [
@@ -27,6 +28,7 @@ import { CompanyModule } from './modules/company/company.module';
     PaginationModule,
     RoleModule,
     CompanyModule,
+    UserModule,
   ],
   controllers: [AppController],
   providers: [AppService],
