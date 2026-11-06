@@ -5,6 +5,7 @@ import { ConfigModule } from '@nestjs/config';
 import { PrismaModule } from './infra/prisma/prisma.module';
 import { PaginationModule } from './common/pagination/pagination.module';
 import z from 'zod';
+import { RoleModule } from './modules/role/role.module';
 
 @Module({
   imports: [
@@ -23,6 +24,7 @@ import z from 'zod';
     }),
     PrismaModule,
     PaginationModule,
+    RoleModule,
   ],
   controllers: [AppController],
   providers: [AppService],
