@@ -3,6 +3,7 @@ import { RoleRepository } from '../role.repository';
 import { RoleDto, UpdateRoleDto } from '../role.dto';
 import { RoleEntity } from '../../../../generated/prisma/client';
 import { isEqualService } from '../../../lib/lodash/is-equal.service';
+import { RoleMapper } from '../role.mapper';
 
 @Injectable()
 export class UpdateService {
@@ -26,8 +27,10 @@ export class UpdateService {
   }
 
   private checkChange(oldRole: RoleEntity, newRole: UpdateRoleDto): void {
-    const { id, created_at, updated_at, ...rest } = oldRole;
-    const isEqual = isEqualService(newRole, rest);
+    const isEqual = isEqualService(
+      RoleMapper.fromEntityToUpdateDto(oldRole),
+      newRole,
+    );
     if (isEqual) throw new ForbiddenException('Changes not detected');
   }
 }

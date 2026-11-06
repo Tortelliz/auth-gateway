@@ -6,6 +6,7 @@ import { PrismaModule } from './infra/prisma/prisma.module';
 import { PaginationModule } from './common/pagination/pagination.module';
 import z from 'zod';
 import { RoleModule } from './modules/role/role.module';
+import { CompanyModule } from './modules/company/company.module';
 
 @Module({
   imports: [
@@ -25,6 +26,7 @@ import { RoleModule } from './modules/role/role.module';
     PrismaModule,
     PaginationModule,
     RoleModule,
+    CompanyModule,
   ],
   controllers: [AppController],
   providers: [AppService],

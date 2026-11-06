@@ -1,4 +1,4 @@
-import { IsDate, IsNotEmpty, IsString, IsUUID } from 'class-validator';
+import { IsDate, IsNotEmpty, IsString, IsUUID, Length } from 'class-validator';
 
 export class RoleDto {
   @IsUUID()
@@ -18,11 +18,14 @@ export class RoleDto {
 export class CreateRoleDto {
   @IsString()
   @IsNotEmpty()
+  @Length(3, 15)
   code: string;
   @IsString()
   @IsNotEmpty()
+  @Length(3, 50)
   name: string;
   @IsString()
+  @Length(0, 255)
   description: string | null;
 }
 

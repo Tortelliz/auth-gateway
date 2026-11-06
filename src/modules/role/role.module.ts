@@ -15,6 +15,7 @@ import { DeleteService } from './services/delete.service';
 import { FindAllService } from './services/find-all.service';
 import { FindOneService } from './services/find-one.service';
 import { RoleRepository } from './role.repository';
+import { RoleMapper } from './role.mapper';
 
 @Module({
   imports: [PaginationModule, PrismaModule],
@@ -33,6 +34,7 @@ import { RoleRepository } from './role.repository';
     FindAllService,
     FindOneService,
     RoleRepository,
+    RoleMapper,
   ],
   exports: [RoleService],
 })
