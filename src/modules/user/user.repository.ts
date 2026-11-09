@@ -15,6 +15,7 @@ abstract class UserContract {
   abstract findById(id: string): Promise<FullUserEntity>;
   abstract findByEmail(email: string): Promise<FullUserEntity>;
   abstract findAll(
+    companyId: string,
     pagination: PaginationRequestDTO,
   ): Promise<PaginationResponseDTO<UserDto[]>>;
 }
@@ -44,8 +45,9 @@ export class UserRepository implements UserContract {
   }
 
   async findAll(
+    companyId: string,
     pagination: PaginationRequestDTO,
   ): Promise<PaginationResponseDTO<UserDto[]>> {
-    return this.userDao.findAll(pagination);
+    return this.userDao.findAll(companyId, pagination);
   }
 }

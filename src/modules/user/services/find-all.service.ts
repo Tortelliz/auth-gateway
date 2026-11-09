@@ -15,8 +15,9 @@ export class FindAllService {
   ) {}
 
   async execute(
+    companyId: string,
     pagination: PaginationRequestDTO,
   ): Promise<PaginationResponseDTO<UserDto[]>> {
-    return await this.userRepository.findAll(pagination);
+    return await this.userRepository.findAll(companyId, pagination);
   }
 }
