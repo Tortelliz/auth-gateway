@@ -10,6 +10,10 @@ import {
   PaginationRequestDTO,
   PaginationResponseDTO,
 } from '../../../common/pagination/pagination.dto';
+import { AddLoginFailAttemptService } from './add-login-fail-attempt.service';
+import { DeactivateService } from './deactivate.service';
+import { LoginStampService } from './login-stamp.service';
+import { SetMustChangePasswordService } from './set-must-change-password.service';
 
 @Injectable()
 export class UserService {
@@ -20,6 +24,10 @@ export class UserService {
     private readonly findOneByIdService: FindOneByIdService,
     private readonly findOneByEmailService: FindOneByEmailService,
     private readonly findAllService: FindAllService,
+    private readonly addLoginFailAttemptService: AddLoginFailAttemptService,
+    private readonly deactivateService: DeactivateService,
+    private readonly loginStampService: LoginStampService,
+    private readonly setMustChangePasswordService: SetMustChangePasswordService,
   ) {}
 
   async create(user: CreateUserDto): Promise<UserDto> {
@@ -46,5 +54,21 @@ export class UserService {
     pagination: PaginationRequestDTO,
   ): Promise<PaginationResponseDTO<UserDto[]>> {
     return await this.findAllService.execute(pagination);
+  }
+
+  async addLoginFailAttempt(id: string): Promise<UserDto> {
+    return await this.addLoginFailAttemptService.execute(id);
+  }
+
+  async deactivate(id: string): Promise<UserDto> {
+    return await this.deactivateService.execute(id);
+  }
+
+  async loginStamp(id: string): Promise<UserDto> {
+    return await this.loginStampService.execute(id);
+  }
+
+  async setMustChangePassword(id: string): Promise<UserDto> {
+    return await this.setMustChangePasswordService.execute(id);
   }
 }

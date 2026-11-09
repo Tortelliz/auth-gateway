@@ -33,7 +33,10 @@ export class FindAllDao {
     );
     const query = this.paginationService.buildToFind(pagination);
     const users = await this.prismaService.userEntity.findMany({
-      ...query,
+      orderBy: { ...query.orderBy },
+      take: query.take,
+      skip: query.skip,
+      where: { ...query.where, active: true },
       omit: {
         password: true,
         failed_login_attempts: true,
@@ -49,7 +52,7 @@ export class FindAllDao {
       },
     });
     const count = await this.prismaService.userEntity.count({
-      where: query.where,
+      where: { ...query.where, active: true },
     });
     return this.paginationService.buildToReturn(pagination, count, users);
   }

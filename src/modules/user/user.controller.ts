@@ -40,8 +40,8 @@ export class UserController {
 
   @Delete(':id')
   @ApiDefaultResponse(UserDto)
-  async delete(@Param('id', ParseUUIDPipe) id: string): Promise<UserDto> {
-    return await this.userService.delete(id);
+  async deactivate(@Param('id', ParseUUIDPipe) id: string): Promise<UserDto> {
+    return await this.userService.deactivate(id);
   }
 
   @Get()

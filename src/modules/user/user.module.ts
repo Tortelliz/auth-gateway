@@ -19,6 +19,10 @@ import { FindOneByIdService } from './services/find-one-by-id.service';
 import { FindOneByEmailService } from './services/find-one-by-email.service';
 import { UserRepository } from './user.repository';
 import { UserMapper } from './user.mapper';
+import { AddLoginFailAttemptService } from './services/add-login-fail-attempt.service';
+import { DeactivateService } from './services/deactivate.service';
+import { LoginStampService } from './services/login-stamp.service';
+import { SetMustChangePasswordService } from './services/set-must-change-password.service';
 
 @Module({
   imports: [PrismaModule, RoleModule, PaginationModule],
@@ -38,6 +42,10 @@ import { UserMapper } from './user.mapper';
     FindAllService,
     FindOneByIdService,
     FindOneByEmailService,
+    AddLoginFailAttemptService,
+    DeactivateService,
+    LoginStampService,
+    SetMustChangePasswordService,
     UserRepository,
     UserMapper,
   ],
