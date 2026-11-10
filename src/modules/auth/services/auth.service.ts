@@ -11,6 +11,7 @@ import { CheckPasswordTokenService } from './check-password-token.service';
 import { ForgotPasswordService } from './forgot-password.serivce';
 import { GeneratePasswordTokenService } from './generate-password-token.service';
 import { SendPasswordTokenEmailService } from './send-password-token-email.service';
+import { CheckSessionTokenService } from './check-session-token.service';
 
 @Injectable()
 export class AuthService {
@@ -22,6 +23,7 @@ export class AuthService {
     private readonly forgotPasswordService: ForgotPasswordService,
     private readonly generatePasswordTokenService: GeneratePasswordTokenService,
     private readonly sendPasswordTokenEmailService: SendPasswordTokenEmailService,
+    private readonly checkSessionTokenService: CheckSessionTokenService,
   ) {}
 
   async login(login: LoginDto): Promise<SessionEntity & { raw_token: string }> {
@@ -50,5 +52,9 @@ export class AuthService {
 
   async sendPasswordTokenEmail(email: string): Promise<void> {
     await this.sendPasswordTokenEmailService.execute(email);
+  }
+
+  async checkSessionToken(token: string): Promise<SessionEntity> {
+    return await this.checkSessionTokenService.execute(token);
   }
 }

@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Global, Module } from '@nestjs/common';
 import { UserModule } from '../user/user.module';
 import { PrismaModule } from '../../infra/prisma/prisma.module';
 import { AuthController } from './auth.controller';
@@ -19,7 +19,9 @@ import { ForgotPasswordService } from './services/forgot-password.serivce';
 import { GeneratePasswordTokenService } from './services/generate-password-token.service';
 import { EmailModule } from '../../lib/resend/email.module';
 import { SendPasswordTokenEmailService } from './services/send-password-token-email.service';
+import { CheckSessionTokenService } from './services/check-session-token.service';
 
+@Global()
 @Module({
   imports: [UserModule, PrismaModule, EmailModule],
   controllers: [AuthController],
@@ -36,10 +38,12 @@ import { SendPasswordTokenEmailService } from './services/send-password-token-em
     LogoutService,
     FindSessionByTokenService,
     CheckPasswordTokenService,
+    CheckSessionTokenService,
     ForgotPasswordService,
     GeneratePasswordTokenService,
     SendPasswordTokenEmailService,
     AuthRepository,
   ],
+  exports: [AuthService],
 })
 export class AuthModule {}

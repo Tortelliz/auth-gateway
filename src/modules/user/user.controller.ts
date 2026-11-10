@@ -10,6 +10,7 @@ import {
   Post,
   Put,
   Query,
+  UseGuards,
 } from '@nestjs/common';
 import { UserService } from './services/user.service';
 import {
@@ -24,6 +25,7 @@ import {
   PaginationResponseDTO,
 } from '../../common/pagination/pagination.dto';
 import { ParseEmailPipe } from '../../common/pipes/parse-email.pipe';
+import { ViewerGuard } from '../../common/guards/viewer.guard';
 
 @Controller('user')
 export class UserController {
@@ -35,6 +37,7 @@ export class UserController {
     return await this.userService.create(user);
   }
 
+  @UseGuards(ViewerGuard)
   @Put(':id')
   @ApiDefaultResponse(UserDto)
   async update(
@@ -44,6 +47,7 @@ export class UserController {
     return await this.userService.update(id, user);
   }
 
+  @UseGuards(ViewerGuard)
   @Patch('update-password/:id')
   @ApiDefaultResponse(UserDto)
   async updatePassword(
