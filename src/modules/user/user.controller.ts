@@ -44,16 +44,16 @@ export class UserController {
     return await this.userService.deactivate(id);
   }
 
-  @Get('company/:id')
+  @Get('company/:company_id')
   @ApiDefaultResponse(PaginationResponseDTO<UserDto[]>)
   async findAll(
-    @Param('id') companyId: string,
+    @Param('company_id', ParseUUIDPipe) companyId: string,
     @Query() pagination: PaginationRequestDTO,
   ): Promise<PaginationResponseDTO<UserDto[]>> {
     return await this.userService.findAll(companyId, pagination);
   }
 
-  @Get('id/:id')
+  @Get(':id')
   @ApiDefaultResponse(UserDto)
   async findOneById(@Param('id', ParseUUIDPipe) id: string): Promise<UserDto> {
     return await this.userService.findOneById(id);
