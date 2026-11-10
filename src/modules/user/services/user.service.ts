@@ -1,6 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import { CreateService } from './create.service';
-import { CreateUserDto, UpdateUserDto, UserDto } from '../user.dto';
+import {
+  CreateUserDto,
+  SetPasswordDto,
+  UpdateUserDto,
+  UserDto,
+} from '../user.dto';
 import { UpdateService } from './update.service';
 import { DeleteService } from './delete.service';
 import { FindOneByIdService } from './find-one-by-id.service';
@@ -14,6 +19,8 @@ import { AddLoginFailAttemptService } from './add-login-fail-attempt.service';
 import { DeactivateService } from './deactivate.service';
 import { LoginStampService } from './login-stamp.service';
 import { SetMustChangePasswordService } from './set-must-change-password.service';
+import { SetPasswordService } from './set-password.service';
+import { ResetLoginFailAttemptsService } from './reset-login-fail-attempts.service';
 
 @Injectable()
 export class UserService {
@@ -28,6 +35,8 @@ export class UserService {
     private readonly deactivateService: DeactivateService,
     private readonly loginStampService: LoginStampService,
     private readonly setMustChangePasswordService: SetMustChangePasswordService,
+    private readonly setPasswordService: SetPasswordService,
+    private readonly resetLoginFailAttemptsService: ResetLoginFailAttemptsService,
   ) {}
 
   async create(user: CreateUserDto): Promise<UserDto> {
@@ -71,5 +80,13 @@ export class UserService {
 
   async setMustChangePassword(id: string): Promise<UserDto> {
     return await this.setMustChangePasswordService.execute(id);
+  }
+
+  async setPassword(id: string, passwords: SetPasswordDto): Promise<UserDto> {
+    return await this.setPasswordService.execute(id, passwords);
+  }
+
+  async resetLoginFailAttempts(id: string): Promise<UserDto> {
+    return await this.resetLoginFailAttemptsService.execute(id);
   }
 }

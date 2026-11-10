@@ -23,6 +23,8 @@ import { AddLoginFailAttemptService } from './services/add-login-fail-attempt.se
 import { DeactivateService } from './services/deactivate.service';
 import { LoginStampService } from './services/login-stamp.service';
 import { SetMustChangePasswordService } from './services/set-must-change-password.service';
+import { SetPasswordService } from './services/set-password.service';
+import { ResetLoginFailAttemptsService } from './services/reset-login-fail-attempts.service';
 
 @Module({
   imports: [PrismaModule, RoleModule, PaginationModule],
@@ -46,6 +48,8 @@ import { SetMustChangePasswordService } from './services/set-must-change-passwor
     DeactivateService,
     LoginStampService,
     SetMustChangePasswordService,
+    SetPasswordService,
+    ResetLoginFailAttemptsService,
     UserRepository,
     UserMapper,
   ],

@@ -6,12 +6,18 @@ import {
   HttpStatus,
   Param,
   ParseUUIDPipe,
+  Patch,
   Post,
   Put,
   Query,
 } from '@nestjs/common';
 import { UserService } from './services/user.service';
-import { CreateUserDto, UpdateUserDto, UserDto } from './user.dto';
+import {
+  CreateUserDto,
+  SetPasswordDto,
+  UpdateUserDto,
+  UserDto,
+} from './user.dto';
 import { ApiDefaultResponse } from '../../lib/swagger/api-response.decorator';
 import {
   PaginationRequestDTO,
@@ -36,6 +42,15 @@ export class UserController {
     @Body() user: UpdateUserDto,
   ): Promise<UserDto> {
     return await this.userService.update(id, user);
+  }
+
+  @Patch('set-password/:id')
+  @ApiDefaultResponse(UserDto)
+  async setPassword(
+    @Param('id', ParseUUIDPipe) id: string,
+    @Body() passwords: SetPasswordDto,
+  ): Promise<UserDto> {
+    return await this.userService.setPassword(id, passwords);
   }
 
   @Delete(':id')
