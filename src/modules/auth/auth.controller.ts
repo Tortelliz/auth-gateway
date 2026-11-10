@@ -3,7 +3,6 @@ import {
   Controller,
   Cookies,
   Get,
-  InternalServerErrorException,
   Param,
   Patch,
   Post,
