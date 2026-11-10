@@ -19,15 +19,19 @@ export class LoginService {
     private readonly configService: ConfigService,
   ) {}
 
-  async execute(login: LoginDto): Promise<{ token: string }> {
+  async execute(
+    login: LoginDto,
+  ): Promise<SessionEntity & { raw_token: string }> {
     const user = await this.getUser(login.email);
     this.checkIsActive(user);
     this.checkMustChangePassword(user);
     await this.checkLoginFailAttempts(user);
     await this.checkMatchPassword(user.id, login.password, user.password);
     const token = randomBytes(32).toString('hex');
-    await this.authRepository.createSession(this.buildSession(token, user));
-    return { token };
+    const session = await this.authRepository.createSession(
+      this.buildSession(token, user),
+    );
+    return { ...session, raw_token: token };
   }
 
   private buildSession(token: string, user: FullUserEntity): SessionEntity {

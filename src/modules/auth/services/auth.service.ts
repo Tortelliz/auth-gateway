@@ -24,7 +24,7 @@ export class AuthService {
     private readonly sendPasswordTokenEmailService: SendPasswordTokenEmailService,
   ) {}
 
-  async login(login: LoginDto): Promise<{ token: string }> {
+  async login(login: LoginDto): Promise<SessionEntity & { raw_token: string }> {
     return await this.loginService.execute(login);
   }
 

@@ -5,7 +5,6 @@ import { Logger, ValidationPipe } from '@nestjs/common';
 import { ResponseInterceptor } from './common/interceptors/response.interceptor';
 import { CatchEverythingFilter } from './common/filters/catch-everything.filter';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
-import cookieParser from 'cookie-parser';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -26,7 +25,6 @@ async function bootstrap() {
   }
   logger.log(`App listening on port: ${port}`);
   logger.log(`Log level: ${logLevel}`);
-  app.use(cookieParser());
   app.useLogger(levels);
   app.useGlobalInterceptors(new ResponseInterceptor());
   const httpAdapterHost = app.get(HttpAdapterHost);

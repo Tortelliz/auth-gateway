@@ -1,21 +1,54 @@
-import { Body, Controller, Get, Param, Patch, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Cookies,
+  Get,
+  InternalServerErrorException,
+  Param,
+  Patch,
+  Post,
+  Res,
+} from '@nestjs/common';
 import { AuthService } from './services/auth.service';
 import { ForgotPasswordDto, LoginDto } from './auth.dto';
 import { ParsePasswordTokenPipe } from '../../common/pipes/parse-password-token.pipe';
 import { ParseEmailPipe } from '../../common/pipes/parse-email.pipe';
+import { HttpAdapterHost } from '@nestjs/core';
 
 @Controller('auth')
 export class AuthController {
-  constructor(private readonly authService: AuthService) {}
+  constructor(
+    private readonly authService: AuthService,
+    private readonly adapterHost: HttpAdapterHost,
+  ) {}
 
   @Post('login')
-  async login(@Body() loginDto: LoginDto): Promise<{ token: string }> {
-    return await this.authService.login(loginDto);
+  async login(
+    @Body() loginDto: LoginDto,
+    @Res({ passthrough: true }) response: unknown,
+  ): Promise<{ message: string }> {
+    const session = await this.authService.login(loginDto);
+    this.adapterHost.httpAdapter.setCookie(
+      response,
+      'session_token',
+      session.raw_token,
+      {
+        httpOnly: true,
+        secure: false,
+        sameSite: 'lax',
+        expires: session.expires_at,
+      },
+    );
+    return {
+      message: 'Login successfully',
+    };
   }
 
-  @Patch('logout')
-  async logout(@Body() body: { token: string }): Promise<{ message: string }> {
-    await this.authService.logout(body.token);
+  @Post('logout')
+  async logout(
+    @Cookies('session_token') token: string,
+  ): Promise<{ message: string }> {
+    await this.authService.logout(token);
     return {
       message: 'Logout successfully',
     };
