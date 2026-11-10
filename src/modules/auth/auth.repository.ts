@@ -9,6 +9,7 @@ abstract class AuthContract {
     id: string,
     session: SessionEntity,
   ): Promise<SessionEntity>;
+  abstract findSessionByToken(token: string): Promise<SessionEntity>;
 }
 
 @Injectable()
@@ -24,5 +25,9 @@ export class AuthRepository implements AuthContract {
     session: SessionEntity,
   ): Promise<SessionEntity> {
     return await this.authDao.updateSession(id, session);
+  }
+
+  async findSessionByToken(token: string): Promise<SessionEntity> {
+    return await this.authDao.findSessionByToken(token);
   }
 }

@@ -8,6 +8,9 @@ import { CreateSessionDao } from './daos/create-session.dao';
 import { UpdateSessionDao } from './daos/update-session.dao';
 import { LoginService } from './services/login.service';
 import { AuthRepository } from './auth.repository';
+import { FindSessionByTokenDao } from './daos/find-session-by-token.dao';
+import { LogoutService } from './services/logout.service';
+import { FindSessionByTokenService } from './services/find-session-by-token.service';
 
 @Module({
   imports: [UserModule, PrismaModule],
@@ -16,8 +19,11 @@ import { AuthRepository } from './auth.repository';
     AuthDao,
     CreateSessionDao,
     UpdateSessionDao,
+    FindSessionByTokenDao,
     AuthService,
     LoginService,
+    LogoutService,
+    FindSessionByTokenService,
     AuthRepository,
   ],
 })
