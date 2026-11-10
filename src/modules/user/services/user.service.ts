@@ -21,6 +21,8 @@ import { LoginStampService } from './login-stamp.service';
 import { SetMustChangePasswordService } from './set-must-change-password.service';
 import { SetPasswordService } from './set-password.service';
 import { ResetLoginFailAttemptsService } from './reset-login-fail-attempts.service';
+import { GetFullUserByEmailService } from './get-full-user-by-email.service';
+import { FullUserEntity } from '../user.entity';
 
 @Injectable()
 export class UserService {
@@ -37,6 +39,7 @@ export class UserService {
     private readonly setMustChangePasswordService: SetMustChangePasswordService,
     private readonly setPasswordService: SetPasswordService,
     private readonly resetLoginFailAttemptsService: ResetLoginFailAttemptsService,
+    private readonly getFullUserByEmailService: GetFullUserByEmailService,
   ) {}
 
   async create(user: CreateUserDto): Promise<UserDto> {
@@ -88,5 +91,9 @@ export class UserService {
 
   async resetLoginFailAttempts(id: string): Promise<UserDto> {
     return await this.resetLoginFailAttemptsService.execute(id);
+  }
+
+  async getFullUserByEmail(email: string): Promise<FullUserEntity> {
+    return await this.getFullUserByEmailService.execute(email);
   }
 }

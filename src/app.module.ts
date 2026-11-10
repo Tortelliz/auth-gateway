@@ -8,6 +8,7 @@ import z from 'zod';
 import { RoleModule } from './modules/role/role.module';
 import { CompanyModule } from './modules/company/company.module';
 import { UserModule } from './modules/user/user.module';
+import { AuthModule } from './modules/auth/auth.module';
 
 @Module({
   imports: [
@@ -22,6 +23,7 @@ import { UserModule } from './modules/user/user.module';
         DB_NAME: z.string(),
         LOG_LEVEL: z.enum(['log', 'debug']),
         PAGINATION_DEFAULT_PAGE_SIZE: z.coerce.number(),
+        TOKEN_EXPIRES_IN_DAYS: z.coerce.number(),
       }),
     }),
     PrismaModule,
@@ -29,6 +31,7 @@ import { UserModule } from './modules/user/user.module';
     RoleModule,
     CompanyModule,
     UserModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -25,6 +25,7 @@ import { LoginStampService } from './services/login-stamp.service';
 import { SetMustChangePasswordService } from './services/set-must-change-password.service';
 import { SetPasswordService } from './services/set-password.service';
 import { ResetLoginFailAttemptsService } from './services/reset-login-fail-attempts.service';
+import { GetFullUserByEmailService } from './services/get-full-user-by-email.service';
 
 @Module({
   imports: [PrismaModule, RoleModule, PaginationModule],
@@ -50,6 +51,7 @@ import { ResetLoginFailAttemptsService } from './services/reset-login-fail-attem
     SetMustChangePasswordService,
     SetPasswordService,
     ResetLoginFailAttemptsService,
+    GetFullUserByEmailService,
     UserRepository,
     UserMapper,
   ],
