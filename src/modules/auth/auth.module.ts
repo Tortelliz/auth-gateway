@@ -11,6 +11,12 @@ import { AuthRepository } from './auth.repository';
 import { FindSessionByTokenDao } from './daos/find-session-by-token.dao';
 import { LogoutService } from './services/logout.service';
 import { FindSessionByTokenService } from './services/find-session-by-token.service';
+import { CreatePasswordTokenDao } from './daos/create-password-token.dao';
+import { FindPasswordTokenByTokenDao } from './daos/find-password-token-by-token.dao';
+import { UpdatePasswordTokenDao } from './daos/update-password-token.dao';
+import { CheckPasswordTokenService } from './services/check-password-token.service';
+import { ForgotPasswordService } from './services/forgot-password.serivce';
+import { GeneratePasswordTokenService } from './services/generate-password-token.service';
 
 @Module({
   imports: [UserModule, PrismaModule],
@@ -20,10 +26,16 @@ import { FindSessionByTokenService } from './services/find-session-by-token.serv
     CreateSessionDao,
     UpdateSessionDao,
     FindSessionByTokenDao,
+    CreatePasswordTokenDao,
+    FindPasswordTokenByTokenDao,
+    UpdatePasswordTokenDao,
     AuthService,
     LoginService,
     LogoutService,
     FindSessionByTokenService,
+    CheckPasswordTokenService,
+    ForgotPasswordService,
+    GeneratePasswordTokenService,
     AuthRepository,
   ],
 })

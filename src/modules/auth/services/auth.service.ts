@@ -1,9 +1,12 @@
 import { Injectable } from '@nestjs/common';
 import { LoginService } from './login.service';
-import { LoginDto } from '../auth.dto';
+import { ForgotPasswordDto, LoginDto } from '../auth.dto';
 import { LogoutService } from './logout.service';
 import { FindSessionByTokenService } from './find-session-by-token.service';
 import { SessionEntity } from '../../../../generated/prisma/client';
+import { CheckPasswordTokenService } from './check-password-token.service';
+import { ForgotPasswordService } from './forgot-password.serivce';
+import { GeneratePasswordTokenService } from './generate-password-token.service';
 
 @Injectable()
 export class AuthService {
@@ -11,6 +14,9 @@ export class AuthService {
     private readonly loginService: LoginService,
     private readonly logoutService: LogoutService,
     private readonly findSessionByTokenService: FindSessionByTokenService,
+    private readonly checkPasswordTokenService: CheckPasswordTokenService,
+    private readonly forgotPasswordService: ForgotPasswordService,
+    private readonly generatePasswordTokenService: GeneratePasswordTokenService,
   ) {}
 
   async login(login: LoginDto): Promise<{ token: string }> {
@@ -23,5 +29,20 @@ export class AuthService {
 
   async findSessionByToken(token: string): Promise<SessionEntity> {
     return await this.findSessionByTokenService.execute(token);
+  }
+
+  async checkPasswordToken(token: string): Promise<boolean> {
+    return await this.checkPasswordTokenService.execute(token);
+  }
+
+  async forgotPassword(
+    userId: string,
+    data: ForgotPasswordDto,
+  ): Promise<boolean> {
+    return await this.forgotPasswordService.execute(userId, data);
+  }
+
+  async generatePasswordToken(userId: string): Promise<{ token: string }> {
+    return await this.generatePasswordTokenService.execute(userId);
   }
 }

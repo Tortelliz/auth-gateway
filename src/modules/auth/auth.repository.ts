@@ -1,5 +1,8 @@
 import { Injectable } from '@nestjs/common';
-import { SessionEntity } from '../../../generated/prisma/client';
+import {
+  PasswordTokenEntity,
+  SessionEntity,
+} from '../../../generated/prisma/client';
 import { AuthDao } from './daos/auth.dao';
 
 @Injectable()
@@ -10,6 +13,16 @@ abstract class AuthContract {
     session: SessionEntity,
   ): Promise<SessionEntity>;
   abstract findSessionByToken(token: string): Promise<SessionEntity>;
+  abstract createPasswordToken(
+    entity: PasswordTokenEntity,
+  ): Promise<PasswordTokenEntity>;
+  abstract updatePasswordToken(
+    id: string,
+    entity: PasswordTokenEntity,
+  ): Promise<PasswordTokenEntity>;
+  abstract findPasswordTokenByToken(
+    token: string,
+  ): Promise<PasswordTokenEntity>;
 }
 
 @Injectable()
@@ -29,5 +42,22 @@ export class AuthRepository implements AuthContract {
 
   async findSessionByToken(token: string): Promise<SessionEntity> {
     return await this.authDao.findSessionByToken(token);
+  }
+
+  async createPasswordToken(
+    entity: PasswordTokenEntity,
+  ): Promise<PasswordTokenEntity> {
+    return await this.authDao.createPasswordToken(entity);
+  }
+
+  async updatePasswordToken(
+    id: string,
+    entity: PasswordTokenEntity,
+  ): Promise<PasswordTokenEntity> {
+    return await this.authDao.updatePasswordToken(id, entity);
+  }
+
+  async findPasswordTokenByToken(token: string): Promise<PasswordTokenEntity> {
+    return await this.authDao.findPasswordTokenByToken(token);
   }
 }

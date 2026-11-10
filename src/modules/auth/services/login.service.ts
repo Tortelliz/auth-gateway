@@ -32,7 +32,7 @@ export class LoginService {
 
   private buildSession(token: string, user: FullUserEntity): SessionEntity {
     const tokenExpiresInDays = this.configService.getOrThrow<number>(
-      'TOKEN_EXPIRES_IN_DAYS',
+      'SESSION_TOKEN_EXPIRES_IN_DAYS',
     );
     const now = new Date();
     const expiresAt = new Date(now);
