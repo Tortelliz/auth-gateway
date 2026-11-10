@@ -1,12 +1,4 @@
-import {
-  Body,
-  Controller,
-  Get,
-  Logger,
-  Param,
-  Patch,
-  Post,
-} from '@nestjs/common';
+import { Body, Controller, Get, Param, Patch, Post } from '@nestjs/common';
 import { AuthService } from './services/auth.service';
 import { ForgotPasswordDto, LoginDto } from './auth.dto';
 import { ParsePasswordTokenPipe } from '../../common/pipes/parse-password-token.pipe';
@@ -14,7 +6,6 @@ import { ParseEmailPipe } from '../../common/pipes/parse-email.pipe';
 
 @Controller('auth')
 export class AuthController {
-  private readonly logger = new Logger(AuthController.name);
   constructor(private readonly authService: AuthService) {}
 
   @Post('login')
