@@ -7,6 +7,7 @@ import { generateRandomStringService } from '../../../lib/faker/generate-random-
 import { hashService } from '../../../lib/bcrypt/hash.service';
 import { RoleService } from '../../role/services/role.service';
 import { UserMapper } from '../user.mapper';
+import { PrismaClientKnownRequestError } from '@prisma/client/runtime/client';
 
 @Injectable()
 export class CreateService {
@@ -56,7 +57,10 @@ export class CreateService {
         await this.roleService.findOne(roleId);
       }
     } catch (error) {
-      if (error.code && error.code === 'P2025')
+      if (
+        error instanceof PrismaClientKnownRequestError &&
+        error.code === 'P2025'
+      )
         throw new ForbiddenException('Invalid role');
       throw error;
     }

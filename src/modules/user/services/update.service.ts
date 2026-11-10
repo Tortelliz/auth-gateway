@@ -6,6 +6,7 @@ import { generateUUIDUtil } from '../../../utils/generate-uuid.util';
 import { RoleService } from '../../role/services/role.service';
 import { UserMapper } from '../user.mapper';
 import { isEqualService } from '../../../lib/lodash/is-equal.service';
+import { PrismaClientKnownRequestError } from '@prisma/client/runtime/client';
 
 @Injectable()
 export class UpdateService {
@@ -69,7 +70,10 @@ export class UpdateService {
         await this.roleService.findOne(roleId);
       }
     } catch (error) {
-      if (error.code && error.code === 'P2025')
+      if (
+        error instanceof PrismaClientKnownRequestError &&
+        error.code === 'P2025'
+      )
         throw new ForbiddenException('Invalid role');
       throw error;
     }
