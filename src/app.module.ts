@@ -9,6 +9,7 @@ import { RoleModule } from './modules/role/role.module';
 import { CompanyModule } from './modules/company/company.module';
 import { UserModule } from './modules/user/user.module';
 import { AuthModule } from './modules/auth/auth.module';
+import { EmailModule } from './lib/resend/email.module';
 
 @Module({
   imports: [
@@ -25,6 +26,8 @@ import { AuthModule } from './modules/auth/auth.module';
         PAGINATION_DEFAULT_PAGE_SIZE: z.coerce.number(),
         SESSION_TOKEN_EXPIRES_IN_DAYS: z.coerce.number(),
         PASSWORD_TOKEN_EXPIRES_IN_MINUTES: z.coerce.number(),
+        RESEND_API_KEY: z.string(),
+        EMAIL: z.string(),
       }),
     }),
     PrismaModule,
@@ -33,6 +36,7 @@ import { AuthModule } from './modules/auth/auth.module';
     CompanyModule,
     UserModule,
     AuthModule,
+    EmailModule,
   ],
   controllers: [AppController],
   providers: [AppService],
