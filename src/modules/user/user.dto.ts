@@ -56,7 +56,7 @@ export class CreateUserDto {
 
 export class UpdateUserDto extends CreateUserDto {}
 
-export class SetPasswordDto {
+export class UpdatePasswordDto {
   @IsString()
   @IsNotEmpty()
   @Length(8, 30)

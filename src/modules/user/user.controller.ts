@@ -14,7 +14,7 @@ import {
 import { UserService } from './services/user.service';
 import {
   CreateUserDto,
-  SetPasswordDto,
+  UpdatePasswordDto,
   UpdateUserDto,
   UserDto,
 } from './user.dto';
@@ -44,13 +44,13 @@ export class UserController {
     return await this.userService.update(id, user);
   }
 
-  @Patch('set-password/:id')
+  @Patch('update-password/:id')
   @ApiDefaultResponse(UserDto)
-  async setPassword(
+  async updatePassword(
     @Param('id', ParseUUIDPipe) id: string,
-    @Body() passwords: SetPasswordDto,
+    @Body() passwords: UpdatePasswordDto,
   ): Promise<UserDto> {
-    return await this.userService.setPassword(id, passwords);
+    return await this.userService.updatePassword(id, passwords);
   }
 
   @Delete(':id')
