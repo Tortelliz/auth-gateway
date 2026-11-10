@@ -12,12 +12,11 @@ import { hashToken } from '../../../utils/hash-token.util';
 export class LogoutService {
   constructor(private readonly authRepository: AuthRepository) {}
 
-  async execute(token: string): Promise<boolean> {
+  async execute(token: string): Promise<void> {
     const session = await this.getSession(token);
     this.checkIsExpired(session);
     this.checkRevoked(session);
     await this.authRepository.updateSession(session.id, this.build(session));
-    return true;
   }
 
   private build(session: SessionEntity): SessionEntity {

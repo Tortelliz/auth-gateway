@@ -17,9 +17,11 @@ import { UpdatePasswordTokenDao } from './daos/update-password-token.dao';
 import { CheckPasswordTokenService } from './services/check-password-token.service';
 import { ForgotPasswordService } from './services/forgot-password.serivce';
 import { GeneratePasswordTokenService } from './services/generate-password-token.service';
+import { EmailModule } from '../../lib/resend/email.module';
+import { SendPasswordTokenEmailService } from './services/send-password-token-email.service';
 
 @Module({
-  imports: [UserModule, PrismaModule],
+  imports: [UserModule, PrismaModule, EmailModule],
   controllers: [AuthController],
   providers: [
     AuthDao,
@@ -36,6 +38,7 @@ import { GeneratePasswordTokenService } from './services/generate-password-token
     CheckPasswordTokenService,
     ForgotPasswordService,
     GeneratePasswordTokenService,
+    SendPasswordTokenEmailService,
     AuthRepository,
   ],
 })

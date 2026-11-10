@@ -3,6 +3,7 @@ import { AuthRepository } from '../auth.repository';
 import { UserService } from '../../user/services/user.service';
 import { ForgotPasswordDto } from '../auth.dto';
 import { CheckPasswordTokenService } from './check-password-token.service';
+import { PasswordTokenEntity } from '../../../../generated/prisma/client';
 
 @Injectable()
 export class ForgotPasswordService {
@@ -12,13 +13,25 @@ export class ForgotPasswordService {
     private readonly checkPasswordTokenService: CheckPasswordTokenService,
   ) {}
 
-  async execute(userId: string, data: ForgotPasswordDto): Promise<boolean> {
+  async execute(userId: string, data: ForgotPasswordDto): Promise<void> {
     await this.userService.findOneById(userId);
-    await this.checkPasswordTokenService.execute(data.token);
+    const token = await this.checkPasswordTokenService.execute(data.token);
     await this.userService.updatePassword(userId, {
       password: data.new_password,
       confirm_password: data.confirm_password,
     });
-    return true;
+    await this.authRepository.updatePasswordToken(token.id, this.build(token));
+  }
+
+  private build(entity: PasswordTokenEntity): PasswordTokenEntity {
+    return {
+      id: entity.id,
+      user_id: entity.user_id,
+      hash_token: entity.hash_token,
+      revoked: true,
+      created_at: entity.created_at,
+      expires_at: entity.expires_at,
+      revoked_at: new Date(),
+    };
   }
 }

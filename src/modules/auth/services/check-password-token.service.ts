@@ -12,11 +12,11 @@ import { PrismaClientKnownRequestError } from '@prisma/client/runtime/client';
 export class CheckPasswordTokenService {
   constructor(private readonly authRepository: AuthRepository) {}
 
-  async execute(token: string): Promise<boolean> {
+  async execute(token: string): Promise<PasswordTokenEntity> {
     const verifiedToken = await this.getPasswordToken(token);
     this.checkIsExpired(verifiedToken);
     this.checkRevoked(verifiedToken);
-    return true;
+    return verifiedToken;
   }
 
   private async getPasswordToken(token: string): Promise<PasswordTokenEntity> {
