@@ -30,6 +30,7 @@ export class UpdateService {
     newUser: UpdateUserDto,
   ): FullUserEntity {
     const now = new Date();
+    const isEmailChange = this.checkChangeEmail(oldUser.email, newUser.email);
     const roles = newUser.roles.map((item) => ({
       id: generateUUIDUtil(),
       user_id: oldUser.id,
@@ -46,7 +47,9 @@ export class UpdateService {
       last_name: newUser.last_name,
       active: oldUser.active,
       first_access: oldUser.first_access,
+      must_email_verification: isEmailChange,
       last_login_at: oldUser.last_login_at,
+      last_email_verification_at: oldUser.last_email_verification_at,
       failed_login_attempts: oldUser.failed_login_attempts,
       must_change_password: oldUser.must_change_password,
       created_at: oldUser.created_at,
@@ -79,5 +82,9 @@ export class UpdateService {
         throw new ForbiddenException('Invalid role');
       throw error;
     }
+  }
+
+  private checkChangeEmail(oldEmail: string, newEmail: string): boolean {
+    return oldEmail != newEmail;
   }
 }

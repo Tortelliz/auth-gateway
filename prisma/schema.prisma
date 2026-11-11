@@ -54,8 +54,8 @@ model UserEntity {
   last_name                  String           @db.VarChar(50)
   active                     Boolean          @db.Boolean
   must_change_password       Boolean          @db.Boolean
+  must_email_verification    Boolean          @db.Boolean
   first_access               Boolean          @db.Boolean
-  email_verification         Boolean          @db.Boolean
   failed_login_attempts      Int              @db.SmallInt
   created_at                 DateTime         @db.Timestamptz()
   updated_at                 DateTime?        @db.Timestamptz()

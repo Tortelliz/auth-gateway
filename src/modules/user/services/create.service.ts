@@ -44,11 +44,13 @@ export class CreateService {
       active: true,
       must_change_password: true,
       first_access: true,
+      must_email_verification: false,
       failed_login_attempts: 0,
       created_at: now,
       updated_at: null,
       first_access_at: null,
       last_login_at: null,
+      last_email_verification_at: null,
       roles,
     };
   }
