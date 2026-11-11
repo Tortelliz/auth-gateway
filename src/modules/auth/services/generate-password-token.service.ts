@@ -25,21 +25,9 @@ export class GeneratePasswordTokenService {
   async execute(email: string): Promise<void> {
     const user = await this.getUser(email);
     if (user) {
-      const company = await this.companyService.findOne(user?.company_id);
       const token = generateRandomTokenUtil();
       await this.authRepository.createToken(this.build(user.id, token));
-      await this.emailService.send({
-        to: email,
-        subject: `Grafcet Auth Gateway - Redefinição de senha - ${user.first_name} ${user.last_name} - ${company.name}`,
-        body: passwordTokenTemplate({
-          appName: 'Grafcet Auth Gateway',
-          name: `${user.first_name} ${user.last_name}`,
-          code: token,
-          expiresInMinutes: this.configService.getOrThrow<number>(
-            'PASSWORD_TOKEN_EXPIRES_IN_MINUTES',
-          ),
-        }),
-      });
+      await this.sendEmail(user, token);
     }
   }
 
@@ -72,5 +60,21 @@ export class GeneratePasswordTokenService {
       )
         return;
     }
+  }
+
+  private async sendEmail(user: UserDto, code: string): Promise<void> {
+    const company = await this.companyService.findOne(user?.company_id);
+    await this.emailService.send({
+      to: user.email,
+      subject: `Redefinição de senha - ${user.first_name} ${user.last_name} - ${company.name}`,
+      body: passwordTokenTemplate({
+        appName: 'Grafcet Auth Gateway',
+        name: `${user.first_name} ${user.last_name}`,
+        code,
+        expiresInMinutes: this.configService.getOrThrow<number>(
+          'PASSWORD_TOKEN_EXPIRES_IN_MINUTES',
+        ),
+      }),
+    });
   }
 }
