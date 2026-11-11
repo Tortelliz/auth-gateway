@@ -10,7 +10,7 @@ import { PrismaClientKnownRequestError } from '@prisma/client/runtime/client';
 import { EmailService } from '../../../lib/resend/email.service';
 import { CompanyService } from '../../company/services/company.service';
 import { firstAccessTokenTemplate } from '../../../lib/resend/templates/first-access-token-template';
-import { FullUserEntity } from '../../user/user.entity';
+import { UserDto } from '../../user/user.dto';
 
 @Injectable()
 export class GenerateFirstAccessTokenService {
@@ -51,9 +51,9 @@ export class GenerateFirstAccessTokenService {
     };
   }
 
-  private async getUser(email: string): Promise<FullUserEntity | undefined> {
+  private async getUser(email: string): Promise<UserDto | undefined> {
     try {
-      return await this.userService.getFullUserByEmail(email);
+      return await this.userService.findOneByEmail(email);
     } catch (error) {
       if (
         error instanceof PrismaClientKnownRequestError &&
@@ -63,7 +63,7 @@ export class GenerateFirstAccessTokenService {
     }
   }
 
-  private async sendEmail(user: FullUserEntity, code: string): Promise<void> {
+  private async sendEmail(user: UserDto, code: string): Promise<void> {
     const company = await this.companyService.findOne(user?.company_id);
     await this.emailService.send({
       to: user.email,
@@ -79,7 +79,7 @@ export class GenerateFirstAccessTokenService {
     });
   }
 
-  private checkMustFirstAccess(user: FullUserEntity): void {
+  private checkMustFirstAccess(user: UserDto): void {
     if (!user.first_access)
       throw new ForbiddenException(
         'The user has already performed their first access',

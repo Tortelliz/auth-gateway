@@ -9,8 +9,8 @@ import { UserService } from '../../user/services/user.service';
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime/client';
 import { EmailService } from '../../../lib/resend/email.service';
 import { CompanyService } from '../../company/services/company.service';
-import { FullUserEntity } from '../../user/user.entity';
 import { emailVerificationTokenTemplate } from '../../../lib/resend/templates/email-verification-token.template';
+import { UserDto } from '../../user/user.dto';
 
 @Injectable()
 export class GenerateEmailVerificationTokenService {
@@ -51,9 +51,9 @@ export class GenerateEmailVerificationTokenService {
     };
   }
 
-  private async getUser(email: string): Promise<FullUserEntity | undefined> {
+  private async getUser(email: string): Promise<UserDto | undefined> {
     try {
-      return await this.userService.getFullUserByEmail(email);
+      return await this.userService.findOneByEmail(email);
     } catch (error) {
       if (
         error instanceof PrismaClientKnownRequestError &&
@@ -63,7 +63,7 @@ export class GenerateEmailVerificationTokenService {
     }
   }
 
-  private async sendEmail(user: FullUserEntity, code: string): Promise<void> {
+  private async sendEmail(user: UserDto, code: string): Promise<void> {
     const company = await this.companyService.findOne(user?.company_id);
     await this.emailService.send({
       to: user.email,
@@ -80,8 +80,8 @@ export class GenerateEmailVerificationTokenService {
     });
   }
 
-  private checkMustEmailVerification(user: FullUserEntity): void {
-    if (!user.first_access)
+  private checkMustEmailVerification(user: UserDto): void {
+    if (!user.must_email_verification)
       throw new ForbiddenException(
         'The user does not need to verify their email',
       );

@@ -1,6 +1,7 @@
 import { RoleDto } from '../role/role.dto';
 import {
   IsArray,
+  IsBoolean,
   IsDate,
   IsEmail,
   IsNotEmpty,
@@ -21,6 +22,14 @@ export class UserDto {
   first_name: string;
   @IsString()
   last_name: string;
+  @IsBoolean()
+  first_access: boolean;
+  @IsBoolean()
+  must_email_verification: boolean;
+  @IsDate()
+  first_access_at: Date | null;
+  @IsDate()
+  last_email_verification_at: Date | null;
   @IsDate()
   last_login_at: Date | null;
   @IsDate()
