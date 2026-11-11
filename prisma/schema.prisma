@@ -113,6 +113,7 @@ model SessionEntity {
 enum Resource {
   forgot_password
   first_access
+  email_verification
 }
 
 model TokenEntity {
