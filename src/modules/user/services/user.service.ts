@@ -1,11 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { CreateService } from './create.service';
-import {
-  CreateUserDto,
-  UpdatePasswordDto,
-  UpdateUserDto,
-  UserDto,
-} from '../user.dto';
+import { CreateUserDto, UpdateUserDto, UserDto } from '../user.dto';
 import { UpdateService } from './update.service';
 import { DeleteService } from './delete.service';
 import { FindOneByIdService } from './find-one-by-id.service';
@@ -86,7 +81,7 @@ export class UserService {
 
   async updatePassword(
     id: string,
-    passwords: UpdatePasswordDto,
+    passwords: { password: string; confirm_password: string },
   ): Promise<UserDto> {
     return await this.updatePasswordService.execute(id, passwords);
   }

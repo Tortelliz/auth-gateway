@@ -1,6 +1,6 @@
 import { ForbiddenException, Injectable } from '@nestjs/common';
 import { UserRepository } from '../user.repository';
-import { UpdatePasswordDto, UserDto } from '../user.dto';
+import { UserDto } from '../user.dto';
 import { FullUserEntity } from '../user.entity';
 import { hashService } from '../../../lib/bcrypt/hash.service';
 import { UserMapper } from '../user.mapper';
@@ -13,7 +13,10 @@ export class UpdatePasswordService {
     private readonly userMapper: UserMapper,
   ) {}
 
-  async execute(id: string, passwords: UpdatePasswordDto): Promise<UserDto> {
+  async execute(
+    id: string,
+    passwords: { password: string; confirm_password: string },
+  ): Promise<UserDto> {
     const user = await this.userRepository.findById(id);
     this.checkMatchPasswords(passwords);
     await this.checkMatchOldPassword(user.password, passwords.password);
@@ -37,7 +40,10 @@ export class UpdatePasswordService {
     };
   }
 
-  private checkMatchPasswords(passwords: UpdatePasswordDto): void {
+  private checkMatchPasswords(passwords: {
+    password: string;
+    confirm_password: string;
+  }): void {
     if (passwords.password != passwords.confirm_password)
       throw new ForbiddenException('Passwords do not match');
   }
