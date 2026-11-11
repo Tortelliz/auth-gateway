@@ -15,7 +15,7 @@ export class EmailService {
       this.configService.getOrThrow<string>('RESEND_API_KEY'),
     );
     await resend.emails.send({
-      from: this.configService.getOrThrow<string>('EMAIL'),
+      from: this.configService.getOrThrow<string>('RESEND_NOTIFIER_EMAIL'),
       to: data.to,
       subject: data.subject,
       html: data.body,

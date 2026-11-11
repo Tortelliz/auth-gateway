@@ -29,7 +29,7 @@ import { EmailModule } from './lib/resend/email.module';
         FIRST_ACCESS_TOKEN_EXPIRES_IN_MINUTES: z.coerce.number(),
         EMAIL_VERIFICATION_TOKEN_EXPIRES_IN_MINUTES: z.coerce.number(),
         RESEND_API_KEY: z.string(),
-        EMAIL: z.string(),
+        RESEND_NOTIFIER_EMAIL: z.string(),
         SUPPORT_EMAIL: z.string(),
         DEV_SITE: z.string(),
       }),
