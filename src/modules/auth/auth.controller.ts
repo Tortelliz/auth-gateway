@@ -106,4 +106,26 @@ export class AuthController {
       message: 'Password created successfully',
     };
   }
+
+  @Post('generate-email-verification-token/:email')
+  async generateEmailVerificationToken(
+    @Param('email', ParseEmailPipe) email: string,
+  ): Promise<{ message: string }> {
+    await this.authService.generateEmailVerificationToken(email);
+    return {
+      message:
+        'If you are registered in the system, you will receive a token via email; please check your email inbox.',
+    };
+  }
+
+  @Patch('email-verification/:user_id')
+  async emailVerification(
+    @Param('user_id') userId: string,
+    @Body() data: ForgotPasswordDto,
+  ): Promise<{ message: string }> {
+    await this.authService.emailVerification(userId, data);
+    return {
+      message: 'E-mail verification successfully',
+    };
+  }
 }

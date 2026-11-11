@@ -45,3 +45,10 @@ export class ForgotPasswordDto {
 }
 
 export class FirstAccessDto extends ForgotPasswordDto {}
+
+export class EmailVerificationDto {
+  @IsString()
+  @Length(6, 6)
+  @IsNotEmpty()
+  token: string;
+}

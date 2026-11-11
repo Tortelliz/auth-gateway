@@ -21,6 +21,8 @@ import { CompanyModule } from '../company/company.module';
 import { CheckSessionTokenService } from './services/check-session-token.service';
 import { FirstAccessService } from './services/first-access.service';
 import { GenerateFirstAccessTokenService } from './services/generate-first-access-token.service';
+import { GenerateEmailVerificationTokenService } from './services/generate-email-verification-token.service';
+import { EmailVerificationService } from './services/email-verification.service';
 
 @Global()
 @Module({
@@ -39,9 +41,11 @@ import { GenerateFirstAccessTokenService } from './services/generate-first-acces
     LogoutService,
     CheckTokenService,
     ForgotPasswordService,
+    EmailVerificationService,
     GenerateForgotPasswordTokenService,
     FirstAccessService,
     GenerateFirstAccessTokenService,
+    GenerateEmailVerificationTokenService,
     CheckSessionTokenService,
     AuthRepository,
   ],

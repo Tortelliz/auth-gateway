@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { LoginService } from './login.service';
-import { ForgotPasswordDto, LoginDto } from '../auth.dto';
+import { EmailVerificationDto, ForgotPasswordDto, LoginDto } from '../auth.dto';
 import { LogoutService } from './logout.service';
 import {
   SessionEntity,
@@ -12,6 +12,8 @@ import { GenerateForgotPasswordTokenService } from './generate-forgot-password-t
 import { CheckSessionTokenService } from './check-session-token.service';
 import { FirstAccessService } from './first-access.service';
 import { GenerateFirstAccessTokenService } from './generate-first-access-token.service';
+import { EmailVerificationService } from './email-verification.service';
+import { GenerateEmailVerificationTokenService } from './generate-email-verification-token.service';
 
 @Injectable()
 export class AuthService {
@@ -24,6 +26,8 @@ export class AuthService {
     private readonly firstAccessService: FirstAccessService,
     private readonly generateFirstAccessTokenService: GenerateFirstAccessTokenService,
     private readonly checkSessionTokenService: CheckSessionTokenService,
+    private readonly emailVerificationService: EmailVerificationService,
+    private readonly generateEmailVerificationTokenService: GenerateEmailVerificationTokenService,
   ) {}
 
   async login(login: LoginDto): Promise<SessionEntity & { raw_token: string }> {
@@ -56,5 +60,16 @@ export class AuthService {
 
   async checkSessionToken(token: string): Promise<SessionEntity> {
     return await this.checkSessionTokenService.execute(token);
+  }
+
+  async emailVerification(
+    userId: string,
+    data: EmailVerificationDto,
+  ): Promise<void> {
+    return await this.emailVerificationService.execute(userId, data);
+  }
+
+  async generateEmailVerificationToken(email: string): Promise<void> {
+    return await this.generateEmailVerificationTokenService.execute(email);
   }
 }
