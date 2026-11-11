@@ -45,24 +45,26 @@ model CompanyAddressEntity {
 }
 
 model UserEntity {
-  id                    String           @id @db.Uuid
-  company_id            String           @db.Uuid
-  company               CompanyEntity    @relation(fields: [company_id], references: [id], onDelete: Cascade)
-  email                 String           @unique @db.VarChar(255)
-  password              String           @db.VarChar(255)
-  first_name            String           @db.VarChar(50)
-  last_name             String           @db.VarChar(50)
-  active                Boolean          @db.Boolean
-  must_change_password  Boolean          @db.Boolean
-  first_access          Boolean          @db.Boolean
-  failed_login_attempts Int              @db.SmallInt
-  created_at            DateTime         @db.Timestamptz()
-  updated_at            DateTime?        @db.Timestamptz()
-  first_access_at       DateTime?        @db.Timestamptz()
-  last_login_at         DateTime?        @db.Timestamptz()
-  roles                 UserRoleEntity[]
-  sessions              SessionEntity[]
-  tokens                TokenEntity[]
+  id                         String           @id @db.Uuid
+  company_id                 String           @db.Uuid
+  company                    CompanyEntity    @relation(fields: [company_id], references: [id], onDelete: Cascade)
+  email                      String           @unique @db.VarChar(255)
+  password                   String           @db.VarChar(255)
+  first_name                 String           @db.VarChar(50)
+  last_name                  String           @db.VarChar(50)
+  active                     Boolean          @db.Boolean
+  must_change_password       Boolean          @db.Boolean
+  first_access               Boolean          @db.Boolean
+  email_verification         Boolean          @db.Boolean
+  failed_login_attempts      Int              @db.SmallInt
+  created_at                 DateTime         @db.Timestamptz()
+  updated_at                 DateTime?        @db.Timestamptz()
+  first_access_at            DateTime?        @db.Timestamptz()
+  last_email_verification_at DateTime?        @db.Timestamptz()
+  last_login_at              DateTime?        @db.Timestamptz()
+  roles                      UserRoleEntity[]
+  sessions                   SessionEntity[]
+  tokens                     TokenEntity[]
 
   @@index([id, email, password])
   @@map("user")
