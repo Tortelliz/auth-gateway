@@ -10,7 +10,6 @@ import { LoginService } from './services/login.service';
 import { AuthRepository } from './auth.repository';
 import { FindSessionByTokenDao } from './daos/find-session-by-token.dao';
 import { LogoutService } from './services/logout.service';
-import { FindSessionByTokenService } from './services/find-session-by-token.service';
 import { CreateTokenDao } from './daos/create-token.dao';
 import { FindTokenByTokenDao } from './daos/find-token-by-token.dao';
 import { UpdateTokenDao } from './daos/update-token.dao';
@@ -18,12 +17,12 @@ import { CheckTokenService } from './services/check-token.service';
 import { ForgotPasswordService } from './services/forgot-password.serivce';
 import { GeneratePasswordTokenService } from './services/generate-password-token.service';
 import { EmailModule } from '../../lib/resend/email.module';
-import { SendPasswordTokenEmailService } from './services/send-password-token-email.service';
+import { CompanyModule } from '../company/company.module';
 import { CheckSessionTokenService } from './services/check-session-token.service';
 
 @Global()
 @Module({
-  imports: [UserModule, PrismaModule, EmailModule],
+  imports: [UserModule, PrismaModule, EmailModule, CompanyModule],
   controllers: [AuthController],
   providers: [
     AuthDao,
@@ -36,12 +35,10 @@ import { CheckSessionTokenService } from './services/check-session-token.service
     AuthService,
     LoginService,
     LogoutService,
-    FindSessionByTokenService,
     CheckTokenService,
-    CheckSessionTokenService,
     ForgotPasswordService,
     GeneratePasswordTokenService,
-    SendPasswordTokenEmailService,
+    CheckSessionTokenService,
     AuthRepository,
   ],
   exports: [AuthService],

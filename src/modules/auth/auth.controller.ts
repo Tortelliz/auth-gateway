@@ -57,18 +57,18 @@ export class AuthController {
   async generatePasswordToken(
     @Param('email', ParseEmailPipe) email: string,
   ): Promise<{ message: string }> {
-    await this.authService.sendPasswordTokenEmail(email);
+    await this.authService.generatePasswordToken(email);
     return {
       message:
         'If you are registered in the system, you will receive a token via email; please check your email inbox.',
     };
   }
 
-  @Get('check-password-token/:token')
-  async checkPasswordToken(
+  @Get('check-token/:token')
+  async checkToken(
     @Param('token', ParsePasswordTokenPipe) token: string,
   ): Promise<{ message: string }> {
-    await this.authService.checkPasswordToken(token);
+    await this.authService.checkToken(token);
     return {
       message: 'Token is valid',
     };

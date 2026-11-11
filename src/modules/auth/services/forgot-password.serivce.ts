@@ -20,8 +20,8 @@ export class ForgotPasswordService {
       password: data.new_password,
       confirm_password: data.confirm_password,
     });
-    await this.userService.resetLoginFailAttempts(userId);
     await this.authRepository.updateToken(token.id, this.build(token));
+    await this.userService.resetLoginFailAttempts(userId);
   }
 
   private build(entity: TokenEntity): TokenEntity {

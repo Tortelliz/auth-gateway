@@ -9,13 +9,13 @@ export class CheckTokenService {
   constructor(private readonly authRepository: AuthRepository) {}
 
   async execute(token: string): Promise<TokenEntity> {
-    const dbToken = await this.getPasswordToken(token);
+    const dbToken = await this.getToken(token);
     this.checkIsExpired(dbToken);
     this.checkRevoked(dbToken);
     return dbToken;
   }
 
-  private async getPasswordToken(token: string): Promise<TokenEntity> {
+  private async getToken(token: string): Promise<TokenEntity> {
     try {
       return await this.authRepository.findTokenByToken(hashToken(token));
     } catch (error) {
