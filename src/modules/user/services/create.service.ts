@@ -42,11 +42,13 @@ export class CreateService {
       first_name: user.first_name,
       last_name: user.last_name,
       active: true,
-      last_login_at: null,
-      failed_login_attempts: 0,
       must_change_password: true,
+      first_access: true,
+      failed_login_attempts: 0,
       created_at: now,
       updated_at: null,
+      first_access_at: null,
+      last_login_at: null,
       roles,
     };
   }

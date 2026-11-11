@@ -45,11 +45,13 @@ export class UpdateService {
       first_name: newUser.first_name,
       last_name: newUser.last_name,
       active: oldUser.active,
+      first_access: oldUser.first_access,
       last_login_at: oldUser.last_login_at,
       failed_login_attempts: oldUser.failed_login_attempts,
       must_change_password: oldUser.must_change_password,
       created_at: oldUser.created_at,
       updated_at: now,
+      first_access_at: oldUser.first_access_at,
       roles,
     };
   }
