@@ -21,11 +21,11 @@ import { UserRepository } from './user.repository';
 import { UserMapper } from './user.mapper';
 import { AddLoginFailAttemptService } from './services/add-login-fail-attempt.service';
 import { DeactivateService } from './services/deactivate.service';
-import { LoginStampService } from './services/login-stamp.service';
 import { SetMustChangePasswordService } from './services/set-must-change-password.service';
 import { UpdatePasswordService } from './services/update-password.service';
 import { ResetLoginFailAttemptsService } from './services/reset-login-fail-attempts.service';
 import { GetFullUserByEmailService } from './services/get-full-user-by-email.service';
+import { UpdateToLoginService } from './services/update-to-login.service';
 
 @Module({
   imports: [PrismaModule, RoleModule, PaginationModule],
@@ -47,11 +47,11 @@ import { GetFullUserByEmailService } from './services/get-full-user-by-email.ser
     FindOneByEmailService,
     AddLoginFailAttemptService,
     DeactivateService,
-    LoginStampService,
     SetMustChangePasswordService,
     UpdatePasswordService,
     ResetLoginFailAttemptsService,
     GetFullUserByEmailService,
+    UpdateToLoginService,
     UserRepository,
     UserMapper,
   ],

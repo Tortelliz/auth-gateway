@@ -17,12 +17,12 @@ import {
 } from '../../../common/pagination/pagination.dto';
 import { AddLoginFailAttemptService } from './add-login-fail-attempt.service';
 import { DeactivateService } from './deactivate.service';
-import { LoginStampService } from './login-stamp.service';
 import { SetMustChangePasswordService } from './set-must-change-password.service';
 import { UpdatePasswordService } from './update-password.service';
 import { ResetLoginFailAttemptsService } from './reset-login-fail-attempts.service';
 import { GetFullUserByEmailService } from './get-full-user-by-email.service';
 import { FullUserEntity } from '../user.entity';
+import { UpdateToLoginService } from './update-to-login.service';
 
 @Injectable()
 export class UserService {
@@ -35,11 +35,11 @@ export class UserService {
     private readonly findAllService: FindAllService,
     private readonly addLoginFailAttemptService: AddLoginFailAttemptService,
     private readonly deactivateService: DeactivateService,
-    private readonly loginStampService: LoginStampService,
     private readonly setMustChangePasswordService: SetMustChangePasswordService,
     private readonly updatePasswordService: UpdatePasswordService,
     private readonly resetLoginFailAttemptsService: ResetLoginFailAttemptsService,
     private readonly getFullUserByEmailService: GetFullUserByEmailService,
+    private readonly updateToLoginService: UpdateToLoginService,
   ) {}
 
   async create(user: CreateUserDto): Promise<UserDto> {
@@ -77,10 +77,6 @@ export class UserService {
     return await this.deactivateService.execute(id);
   }
 
-  async loginStamp(id: string): Promise<UserDto> {
-    return await this.loginStampService.execute(id);
-  }
-
   async setMustChangePassword(id: string): Promise<UserDto> {
     return await this.setMustChangePasswordService.execute(id);
   }
@@ -98,5 +94,9 @@ export class UserService {
 
   async getFullUserByEmail(email: string): Promise<FullUserEntity> {
     return await this.getFullUserByEmailService.execute(email);
+  }
+
+  async updateToLogin(id: string): Promise<UserDto> {
+    return await this.updateToLoginService.execute(id);
   }
 }
