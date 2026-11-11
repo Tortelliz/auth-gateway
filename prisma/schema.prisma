@@ -45,22 +45,22 @@ model CompanyAddressEntity {
 }
 
 model UserEntity {
-  id                    String                @id @db.Uuid
-  company_id            String                @db.Uuid
-  company               CompanyEntity         @relation(fields: [company_id], references: [id], onDelete: Cascade)
-  email                 String                @unique @db.VarChar(255)
-  password              String                @db.VarChar(255)
-  first_name            String                @db.VarChar(50)
-  last_name             String                @db.VarChar(50)
-  active                Boolean               @db.Boolean
-  last_login_at         DateTime?             @db.Timestamptz()
-  failed_login_attempts Int                   @db.SmallInt
-  must_change_password  Boolean               @db.Boolean
-  created_at            DateTime              @db.Timestamptz()
-  updated_at            DateTime?             @db.Timestamptz()
+  id                    String           @id @db.Uuid
+  company_id            String           @db.Uuid
+  company               CompanyEntity    @relation(fields: [company_id], references: [id], onDelete: Cascade)
+  email                 String           @unique @db.VarChar(255)
+  password              String           @db.VarChar(255)
+  first_name            String           @db.VarChar(50)
+  last_name             String           @db.VarChar(50)
+  active                Boolean          @db.Boolean
+  last_login_at         DateTime?        @db.Timestamptz()
+  failed_login_attempts Int              @db.SmallInt
+  must_change_password  Boolean          @db.Boolean
+  created_at            DateTime         @db.Timestamptz()
+  updated_at            DateTime?        @db.Timestamptz()
   roles                 UserRoleEntity[]
   sessions              SessionEntity[]
-  passwordTokens        PasswordTokenEntity[]
+  tokens                TokenEntity[]
 
   @@index([id, email, password])
   @@map("user")
@@ -106,16 +106,22 @@ model SessionEntity {
   @@map("session")
 }
 
-model PasswordTokenEntity {
+enum Resource {
+  forgot_password
+  first_access
+}
+
+model TokenEntity {
   id         String     @id @db.Uuid
   user_id    String     @db.Uuid
   user       UserEntity @relation(fields: [user_id], references: [id], onDelete: Cascade)
   hash_token String     @unique
+  resource   Resource
   revoked    Boolean
   created_at DateTime   @db.Timestamptz()
   expires_at DateTime   @db.Timestamptz()
   revoked_at DateTime?  @db.Timestamptz()
 
-  @@index([id, user_id, hash_token])
-  @@map("password_token")
+  @@index([id, user_id, resource, hash_token])
+  @@map("token")
 }

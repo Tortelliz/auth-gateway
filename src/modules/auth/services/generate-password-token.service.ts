@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { AuthRepository } from '../auth.repository';
-import { PasswordTokenEntity } from '../../../../generated/prisma/client';
+import { TokenEntity } from '../../../../generated/prisma/client';
 import { generateUUIDUtil } from '../../../utils/generate-uuid.util';
 import { hashToken } from '../../../utils/hash-token.util';
 import { ConfigService } from '@nestjs/config';
@@ -18,11 +18,11 @@ export class GeneratePasswordTokenService {
   async execute(userId: string): Promise<{ token: string }> {
     const user = await this.userService.findOneById(userId);
     const token = generateRandomTokenUtil();
-    await this.authRepository.createPasswordToken(this.build(user.id, token));
+    await this.authRepository.createToken(this.build(user.id, token));
     return { token };
   }
 
-  private build(userId: string, rawToken: string): PasswordTokenEntity {
+  private build(userId: string, rawToken: string): TokenEntity {
     const tokenExpiresInMinutes = this.configService.getOrThrow<number>(
       'PASSWORD_TOKEN_EXPIRES_IN_MINUTES',
     );
@@ -33,6 +33,7 @@ export class GeneratePasswordTokenService {
       id: generateUUIDUtil(),
       user_id: userId,
       hash_token: hashToken(rawToken),
+      resource: 'forgot_password',
       revoked: false,
       created_at: now,
       expires_at: expiresAt,

@@ -1,8 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import {
-  PasswordTokenEntity,
-  SessionEntity,
-} from '../../../generated/prisma/client';
+import { TokenEntity, SessionEntity } from '../../../generated/prisma/client';
 import { AuthDao } from './daos/auth.dao';
 
 @Injectable()
@@ -13,16 +10,9 @@ abstract class AuthContract {
     session: SessionEntity,
   ): Promise<SessionEntity>;
   abstract findSessionByToken(token: string): Promise<SessionEntity>;
-  abstract createPasswordToken(
-    entity: PasswordTokenEntity,
-  ): Promise<PasswordTokenEntity>;
-  abstract updatePasswordToken(
-    id: string,
-    entity: PasswordTokenEntity,
-  ): Promise<PasswordTokenEntity>;
-  abstract findPasswordTokenByToken(
-    token: string,
-  ): Promise<PasswordTokenEntity>;
+  abstract createToken(entity: TokenEntity): Promise<TokenEntity>;
+  abstract updateToken(id: string, entity: TokenEntity): Promise<TokenEntity>;
+  abstract findTokenByToken(token: string): Promise<TokenEntity>;
 }
 
 @Injectable()
@@ -44,20 +34,15 @@ export class AuthRepository implements AuthContract {
     return await this.authDao.findSessionByToken(token);
   }
 
-  async createPasswordToken(
-    entity: PasswordTokenEntity,
-  ): Promise<PasswordTokenEntity> {
-    return await this.authDao.createPasswordToken(entity);
+  async createToken(entity: TokenEntity): Promise<TokenEntity> {
+    return await this.authDao.createToken(entity);
   }
 
-  async updatePasswordToken(
-    id: string,
-    entity: PasswordTokenEntity,
-  ): Promise<PasswordTokenEntity> {
-    return await this.authDao.updatePasswordToken(id, entity);
+  async updateToken(id: string, entity: TokenEntity): Promise<TokenEntity> {
+    return await this.authDao.updateToken(id, entity);
   }
 
-  async findPasswordTokenByToken(token: string): Promise<PasswordTokenEntity> {
-    return await this.authDao.findPasswordTokenByToken(token);
+  async findTokenByToken(token: string): Promise<TokenEntity> {
+    return await this.authDao.findTokenByToken(token);
   }
 }

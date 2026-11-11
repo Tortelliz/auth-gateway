@@ -2,33 +2,35 @@ import { Injectable } from '@nestjs/common';
 import { AuthRepository } from '../auth.repository';
 import { UserService } from '../../user/services/user.service';
 import { ForgotPasswordDto } from '../auth.dto';
-import { CheckPasswordTokenService } from './check-password-token.service';
-import { PasswordTokenEntity } from '../../../../generated/prisma/client';
+import { CheckTokenService } from './check-token.service';
+import { TokenEntity } from '../../../../generated/prisma/client';
 
 @Injectable()
 export class ForgotPasswordService {
   constructor(
     private readonly authRepository: AuthRepository,
     private readonly userService: UserService,
-    private readonly checkPasswordTokenService: CheckPasswordTokenService,
+    private readonly checkTokenService: CheckTokenService,
   ) {}
 
   async execute(userId: string, data: ForgotPasswordDto): Promise<void> {
     await this.userService.findOneById(userId);
-    const token = await this.checkPasswordTokenService.execute(data.token);
+    const token = await this.checkTokenService.execute(data.token);
     await this.userService.updatePassword(userId, {
       password: data.new_password,
       confirm_password: data.confirm_password,
     });
-    await this.authRepository.updatePasswordToken(token.id, this.build(token));
+    await this.userService.resetLoginFailAttempts(userId);
+    await this.authRepository.updateToken(token.id, this.build(token));
   }
 
-  private build(entity: PasswordTokenEntity): PasswordTokenEntity {
+  private build(entity: TokenEntity): TokenEntity {
     return {
       id: entity.id,
       user_id: entity.user_id,
       hash_token: entity.hash_token,
       revoked: true,
+      resource: entity.resource,
       created_at: entity.created_at,
       expires_at: entity.expires_at,
       revoked_at: new Date(),

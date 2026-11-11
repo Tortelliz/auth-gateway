@@ -2,13 +2,13 @@ import { Injectable } from '@nestjs/common';
 import { CreateSessionDao } from './create-session.dao';
 import { UpdateSessionDao } from './update-session.dao';
 import {
-  PasswordTokenEntity,
+  TokenEntity,
   SessionEntity,
 } from '../../../../generated/prisma/client';
 import { FindSessionByTokenDao } from './find-session-by-token.dao';
-import { CreatePasswordTokenDao } from './create-password-token.dao';
-import { UpdatePasswordTokenDao } from './update-password-token.dao';
-import { FindPasswordTokenByTokenDao } from './find-password-token-by-token.dao';
+import { CreateTokenDao } from './create-token.dao';
+import { UpdateTokenDao } from './update-token.dao';
+import { FindTokenByTokenDao } from './find-token-by-token.dao';
 
 @Injectable()
 export class AuthDao {
@@ -16,9 +16,9 @@ export class AuthDao {
     private readonly createSessionDao: CreateSessionDao,
     private readonly updateSessionDao: UpdateSessionDao,
     private readonly findSessionByTokenDao: FindSessionByTokenDao,
-    private readonly createPasswordTokenDao: CreatePasswordTokenDao,
-    private readonly updatePasswordTokenDao: UpdatePasswordTokenDao,
-    private readonly findPasswordTokenByTokenDao: FindPasswordTokenByTokenDao,
+    private readonly createPasswordTokenDao: CreateTokenDao,
+    private readonly updatePasswordTokenDao: UpdateTokenDao,
+    private readonly findPasswordTokenByTokenDao: FindTokenByTokenDao,
   ) {}
 
   async createSession(session: SessionEntity): Promise<SessionEntity> {
@@ -36,20 +36,15 @@ export class AuthDao {
     return await this.findSessionByTokenDao.execute(token);
   }
 
-  async createPasswordToken(
-    entity: PasswordTokenEntity,
-  ): Promise<PasswordTokenEntity> {
+  async createToken(entity: TokenEntity): Promise<TokenEntity> {
     return await this.createPasswordTokenDao.execute(entity);
   }
 
-  async updatePasswordToken(
-    id: string,
-    entity: PasswordTokenEntity,
-  ): Promise<PasswordTokenEntity> {
+  async updateToken(id: string, entity: TokenEntity): Promise<TokenEntity> {
     return await this.updatePasswordTokenDao.execute(id, entity);
   }
 
-  async findPasswordTokenByToken(token: string): Promise<PasswordTokenEntity> {
+  async findTokenByToken(token: string): Promise<TokenEntity> {
     return await this.findPasswordTokenByTokenDao.execute(token);
   }
 }
