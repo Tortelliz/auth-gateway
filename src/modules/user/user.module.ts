@@ -27,6 +27,7 @@ import { ResetLoginFailAttemptsService } from './services/reset-login-fail-attem
 import { GetFullUserByEmailService } from './services/get-full-user-by-email.service';
 import { LoginStampService } from './services/login-stamp.service';
 import { RegisterFirstAccessService } from './services/register-first-access.service';
+import { RegisterEmailVerificationService } from './services/register-email-verification.service';
 
 @Module({
   imports: [PrismaModule, RoleModule, PaginationModule],
@@ -54,6 +55,7 @@ import { RegisterFirstAccessService } from './services/register-first-access.ser
     GetFullUserByEmailService,
     LoginStampService,
     RegisterFirstAccessService,
+    RegisterEmailVerificationService,
     UserRepository,
     UserMapper,
   ],

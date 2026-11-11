@@ -24,6 +24,7 @@ import { GetFullUserByEmailService } from './get-full-user-by-email.service';
 import { FullUserEntity } from '../user.entity';
 import { LoginStampService } from './login-stamp.service';
 import { RegisterFirstAccessService } from './register-first-access.service';
+import { RegisterEmailVerificationService } from './register-email-verification.service';
 
 @Injectable()
 export class UserService {
@@ -42,6 +43,7 @@ export class UserService {
     private readonly getFullUserByEmailService: GetFullUserByEmailService,
     private readonly loginStampService: LoginStampService,
     private readonly registerFirstAccessService: RegisterFirstAccessService,
+    private readonly registerEmailVerificationService: RegisterEmailVerificationService,
   ) {}
 
   async create(user: CreateUserDto): Promise<UserDto> {
@@ -104,5 +106,9 @@ export class UserService {
 
   async registerFirstAccess(id: string): Promise<UserDto> {
     return await this.registerFirstAccessService.execute(id);
+  }
+
+  async registerEmailVerification(id: string): Promise<UserDto> {
+    return await this.registerEmailVerificationService.execute(id);
   }
 }
