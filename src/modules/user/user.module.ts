@@ -25,7 +25,8 @@ import { SetMustChangePasswordService } from './services/set-must-change-passwor
 import { UpdatePasswordService } from './services/update-password.service';
 import { ResetLoginFailAttemptsService } from './services/reset-login-fail-attempts.service';
 import { GetFullUserByEmailService } from './services/get-full-user-by-email.service';
-import { UpdateToLoginService } from './services/update-to-login.service';
+import { LoginStampService } from './services/login-stamp.service';
+import { RegisterFirstAccessService } from './services/register-first-access.service';
 
 @Module({
   imports: [PrismaModule, RoleModule, PaginationModule],
@@ -51,7 +52,8 @@ import { UpdateToLoginService } from './services/update-to-login.service';
     UpdatePasswordService,
     ResetLoginFailAttemptsService,
     GetFullUserByEmailService,
-    UpdateToLoginService,
+    LoginStampService,
+    RegisterFirstAccessService,
     UserRepository,
     UserMapper,
   ],

@@ -24,6 +24,7 @@ export class LoginService {
   ): Promise<SessionEntity & { raw_token: string }> {
     const user = await this.getUser(login.email);
     this.checkIsActive(user);
+    this.checkFirstAccess(user);
     this.checkMustChangePassword(user);
     await this.checkLoginFailAttempts(user);
     await this.checkMatchPassword(user.id, login.password, user.password);
@@ -31,7 +32,8 @@ export class LoginService {
     const session = await this.authRepository.createSession(
       this.buildSession(token, user),
     );
-    await this.userService.updateToLogin(user.id);
+    await this.userService.loginStamp(user.id);
+    await this.userService.resetLoginFailAttempts(user.id);
     return { ...session, raw_token: token };
   }
 
@@ -76,6 +78,11 @@ export class LoginService {
       await this.userService.addLoginFailAttempt(userId);
       throw new UnauthorizedException('Email or password is incorrect');
     }
+  }
+
+  private checkFirstAccess(user: FullUserEntity): void {
+    if (user.first_access)
+      throw new UnauthorizedException('The user must perform the first access');
   }
 
   private checkIsActive(user: FullUserEntity): void {

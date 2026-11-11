@@ -43,3 +43,5 @@ export class ForgotPasswordDto {
   })
   confirm_password: string;
 }
+
+export class FirstAccessDto extends ForgotPasswordDto {}

@@ -22,7 +22,8 @@ import { UpdatePasswordService } from './update-password.service';
 import { ResetLoginFailAttemptsService } from './reset-login-fail-attempts.service';
 import { GetFullUserByEmailService } from './get-full-user-by-email.service';
 import { FullUserEntity } from '../user.entity';
-import { UpdateToLoginService } from './update-to-login.service';
+import { LoginStampService } from './login-stamp.service';
+import { RegisterFirstAccessService } from './register-first-access.service';
 
 @Injectable()
 export class UserService {
@@ -39,7 +40,8 @@ export class UserService {
     private readonly updatePasswordService: UpdatePasswordService,
     private readonly resetLoginFailAttemptsService: ResetLoginFailAttemptsService,
     private readonly getFullUserByEmailService: GetFullUserByEmailService,
-    private readonly updateToLoginService: UpdateToLoginService,
+    private readonly loginStampService: LoginStampService,
+    private readonly registerFirstAccessService: RegisterFirstAccessService,
   ) {}
 
   async create(user: CreateUserDto): Promise<UserDto> {
@@ -96,7 +98,11 @@ export class UserService {
     return await this.getFullUserByEmailService.execute(email);
   }
 
-  async updateToLogin(id: string): Promise<UserDto> {
-    return await this.updateToLoginService.execute(id);
+  async loginStamp(id: string): Promise<UserDto> {
+    return await this.loginStampService.execute(id);
+  }
+
+  async registerFirstAccess(id: string): Promise<UserDto> {
+    return await this.registerFirstAccessService.execute(id);
   }
 }

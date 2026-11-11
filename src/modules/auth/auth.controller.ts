@@ -53,17 +53,6 @@ export class AuthController {
     };
   }
 
-  @Post('generate-password-token/:email')
-  async generatePasswordToken(
-    @Param('email', ParseEmailPipe) email: string,
-  ): Promise<{ message: string }> {
-    await this.authService.generatePasswordToken(email);
-    return {
-      message:
-        'If you are registered in the system, you will receive a token via email; please check your email inbox.',
-    };
-  }
-
   @Get('check-token/:token')
   async checkToken(
     @Param('token', ParsePasswordTokenPipe) token: string,
@@ -71,6 +60,17 @@ export class AuthController {
     await this.authService.checkToken(token);
     return {
       message: 'Token is valid',
+    };
+  }
+
+  @Post('generate-forgot-password-token/:email')
+  async generatePasswordToken(
+    @Param('email', ParseEmailPipe) email: string,
+  ): Promise<{ message: string }> {
+    await this.authService.generateForgotPasswordToken(email);
+    return {
+      message:
+        'If you are registered in the system, you will receive a token via email; please check your email inbox.',
     };
   }
 
@@ -82,6 +82,28 @@ export class AuthController {
     await this.authService.forgotPassword(userId, data);
     return {
       message: 'Password changed successfully',
+    };
+  }
+
+  @Post('generate-first-access-token/:email')
+  async generateFirstAccessToken(
+    @Param('email', ParseEmailPipe) email: string,
+  ): Promise<{ message: string }> {
+    await this.authService.generateFirstAccessToken(email);
+    return {
+      message:
+        'If you are registered in the system, you will receive a token via email; please check your email inbox.',
+    };
+  }
+
+  @Patch('first-access/:user_id')
+  async firstAccess(
+    @Param('user_id') userId: string,
+    @Body() data: ForgotPasswordDto,
+  ): Promise<{ message: string }> {
+    await this.authService.firstAccess(userId, data);
+    return {
+      message: 'Password created successfully',
     };
   }
 }

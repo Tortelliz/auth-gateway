@@ -15,10 +15,12 @@ import { FindTokenByTokenDao } from './daos/find-token-by-token.dao';
 import { UpdateTokenDao } from './daos/update-token.dao';
 import { CheckTokenService } from './services/check-token.service';
 import { ForgotPasswordService } from './services/forgot-password.serivce';
-import { GeneratePasswordTokenService } from './services/generate-password-token.service';
+import { GenerateForgotPasswordTokenService } from './services/generate-forgot-password-token.service';
 import { EmailModule } from '../../lib/resend/email.module';
 import { CompanyModule } from '../company/company.module';
 import { CheckSessionTokenService } from './services/check-session-token.service';
+import { FirstAccessService } from './services/first-access.service';
+import { GenerateFirstAccessTokenService } from './services/generate-first-access-token.service';
 
 @Global()
 @Module({
@@ -37,7 +39,9 @@ import { CheckSessionTokenService } from './services/check-session-token.service
     LogoutService,
     CheckTokenService,
     ForgotPasswordService,
-    GeneratePasswordTokenService,
+    GenerateForgotPasswordTokenService,
+    FirstAccessService,
+    GenerateFirstAccessTokenService,
     CheckSessionTokenService,
     AuthRepository,
   ],

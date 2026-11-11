@@ -5,7 +5,7 @@ import { UserMapper } from '../user.mapper';
 import { Injectable } from '@nestjs/common';
 
 @Injectable()
-export class UpdateToLoginService {
+export class LoginStampService {
   constructor(
     private readonly userRepository: UserRepository,
     private readonly userMapper: UserMapper,
@@ -23,7 +23,6 @@ export class UpdateToLoginService {
     return {
       ...user,
       last_login_at: now,
-      failed_login_attempts: 0,
       updated_at: now,
     };
   }

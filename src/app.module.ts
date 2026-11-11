@@ -26,6 +26,7 @@ import { EmailModule } from './lib/resend/email.module';
         PAGINATION_DEFAULT_PAGE_SIZE: z.coerce.number(),
         SESSION_TOKEN_EXPIRES_IN_DAYS: z.coerce.number(),
         PASSWORD_TOKEN_EXPIRES_IN_MINUTES: z.coerce.number(),
+        FIRST_ACCESS_TOKEN_EXPIRES_IN_MINUTES: z.coerce.number(),
         RESEND_API_KEY: z.string(),
         EMAIL: z.string(),
       }),

@@ -44,7 +44,7 @@ function renderCode(code: string): string {
     </td>`;
 }
 
-export function passwordTokenTemplate({
+export function firstAccessTokenTemplate({
   name,
   code,
   expiresInMinutes = 15,
@@ -67,7 +67,7 @@ export function passwordTokenTemplate({
       .px { padding-left: 24px !important; padding-right: 24px !important; }
       .code-cell { width: 38px !important; height: 50px !important; font-size: 24px !important; }
       .code-gap { width: 5px !important; }
-      .title { font-size: 24px !important; }
+      .title { font-size: 20px !important; }
     }
     @media (prefers-color-scheme: dark) {
       .page { background-color: #1C1C1C !important; }
@@ -101,13 +101,13 @@ export function passwordTokenTemplate({
           <tr>
             <td class="card px" style="background-color:#F5F5F4;padding:40px 40px 12px;">
               <h1 class="title text-main" style="margin:0 0 20px;font-family:${FONT};font-size:28px;line-height:1.2;font-weight:700;color:#141414;">
-                Redefinição de senha
+                Seja muito bem-vindo, ${safeName}!
               </h1>
               <p class="text-main" style="margin:0 0 12px;font-family:${FONT};font-size:16px;line-height:1.6;color:#3A3A3A;">
-                Olá, ${safeName}.
+                É um prazer recebê-lo em nosso ecossistema.
               </p>
               <p class="text-main" style="margin:0 0 28px;font-family:${FONT};font-size:16px;line-height:1.6;color:#3A3A3A;">
-                Recebemos um pedido para alterar a senha da sua conta. Digite o código abaixo na tela de redefinição para continuar.
+                Recebemos uma solicitação de primeiro acesso para o seu usuário. Digite o código abaixo na tela de primeiro acesso para continuar.
               </p>
             </td>
           </tr>
@@ -134,7 +134,7 @@ export function passwordTokenTemplate({
               <table role="presentation" class="notice" width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:#E8E8E6;border-left:3px solid #F26B1D;border-radius:0 6px 6px 0;">
                 <tr>
                   <td class="text-soft" style="padding:16px 18px;font-family:${FONT};font-size:14px;line-height:1.6;color:#555555;">
-                    <strong class="text-main" style="color:#141414;">Não foi você?</strong> Ignore este e-mail. Sua senha atual continua valendo e ninguém consegue alterá-la sem este código.
+                    <strong class="text-main" style="color:#141414;">Não foi você?</strong> Ignore este e-mail.
                     Nunca pedimos esse código por telefone ou mensagem.
                   </td>
                 </tr>

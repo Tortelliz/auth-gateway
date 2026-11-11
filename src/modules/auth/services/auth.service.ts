@@ -3,13 +3,15 @@ import { LoginService } from './login.service';
 import { ForgotPasswordDto, LoginDto } from '../auth.dto';
 import { LogoutService } from './logout.service';
 import {
-  TokenEntity,
   SessionEntity,
+  TokenEntity,
 } from '../../../../generated/prisma/client';
 import { CheckTokenService } from './check-token.service';
 import { ForgotPasswordService } from './forgot-password.serivce';
-import { GeneratePasswordTokenService } from './generate-password-token.service';
+import { GenerateForgotPasswordTokenService } from './generate-forgot-password-token.service';
 import { CheckSessionTokenService } from './check-session-token.service';
+import { FirstAccessService } from './first-access.service';
+import { GenerateFirstAccessTokenService } from './generate-first-access-token.service';
 
 @Injectable()
 export class AuthService {
@@ -18,7 +20,9 @@ export class AuthService {
     private readonly logoutService: LogoutService,
     private readonly checkTokenService: CheckTokenService,
     private readonly forgotPasswordService: ForgotPasswordService,
-    private readonly generatePasswordTokenService: GeneratePasswordTokenService,
+    private readonly generateForgotPasswordTokenService: GenerateForgotPasswordTokenService,
+    private readonly firstAccessService: FirstAccessService,
+    private readonly generateFirstAccessTokenService: GenerateFirstAccessTokenService,
     private readonly checkSessionTokenService: CheckSessionTokenService,
   ) {}
 
@@ -34,8 +38,16 @@ export class AuthService {
     return await this.forgotPasswordService.execute(userId, data);
   }
 
-  async generatePasswordToken(email: string): Promise<void> {
-    return await this.generatePasswordTokenService.execute(email);
+  async generateForgotPasswordToken(email: string): Promise<void> {
+    return await this.generateForgotPasswordTokenService.execute(email);
+  }
+
+  async firstAccess(userId: string, data: ForgotPasswordDto): Promise<void> {
+    return await this.firstAccessService.execute(userId, data);
+  }
+
+  async generateFirstAccessToken(email: string): Promise<void> {
+    return await this.generateFirstAccessTokenService.execute(email);
   }
 
   async checkToken(token: string): Promise<TokenEntity> {
