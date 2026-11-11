@@ -32,6 +32,7 @@ import { EmailModule } from './lib/resend/email.module';
         RESEND_NOTIFIER_EMAIL: z.string(),
         SUPPORT_EMAIL: z.string(),
         DEV_SITE: z.string(),
+        DB_SEEDS_RUN: z.coerce.boolean(),
       }),
     }),
     PrismaModule,
