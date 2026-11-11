@@ -5,6 +5,7 @@ import {
   IsDate,
   IsEmail,
   IsNotEmpty,
+  IsNumber,
   IsString,
   IsUUID,
   Length,
@@ -23,19 +24,25 @@ export class UserDto {
   @IsString()
   last_name: string;
   @IsBoolean()
+  active: boolean;
+  @IsBoolean()
   first_access: boolean;
   @IsBoolean()
+  must_change_password: boolean;
+  @IsBoolean()
   must_email_verification: boolean;
+  @IsNumber()
+  failed_login_attempts: number;
+  @IsDate()
+  created_at: Date;
+  @IsDate()
+  updated_at: Date | null;
   @IsDate()
   first_access_at: Date | null;
   @IsDate()
   last_email_verification_at: Date | null;
   @IsDate()
   last_login_at: Date | null;
-  @IsDate()
-  created_at: Date;
-  @IsDate()
-  updated_at: Date | null;
   @IsArray()
   roles: {
     role: RoleDto;

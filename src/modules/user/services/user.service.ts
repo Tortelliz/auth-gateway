@@ -20,8 +20,7 @@ import { DeactivateService } from './deactivate.service';
 import { SetMustChangePasswordService } from './set-must-change-password.service';
 import { UpdatePasswordService } from './update-password.service';
 import { ResetLoginFailAttemptsService } from './reset-login-fail-attempts.service';
-import { GetFullUserByEmailService } from './get-full-user-by-email.service';
-import { FullUserEntity } from '../user.entity';
+import { GetUserWithPasswordByEmailService } from './get-user-with-password-by-email.service';
 import { LoginStampService } from './login-stamp.service';
 import { RegisterFirstAccessService } from './register-first-access.service';
 import { RegisterEmailVerificationService } from './register-email-verification.service';
@@ -40,7 +39,7 @@ export class UserService {
     private readonly setMustChangePasswordService: SetMustChangePasswordService,
     private readonly updatePasswordService: UpdatePasswordService,
     private readonly resetLoginFailAttemptsService: ResetLoginFailAttemptsService,
-    private readonly getFullUserByEmailService: GetFullUserByEmailService,
+    private readonly getUserWithPasswordByEmailService: GetUserWithPasswordByEmailService,
     private readonly loginStampService: LoginStampService,
     private readonly registerFirstAccessService: RegisterFirstAccessService,
     private readonly registerEmailVerificationService: RegisterEmailVerificationService,
@@ -96,8 +95,10 @@ export class UserService {
     return await this.resetLoginFailAttemptsService.execute(id);
   }
 
-  async getFullUserByEmail(email: string): Promise<FullUserEntity> {
-    return await this.getFullUserByEmailService.execute(email);
+  async getUserWithPasswordByEmail(
+    email: string,
+  ): Promise<UserDto & { password: string }> {
+    return await this.getUserWithPasswordByEmailService.execute(email);
   }
 
   async loginStamp(id: string): Promise<UserDto> {

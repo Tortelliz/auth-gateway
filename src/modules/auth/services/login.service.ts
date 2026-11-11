@@ -6,10 +6,10 @@ import { compareService } from '../../../lib/bcrypt/compare.service';
 import { SessionEntity } from '../../../../generated/prisma/client';
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime/client';
 import { generateUUIDUtil } from '../../../utils/generate-uuid.util';
-import { FullUserEntity } from '../../user/user.entity';
 import { hashToken } from '../../../utils/hash-token.util';
 import { randomBytes } from 'node:crypto';
 import { ConfigService } from '@nestjs/config';
+import { UserDto } from '../../user/user.dto';
 
 @Injectable()
 export class LoginService {
@@ -37,7 +37,7 @@ export class LoginService {
     return { ...session, raw_token: token };
   }
 
-  private buildSession(token: string, user: FullUserEntity): SessionEntity {
+  private buildSession(token: string, user: UserDto): SessionEntity {
     const tokenExpiresInDays = this.configService.getOrThrow<number>(
       'SESSION_TOKEN_EXPIRES_IN_DAYS',
     );
@@ -55,9 +55,11 @@ export class LoginService {
     };
   }
 
-  private async getUser(email: string): Promise<FullUserEntity> {
+  private async getUser(
+    email: string,
+  ): Promise<UserDto & { password: string }> {
     try {
-      return await this.userService.getFullUserByEmail(email);
+      return await this.userService.getUserWithPasswordByEmail(email);
     } catch (error) {
       if (
         error instanceof PrismaClientKnownRequestError &&
@@ -80,21 +82,21 @@ export class LoginService {
     }
   }
 
-  private checkFirstAccess(user: FullUserEntity): void {
+  private checkFirstAccess(user: UserDto): void {
     if (user.first_access)
       throw new UnauthorizedException('The user must perform the first access');
   }
 
-  private checkIsActive(user: FullUserEntity): void {
+  private checkIsActive(user: UserDto): void {
     if (!user.active) throw new UnauthorizedException('User is not active');
   }
 
-  private checkMustChangePassword(user: FullUserEntity): void {
+  private checkMustChangePassword(user: UserDto): void {
     if (user.must_change_password)
       throw new UnauthorizedException('User must change password');
   }
 
-  private async checkLoginFailAttempts(user: FullUserEntity): Promise<void> {
+  private async checkLoginFailAttempts(user: UserDto): Promise<void> {
     if (user.failed_login_attempts >= 5) {
       await this.userService.setMustChangePassword(user.id);
       throw new UnauthorizedException(

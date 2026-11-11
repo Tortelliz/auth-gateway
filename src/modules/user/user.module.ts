@@ -24,7 +24,7 @@ import { DeactivateService } from './services/deactivate.service';
 import { SetMustChangePasswordService } from './services/set-must-change-password.service';
 import { UpdatePasswordService } from './services/update-password.service';
 import { ResetLoginFailAttemptsService } from './services/reset-login-fail-attempts.service';
-import { GetFullUserByEmailService } from './services/get-full-user-by-email.service';
+import { GetUserWithPasswordByEmailService } from './services/get-user-with-password-by-email.service';
 import { LoginStampService } from './services/login-stamp.service';
 import { RegisterFirstAccessService } from './services/register-first-access.service';
 import { RegisterEmailVerificationService } from './services/register-email-verification.service';
@@ -52,7 +52,7 @@ import { RegisterEmailVerificationService } from './services/register-email-veri
     SetMustChangePasswordService,
     UpdatePasswordService,
     ResetLoginFailAttemptsService,
-    GetFullUserByEmailService,
+    GetUserWithPasswordByEmailService,
     LoginStampService,
     RegisterFirstAccessService,
     RegisterEmailVerificationService,
