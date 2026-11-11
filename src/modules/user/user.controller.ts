@@ -15,6 +15,7 @@ import {
 import { UserService } from './services/user.service';
 import {
   CreateUserDto,
+  UserWithMessageDto,
   UpdatePasswordDto,
   UpdateUserDto,
   UserDto,
@@ -32,9 +33,15 @@ export class UserController {
   constructor(private readonly userService: UserService) {}
 
   @Post()
-  @ApiDefaultResponse(UserDto, false, HttpStatus.CREATED)
-  async create(@Body() user: CreateUserDto): Promise<UserDto> {
-    return await this.userService.create(user);
+  @ApiDefaultResponse(UserWithMessageDto, false, HttpStatus.CREATED)
+  async create(
+    @Body() user: CreateUserDto,
+  ): Promise<{ user: UserDto; message: string }> {
+    return {
+      user: await this.userService.create(user),
+      message:
+        'User created successfully, a welcome email was sent to the user',
+    };
   }
 
   @UseGuards(ViewerGuard)

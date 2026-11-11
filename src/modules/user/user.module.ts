@@ -28,9 +28,17 @@ import { GetUserWithPasswordByEmailService } from './services/get-user-with-pass
 import { LoginStampService } from './services/login-stamp.service';
 import { RegisterFirstAccessService } from './services/register-first-access.service';
 import { RegisterEmailVerificationService } from './services/register-email-verification.service';
+import { EmailModule } from '../../lib/resend/email.module';
+import { CompanyModule } from '../company/company.module';
 
 @Module({
-  imports: [PrismaModule, RoleModule, PaginationModule],
+  imports: [
+    PrismaModule,
+    RoleModule,
+    PaginationModule,
+    EmailModule,
+    CompanyModule,
+  ],
   controllers: [UserController],
   providers: [
     UserDao,

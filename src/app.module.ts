@@ -30,6 +30,8 @@ import { EmailModule } from './lib/resend/email.module';
         EMAIL_VERIFICATION_TOKEN_EXPIRES_IN_MINUTES: z.coerce.number(),
         RESEND_API_KEY: z.string(),
         EMAIL: z.string(),
+        SUPPORT_EMAIL: z.string(),
+        DEV_SITE: z.string(),
       }),
     }),
     PrismaModule,

@@ -52,3 +52,7 @@ export class EmailVerificationDto {
   @IsNotEmpty()
   token: string;
 }
+
+export class MessageDto {
+  message: string;
+}

@@ -7,6 +7,7 @@ import {
   IsNotEmpty,
   IsNumber,
   IsString,
+  IsUrl,
   IsUUID,
   Length,
   Matches,
@@ -65,12 +66,35 @@ export class CreateUserDto {
   @IsNotEmpty()
   @Length(2, 50)
   last_name: string;
+  @IsString()
+  @IsUrl()
+  @IsNotEmpty()
+  login_app_url: string;
   @IsArray()
   @IsNotEmpty()
   roles: string[];
 }
 
-export class UpdateUserDto extends CreateUserDto {}
+export class UpdateUserDto {
+  @IsUUID()
+  @IsNotEmpty()
+  company_id: string;
+  @IsEmail()
+  @IsNotEmpty()
+  @Length(5, 255)
+  email: string;
+  @IsString()
+  @IsNotEmpty()
+  @Length(2, 50)
+  first_name: string;
+  @IsString()
+  @IsNotEmpty()
+  @Length(2, 50)
+  last_name: string;
+  @IsArray()
+  @IsNotEmpty()
+  roles: string[];
+}
 
 export class UpdatePasswordDto {
   @IsString()
@@ -89,4 +113,9 @@ export class UpdatePasswordDto {
       'confirm_password must contain at least one uppercase letter, one lowercase letter, one number and one special character',
   })
   confirm_password: string;
+}
+
+export class UserWithMessageDto {
+  user: UserDto;
+  message: string;
 }

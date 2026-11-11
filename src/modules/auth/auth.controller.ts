@@ -3,16 +3,18 @@ import {
   Controller,
   Cookies,
   Get,
+  HttpStatus,
   Param,
   Patch,
   Post,
   Res,
 } from '@nestjs/common';
 import { AuthService } from './services/auth.service';
-import { ForgotPasswordDto, LoginDto } from './auth.dto';
+import { ForgotPasswordDto, LoginDto, MessageDto } from './auth.dto';
 import { ParsePasswordTokenPipe } from '../../common/pipes/parse-password-token.pipe';
 import { ParseEmailPipe } from '../../common/pipes/parse-email.pipe';
 import { HttpAdapterHost } from '@nestjs/core';
+import { ApiDefaultResponse } from '../../lib/swagger/api-response.decorator';
 
 @Controller('auth')
 export class AuthController {
@@ -22,6 +24,7 @@ export class AuthController {
   ) {}
 
   @Post('login')
+  @ApiDefaultResponse(MessageDto, false, HttpStatus.CREATED)
   async login(
     @Body() loginDto: LoginDto,
     @Res({ passthrough: true }) response: unknown,
@@ -44,6 +47,7 @@ export class AuthController {
   }
 
   @Post('logout')
+  @ApiDefaultResponse(MessageDto, false, HttpStatus.CREATED)
   async logout(
     @Cookies('session_token') token: string,
   ): Promise<{ message: string }> {
@@ -54,6 +58,7 @@ export class AuthController {
   }
 
   @Get('check-token/:token')
+  @ApiDefaultResponse(MessageDto)
   async checkToken(
     @Param('token', ParsePasswordTokenPipe) token: string,
   ): Promise<{ message: string }> {
@@ -64,6 +69,7 @@ export class AuthController {
   }
 
   @Post('generate-forgot-password-token/:email')
+  @ApiDefaultResponse(MessageDto, false, HttpStatus.CREATED)
   async generatePasswordToken(
     @Param('email', ParseEmailPipe) email: string,
   ): Promise<{ message: string }> {
@@ -75,6 +81,7 @@ export class AuthController {
   }
 
   @Patch('forgot-password/:user_id')
+  @ApiDefaultResponse(MessageDto)
   async forgotPassword(
     @Param('user_id') userId: string,
     @Body() data: ForgotPasswordDto,
@@ -86,6 +93,7 @@ export class AuthController {
   }
 
   @Post('generate-first-access-token/:email')
+  @ApiDefaultResponse(MessageDto, false, HttpStatus.CREATED)
   async generateFirstAccessToken(
     @Param('email', ParseEmailPipe) email: string,
   ): Promise<{ message: string }> {
@@ -97,6 +105,7 @@ export class AuthController {
   }
 
   @Patch('first-access/:user_id')
+  @ApiDefaultResponse(MessageDto)
   async firstAccess(
     @Param('user_id') userId: string,
     @Body() data: ForgotPasswordDto,
@@ -108,6 +117,7 @@ export class AuthController {
   }
 
   @Post('generate-email-verification-token/:email')
+  @ApiDefaultResponse(MessageDto, false, HttpStatus.CREATED)
   async generateEmailVerificationToken(
     @Param('email', ParseEmailPipe) email: string,
   ): Promise<{ message: string }> {
@@ -119,6 +129,7 @@ export class AuthController {
   }
 
   @Patch('email-verification/:user_id')
+  @ApiDefaultResponse(MessageDto)
   async emailVerification(
     @Param('user_id') userId: string,
     @Body() data: ForgotPasswordDto,

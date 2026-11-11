@@ -1,6 +1,6 @@
 import { ForbiddenException, Injectable } from '@nestjs/common';
 import { UserRepository } from '../user.repository';
-import { CreateUserDto, UpdateUserDto, UserDto } from '../user.dto';
+import { UpdateUserDto, UserDto } from '../user.dto';
 import { FullUserEntity } from '../user.entity';
 import { generateUUIDUtil } from '../../../utils/generate-uuid.util';
 import { RoleService } from '../../role/services/role.service';
@@ -16,7 +16,7 @@ export class UpdateService {
     private readonly userMapper: UserMapper,
   ) {}
 
-  async execute(id: string, user: CreateUserDto): Promise<UserDto> {
+  async execute(id: string, user: UpdateUserDto): Promise<UserDto> {
     const oldUser = await this.userRepository.findById(id);
     await this.checkChange(oldUser, user);
     await this.checkRoles(user.roles);
