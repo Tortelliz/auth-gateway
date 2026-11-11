@@ -10,7 +10,13 @@ import {
   Res,
 } from '@nestjs/common';
 import { AuthService } from './services/auth.service';
-import { ForgotPasswordDto, LoginDto, MessageDto } from './auth.dto';
+import {
+  EmailVerificationDto,
+  FirstAccessDto,
+  ForgotPasswordDto,
+  LoginDto,
+  MessageDto,
+} from './auth.dto';
 import { ParsePasswordTokenPipe } from '../../common/pipes/parse-password-token.pipe';
 import { ParseEmailPipe } from '../../common/pipes/parse-email.pipe';
 import { HttpAdapterHost } from '@nestjs/core';
@@ -108,7 +114,7 @@ export class AuthController {
   @ApiDefaultResponse(MessageDto)
   async firstAccess(
     @Param('user_id') userId: string,
-    @Body() data: ForgotPasswordDto,
+    @Body() data: FirstAccessDto,
   ): Promise<{ message: string }> {
     await this.authService.firstAccess(userId, data);
     return {
@@ -132,7 +138,7 @@ export class AuthController {
   @ApiDefaultResponse(MessageDto)
   async emailVerification(
     @Param('user_id') userId: string,
-    @Body() data: ForgotPasswordDto,
+    @Body() data: EmailVerificationDto,
   ): Promise<{ message: string }> {
     await this.authService.emailVerification(userId, data);
     return {
