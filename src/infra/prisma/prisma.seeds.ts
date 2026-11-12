@@ -99,10 +99,11 @@ export class PrismaSeeds implements OnModuleInit {
     companyId: string,
     roleIds: string[],
   ): Promise<UserEntity> {
+    const now = new Date();
     const user = await this.prismaService.userEntity.create({
       data: {
         id: generateUUIDUtil(),
-        created_at: new Date(),
+        created_at: now,
         updated_at: null,
         company_id: companyId,
         email: 'rayan@grafcet.com.br',
@@ -110,12 +111,12 @@ export class PrismaSeeds implements OnModuleInit {
         first_name: 'Rayan',
         last_name: 'Tortelli',
         active: true,
-        must_change_password: true,
+        must_change_password: false,
         must_email_verification: false,
-        first_access: true,
+        first_access: false,
         failed_login_attempts: 0,
-        first_access_at: null,
-        last_email_verification_at: null,
+        first_access_at: now,
+        last_email_verification_at: now,
         last_login_at: null,
       },
     });
