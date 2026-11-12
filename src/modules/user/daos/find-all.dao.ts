@@ -43,6 +43,13 @@ export class FindAllDao {
         active: true,
         company_id: companyId,
         id: { not: omitUserId },
+        roles: {
+          none: {
+            role: {
+              code: 'admin',
+            },
+          },
+        },
       },
       omit: {
         password: true,
@@ -59,7 +66,19 @@ export class FindAllDao {
       },
     });
     const count = await this.prismaService.userEntity.count({
-      where: { ...query.where, active: true },
+      where: {
+        ...query.where,
+        active: true,
+        company_id: companyId,
+        id: { not: omitUserId },
+        roles: {
+          none: {
+            role: {
+              code: 'admin',
+            },
+          },
+        },
+      },
     });
     return this.paginationService.buildToReturn(pagination, count, users);
   }
