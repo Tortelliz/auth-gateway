@@ -19,8 +19,9 @@ export class PrismaSeeds implements OnModuleInit {
   ) {}
 
   async onModuleInit(): Promise<void> {
-    const run = this.configService.getOrThrow<boolean>('DB_SEEDS_RUN');
-    if (run) await this.execute();
+    const run = this.configService.getOrThrow<'true' | 'false'>('DB_SEEDS_RUN');
+    this.logger.log(`Run seeds: ${run}`);
+    if (run === 'true') await this.execute();
   }
 
   private async execute(): Promise<void> {
