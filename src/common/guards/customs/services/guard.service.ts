@@ -3,7 +3,6 @@ import { SelfGuardService } from './self-guard.service';
 import { CreateUserPermissionsGuardService } from './create-user-permissions-guard.service';
 import { DeleteUserPermissionsGuardService } from './delete-user-permissions-guard.service';
 import { FindAllUsersGuardService } from './find-all-users-guard.service';
-import { UserDto } from '../../../../modules/user/user.dto';
 
 @Injectable()
 export class GuardService {
