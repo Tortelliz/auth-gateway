@@ -52,8 +52,8 @@ export class UserController {
     };
   }
 
-  @UseGuards(ViewerGuard)
   @Put(':id')
+  @UseGuards(ViewerGuard)
   @ApiDefaultResponse(UserDto)
   async update(
     @Cookies('session_token') token: string,
@@ -64,8 +64,8 @@ export class UserController {
     return await this.userService.update(id, user);
   }
 
-  @UseGuards(ViewerGuard)
   @Patch('update-password/:id')
+  @UseGuards(ViewerGuard)
   @ApiDefaultResponse(UserDto)
   async updatePassword(
     @Cookies('session_token') token: string,
@@ -76,8 +76,8 @@ export class UserController {
     return await this.userService.updatePassword(id, passwords);
   }
 
-  @UseGuards(StaffGuard)
   @Delete(':id')
+  @UseGuards(StaffGuard)
   @ApiDefaultResponse(UserDto)
   async deactivate(
     @Cookies('session_token') token: string,
@@ -96,8 +96,8 @@ export class UserController {
     return await this.userService.findAll(companyId, pagination);
   }
 
-  @UseGuards(ViewerGuard)
   @Get(':id')
+  @UseGuards(ViewerGuard)
   @ApiDefaultResponse(UserDto)
   async findOneById(
     @Cookies('session_token') token: string,
