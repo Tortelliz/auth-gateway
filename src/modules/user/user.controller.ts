@@ -88,12 +88,19 @@ export class UserController {
   }
 
   @Get('company/:company_id')
+  @UseGuards(StaffGuard)
   @ApiDefaultResponse(PaginationResponseDTO<UserDto[]>)
   async findAll(
+    @Cookies('session_token') token: string,
     @Param('company_id', ParseUUIDPipe) companyId: string,
     @Query() pagination: PaginationRequestDTO,
   ): Promise<PaginationResponseDTO<UserDto[]>> {
-    return await this.userService.findAll(companyId, pagination);
+    const res = await this.guardService.findAllUsersGuard(token);
+    return await this.userService.findAll(
+      companyId,
+      pagination,
+      res.user_id_to_omit,
+    );
   }
 
   @Get(':id')

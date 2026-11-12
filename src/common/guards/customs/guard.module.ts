@@ -5,6 +5,7 @@ import { CreateUserPermissionsGuardService } from './services/create-user-permis
 import { RoleModule } from '../../../modules/role/role.module';
 import { UserModule } from '../../../modules/user/user.module';
 import { DeleteUserPermissionsGuardService } from './services/delete-user-permissions-guard.service';
+import { FindAllUsersGuardService } from './services/find-all-users-guard.service';
 
 @Global()
 @Module({
@@ -14,6 +15,7 @@ import { DeleteUserPermissionsGuardService } from './services/delete-user-permis
     SelfGuardService,
     CreateUserPermissionsGuardService,
     DeleteUserPermissionsGuardService,
+    FindAllUsersGuardService,
   ],
   exports: [GuardService],
 })

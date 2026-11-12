@@ -63,8 +63,9 @@ export class UserService {
   async findAll(
     companyId: string,
     pagination: PaginationRequestDTO,
+    omitUserId: string,
   ): Promise<PaginationResponseDTO<UserDto[]>> {
-    return await this.findAllService.execute(companyId, pagination);
+    return await this.findAllService.execute(companyId, pagination, omitUserId);
   }
 
   async addLoginFailAttempt(id: string): Promise<UserDto> {

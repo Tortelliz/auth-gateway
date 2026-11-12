@@ -38,8 +38,9 @@ export class UserDao {
   async findAll(
     companyId: string,
     pagination: PaginationRequestDTO,
+    omitUserId: string,
   ): Promise<PaginationResponseDTO<UserDto[]>> {
-    return await this.findAllDao.execute(companyId, pagination);
+    return await this.findAllDao.execute(companyId, pagination, omitUserId);
   }
 
   async findByEmail(email: string): Promise<FullUserEntity> {

@@ -17,6 +17,7 @@ abstract class UserContract {
   abstract findAll(
     companyId: string,
     pagination: PaginationRequestDTO,
+    omitUserId: string,
   ): Promise<PaginationResponseDTO<UserDto[]>>;
 }
 
@@ -47,7 +48,8 @@ export class UserRepository implements UserContract {
   async findAll(
     companyId: string,
     pagination: PaginationRequestDTO,
+    omitUserId: string,
   ): Promise<PaginationResponseDTO<UserDto[]>> {
-    return this.userDao.findAll(companyId, pagination);
+    return this.userDao.findAll(companyId, pagination, omitUserId);
   }
 }

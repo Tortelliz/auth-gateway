@@ -17,6 +17,7 @@ export class FindAllDao {
   async execute(
     companyId: string,
     pagination: PaginationRequestDTO,
+    omitUserId: string,
   ): Promise<PaginationResponseDTO<UserDto[]>> {
     this.paginationService.checkFields(
       pagination,
@@ -37,7 +38,12 @@ export class FindAllDao {
       orderBy: { ...query.orderBy },
       take: query.take,
       skip: query.skip,
-      where: { ...query.where, active: true, company_id: companyId },
+      where: {
+        ...query.where,
+        active: true,
+        company_id: companyId,
+        id: { not: omitUserId },
+      },
       omit: {
         password: true,
         failed_login_attempts: true,
