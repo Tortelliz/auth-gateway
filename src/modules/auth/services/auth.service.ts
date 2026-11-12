@@ -75,7 +75,7 @@ export class AuthService {
     return await this.generateEmailVerificationTokenService.execute(email);
   }
 
-  async findSessionByToken(hashToken: string): Promise<SessionEntity> {
-    return await this.findSessionByTokenService.execute(hashToken);
+  async findSessionByToken(token: string): Promise<SessionEntity> {
+    return await this.findSessionByTokenService.execute(token);
   }
 }
