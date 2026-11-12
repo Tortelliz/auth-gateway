@@ -16,26 +16,25 @@ import {
 import { UserService } from './services/user.service';
 import {
   CreateUserDto,
-  UserWithMessageDto,
   UpdatePasswordDto,
   UpdateUserDto,
   UserDto,
+  UserWithMessageDto,
 } from './user.dto';
 import { ApiDefaultResponse } from '../../lib/swagger/api-response.decorator';
 import {
   PaginationRequestDTO,
   PaginationResponseDTO,
 } from '../../common/pagination/pagination.dto';
-import { ParseEmailPipe } from '../../common/pipes/parse-email.pipe';
 import { ViewerGuard } from '../../common/guards/viewer.guard';
 import { StaffGuard } from '../../common/guards/staff.guard';
-import { AuthService } from '../auth/services/auth.service';
+import { GuardService } from '../../common/guards/customs/services/guard.service';
 
 @Controller('user')
 export class UserController {
   constructor(
     private readonly userService: UserService,
-    private readonly authService: AuthService,
+    private readonly guardService: GuardService,
   ) {}
 
   @Post()
@@ -45,11 +44,9 @@ export class UserController {
     @Cookies('session_token') token: string,
     @Body() user: CreateUserDto,
   ): Promise<{ user: UserDto; message: string }> {
-    const requesterUser = await this.userService.findOneById(
-      (await this.authService.findSessionByToken(token)).user_id,
-    );
+    await this.guardService.createUserPermissionsGuard(token, user.roles);
     return {
-      user: await this.userService.create(user, requesterUser),
+      user: await this.userService.create(user),
       message:
         'User created successfully, a welcome email was sent to the user',
     };
@@ -59,9 +56,11 @@ export class UserController {
   @Put(':id')
   @ApiDefaultResponse(UserDto)
   async update(
+    @Cookies('session_token') token: string,
     @Param('id', ParseUUIDPipe) id: string,
     @Body() user: UpdateUserDto,
   ): Promise<UserDto> {
+    await this.guardService.selfGuard(token, id);
     return await this.userService.update(id, user);
   }
 
@@ -69,15 +68,22 @@ export class UserController {
   @Patch('update-password/:id')
   @ApiDefaultResponse(UserDto)
   async updatePassword(
+    @Cookies('session_token') token: string,
     @Param('id', ParseUUIDPipe) id: string,
     @Body() passwords: UpdatePasswordDto,
   ): Promise<UserDto> {
+    await this.guardService.selfGuard(token, id);
     return await this.userService.updatePassword(id, passwords);
   }
 
+  @UseGuards(StaffGuard)
   @Delete(':id')
   @ApiDefaultResponse(UserDto)
-  async deactivate(@Param('id', ParseUUIDPipe) id: string): Promise<UserDto> {
+  async deactivate(
+    @Cookies('session_token') token: string,
+    @Param('id', ParseUUIDPipe) id: string,
+  ): Promise<UserDto> {
+    await this.guardService.deleteUserPermissionsGuard(token, id);
     return await this.userService.deactivate(id);
   }
 
@@ -90,17 +96,14 @@ export class UserController {
     return await this.userService.findAll(companyId, pagination);
   }
 
+  @UseGuards(ViewerGuard)
   @Get(':id')
   @ApiDefaultResponse(UserDto)
-  async findOneById(@Param('id', ParseUUIDPipe) id: string): Promise<UserDto> {
-    return await this.userService.findOneById(id);
-  }
-
-  @Get('email/:email')
-  @ApiDefaultResponse(UserDto)
-  async findOneByEmail(
-    @Param('email', ParseEmailPipe) email: string,
+  async findOneById(
+    @Cookies('session_token') token: string,
+    @Param('id', ParseUUIDPipe) id: string,
   ): Promise<UserDto> {
-    return await this.userService.findOneByEmail(email);
+    await this.guardService.selfGuard(token, id);
+    return await this.userService.findOneById(id);
   }
 }

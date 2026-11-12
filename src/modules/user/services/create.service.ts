@@ -25,12 +25,8 @@ export class CreateService {
     private readonly configService: ConfigService,
   ) {}
 
-  async execute(
-    newUser: CreateUserDto,
-    requesterUser: UserDto,
-  ): Promise<UserDto> {
-    const newUserRoles = await this.checkRoles(newUser.roles);
-    await this.checkPermissions(newUserRoles, requesterUser);
+  async execute(newUser: CreateUserDto): Promise<UserDto> {
+    await this.checkRoles(newUser.roles);
     const createdUser = await this.userMapper.fromEntityToDto(
       await this.userRepository.create(await this.build(newUser)),
     );
@@ -100,24 +96,5 @@ export class CreateService {
         devSite: this.configService.getOrThrow<string>('DEV_SITE'),
       }),
     });
-  }
-
-  private async checkPermissions(
-    newUserRoles: RoleDto[],
-    requesterUser: UserDto,
-  ): Promise<void> {
-    const requesterUserRoles = await this.roleService.findByUserId(
-      requesterUser.id,
-    );
-    if (
-      requesterUserRoles.some(
-        (item) =>
-          item.code === 'staff' &&
-          newUserRoles.some((item) => item.code === 'admin'),
-      )
-    )
-      throw new ForbiddenException(
-        'You do not have permission to create an admin user',
-      );
   }
 }
