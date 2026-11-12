@@ -12,6 +12,7 @@ import { CompanyService } from '../../company/services/company.service';
 import { EmailService } from '../../../lib/resend/email.service';
 import { ConfigService } from '@nestjs/config';
 import { welcomeTemplate } from '../../../lib/resend/templates/welcome.template';
+import { RoleDto } from '../../role/role.dto';
 
 @Injectable()
 export class CreateService {
@@ -24,12 +25,16 @@ export class CreateService {
     private readonly configService: ConfigService,
   ) {}
 
-  async execute(user: CreateUserDto): Promise<UserDto> {
-    await this.checkRoles(user.roles);
+  async execute(
+    newUser: CreateUserDto,
+    requesterUser: UserDto,
+  ): Promise<UserDto> {
+    const newUserRoles = await this.checkRoles(newUser.roles);
+    await this.checkPermissions(newUserRoles, requesterUser);
     const createdUser = await this.userMapper.fromEntityToDto(
-      await this.userRepository.create(await this.build(user)),
+      await this.userRepository.create(await this.build(newUser)),
     );
-    await this.sendEmail(createdUser, user.login_app_url);
+    await this.sendEmail(createdUser, newUser.login_app_url);
     return createdUser;
   }
 
@@ -64,11 +69,13 @@ export class CreateService {
     };
   }
 
-  private async checkRoles(roleIds: string[]): Promise<void> {
+  private async checkRoles(roleIds: string[]): Promise<RoleDto[]> {
     try {
-      for (const roleId of roleIds) {
-        await this.roleService.findOne(roleId);
-      }
+      return await Promise.all(
+        roleIds.map(async (roleId) => {
+          return await this.roleService.findOne(roleId);
+        }),
+      );
     } catch (error) {
       if (
         error instanceof PrismaClientKnownRequestError &&
@@ -93,5 +100,24 @@ export class CreateService {
         devSite: this.configService.getOrThrow<string>('DEV_SITE'),
       }),
     });
+  }
+
+  private async checkPermissions(
+    newUserRoles: RoleDto[],
+    requesterUser: UserDto,
+  ): Promise<void> {
+    const requesterUserRoles = await this.roleService.findByUserId(
+      requesterUser.id,
+    );
+    if (
+      requesterUserRoles.some(
+        (item) =>
+          item.code === 'staff' &&
+          newUserRoles.some((item) => item.code === 'admin'),
+      )
+    )
+      throw new ForbiddenException(
+        'You do not have permission to create an admin user',
+      );
   }
 }

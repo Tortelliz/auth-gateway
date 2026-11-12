@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Cookies,
   Delete,
   Get,
   HttpStatus,
@@ -27,18 +28,28 @@ import {
 } from '../../common/pagination/pagination.dto';
 import { ParseEmailPipe } from '../../common/pipes/parse-email.pipe';
 import { ViewerGuard } from '../../common/guards/viewer.guard';
+import { StaffGuard } from '../../common/guards/staff.guard';
+import { AuthService } from '../auth/services/auth.service';
 
 @Controller('user')
 export class UserController {
-  constructor(private readonly userService: UserService) {}
+  constructor(
+    private readonly userService: UserService,
+    private readonly authService: AuthService,
+  ) {}
 
   @Post()
+  @UseGuards(StaffGuard)
   @ApiDefaultResponse(UserWithMessageDto, false, HttpStatus.CREATED)
   async create(
+    @Cookies('session_token') token: string,
     @Body() user: CreateUserDto,
   ): Promise<{ user: UserDto; message: string }> {
+    const requesterUser = await this.userService.findOneById(
+      (await this.authService.findSessionByToken(token)).user_id,
+    );
     return {
-      user: await this.userService.create(user),
+      user: await this.userService.create(user, requesterUser),
       message:
         'User created successfully, a welcome email was sent to the user',
     };

@@ -40,8 +40,11 @@ export class UserService {
     private readonly registerEmailVerificationService: RegisterEmailVerificationService,
   ) {}
 
-  async create(user: CreateUserDto): Promise<UserDto> {
-    return await this.createService.execute(user);
+  async create(
+    newUser: CreateUserDto,
+    requesterUser: UserDto,
+  ): Promise<UserDto> {
+    return await this.createService.execute(newUser, requesterUser);
   }
 
   async update(id: string, user: UpdateUserDto): Promise<UserDto> {

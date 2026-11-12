@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { ForbiddenException, Injectable } from '@nestjs/common';
 import { AuthRepository } from '../auth.repository';
 import { UserService } from '../../user/services/user.service';
 import { ForgotPasswordDto } from '../auth.dto';
@@ -16,6 +16,7 @@ export class ForgotPasswordService {
   async execute(userId: string, data: ForgotPasswordDto): Promise<void> {
     await this.userService.findOneById(userId);
     const token = await this.checkTokenService.execute(data.token);
+    this.checkMatchUserIds(userId, token.user_id);
     await this.userService.updatePassword(userId, {
       password: data.new_password,
       confirm_password: data.confirm_password,
@@ -35,5 +36,15 @@ export class ForgotPasswordService {
       expires_at: entity.expires_at,
       revoked_at: new Date(),
     };
+  }
+
+  private checkMatchUserIds(
+    requesterUserId: string,
+    tokenUserId: string,
+  ): void {
+    if (requesterUserId != tokenUserId)
+      throw new ForbiddenException(
+        'It is not permitted to use a token generated for another user',
+      );
   }
 }
