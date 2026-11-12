@@ -43,13 +43,6 @@ export class FindAllDao {
         active: true,
         company_id: companyId,
         id: { not: omitUserId },
-        roles: {
-          none: {
-            role: {
-              code: 'admin',
-            },
-          },
-        },
       },
       omit: {
         password: true,
@@ -71,13 +64,6 @@ export class FindAllDao {
         active: true,
         company_id: companyId,
         id: { not: omitUserId },
-        roles: {
-          none: {
-            role: {
-              code: 'admin',
-            },
-          },
-        },
       },
     });
     return this.paginationService.buildToReturn(pagination, count, users);

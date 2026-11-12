@@ -23,12 +23,8 @@ export class CreateUserPermissionsGuardService {
       requesterUser.id,
     );
     if (
-      requesterUserRoles.some(
-        (item) =>
-          item.code === 'staff' &&
-          !requesterUserRoles.some((item) => item.code === 'admin') &&
-          newUserRoles.some((item) => item.code === 'admin'),
-      )
+      !requesterUserRoles.some((item) => item.code === 'admin') &&
+      newUserRoles.some((item) => item.code === 'admin')
     )
       throw new ForbiddenException(
         'You do not have permission to create an admin user',

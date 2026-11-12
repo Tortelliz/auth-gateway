@@ -19,12 +19,8 @@ export class DeleteUserPermissionsGuardService {
       requesterUser.id,
     );
     if (
-      requesterUserRoles.some(
-        (item) =>
-          item.code === 'staff' &&
-          !requesterUserRoles.some((item) => item.code === 'admin') &&
-          targetUser.roles.some((item) => item.role.code === 'admin'),
-      )
+      !requesterUserRoles.some((item) => item.code === 'admin') &&
+      targetUser.roles.some((item) => item.role.code === 'admin')
     )
       throw new ForbiddenException(
         'You do not have permission to delete an admin user',
