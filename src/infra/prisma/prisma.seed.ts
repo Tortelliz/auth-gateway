@@ -29,13 +29,13 @@ export class PrismaSeeds implements OnModuleInit {
       const company = await this.createCompany();
       const role = await this.createRole();
       await this.createUser(company.id, role.id);
-      this.logger.log(
-        'The seeds have been applied to the database; please verify',
+      this.logger.warn(
+        'The seeds have been applied to the database, please verify',
       );
     }
     if (!isEmpty)
       this.logger.error(
-        'The seeds were not applied to the database; please delete all data from all tables and try again.',
+        'The seeds were not applied to the database, please delete all data from all tables and try again.',
       );
   }
 
@@ -119,12 +119,13 @@ export class PrismaSeeds implements OnModuleInit {
         count: await this.prismaService.userRoleEntity.count(),
       },
     ];
+    let result = true;
     for (const item of counts) {
       if (item.count != 0) {
         this.logger.error(`The ${item.table} table is not empty`);
-        return false;
+        result = false;
       }
     }
-    return true;
+    return result;
   }
 }
