@@ -22,6 +22,7 @@ export class DeleteUserPermissionsGuardService {
       requesterUserRoles.some(
         (item) =>
           item.code === 'staff' &&
+          !requesterUserRoles.some((item) => item.code === 'admin') &&
           targetUser.roles.some((item) => item.role.code === 'admin'),
       )
     )

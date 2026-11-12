@@ -26,6 +26,7 @@ export class CreateUserPermissionsGuardService {
       requesterUserRoles.some(
         (item) =>
           item.code === 'staff' &&
+          !requesterUserRoles.some((item) => item.code === 'admin') &&
           newUserRoles.some((item) => item.code === 'admin'),
       )
     )
