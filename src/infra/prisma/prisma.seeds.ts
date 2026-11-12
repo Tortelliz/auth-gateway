@@ -7,7 +7,6 @@ import {
   UserEntity,
 } from '../../../generated/prisma/client';
 import { hashService } from '../../lib/bcrypt/hash.service';
-import { generateRandomStringService } from '../../lib/faker/generate-random-string.service';
 import { ConfigService } from '@nestjs/config';
 
 @Injectable()
@@ -107,7 +106,7 @@ export class PrismaSeeds implements OnModuleInit {
         updated_at: null,
         company_id: companyId,
         email: 'rayan@grafcet.com.br',
-        password: await hashService(generateRandomStringService()),
+        password: await hashService('Gr@fcet01'),
         first_name: 'Rayan',
         last_name: 'Tortelli',
         active: true,
