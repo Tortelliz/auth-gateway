@@ -23,6 +23,7 @@ import { FirstAccessService } from './services/first-access.service';
 import { GenerateFirstAccessTokenService } from './services/generate-first-access-token.service';
 import { GenerateEmailVerificationTokenService } from './services/generate-email-verification-token.service';
 import { EmailVerificationService } from './services/email-verification.service';
+import { FindSessionByTokenService } from './services/find-session-by-token.service';
 
 @Global()
 @Module({
@@ -47,6 +48,7 @@ import { EmailVerificationService } from './services/email-verification.service'
     GenerateFirstAccessTokenService,
     GenerateEmailVerificationTokenService,
     CheckSessionTokenService,
+    FindSessionByTokenService,
     AuthRepository,
   ],
   exports: [AuthService],

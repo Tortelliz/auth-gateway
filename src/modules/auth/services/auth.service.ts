@@ -14,6 +14,7 @@ import { FirstAccessService } from './first-access.service';
 import { GenerateFirstAccessTokenService } from './generate-first-access-token.service';
 import { EmailVerificationService } from './email-verification.service';
 import { GenerateEmailVerificationTokenService } from './generate-email-verification-token.service';
+import { FindSessionByTokenService } from './find-session-by-token.service';
 
 @Injectable()
 export class AuthService {
@@ -28,6 +29,7 @@ export class AuthService {
     private readonly checkSessionTokenService: CheckSessionTokenService,
     private readonly emailVerificationService: EmailVerificationService,
     private readonly generateEmailVerificationTokenService: GenerateEmailVerificationTokenService,
+    private readonly findSessionByTokenService: FindSessionByTokenService,
   ) {}
 
   async login(login: LoginDto): Promise<SessionEntity & { raw_token: string }> {
@@ -71,5 +73,9 @@ export class AuthService {
 
   async generateEmailVerificationToken(email: string): Promise<void> {
     return await this.generateEmailVerificationTokenService.execute(email);
+  }
+
+  async findSessionByToken(hashToken: string): Promise<SessionEntity> {
+    return await this.findSessionByTokenService.execute(hashToken);
   }
 }
