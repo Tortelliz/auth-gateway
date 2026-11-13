@@ -16,9 +16,9 @@ import { SetMustChangePasswordService } from './set-must-change-password.service
 import { UpdatePasswordService } from './update-password.service';
 import { ResetLoginFailAttemptsService } from './reset-login-fail-attempts.service';
 import { GetUserWithPasswordByEmailService } from './get-user-with-password-by-email.service';
-import { LoginStampService } from './login-stamp.service';
 import { RegisterFirstAccessService } from './register-first-access.service';
 import { RegisterEmailVerificationService } from './register-email-verification.service';
+import { UpdateToLoginService } from './update-to-login.service';
 
 @Injectable()
 export class UserService {
@@ -35,9 +35,9 @@ export class UserService {
     private readonly updatePasswordService: UpdatePasswordService,
     private readonly resetLoginFailAttemptsService: ResetLoginFailAttemptsService,
     private readonly getUserWithPasswordByEmailService: GetUserWithPasswordByEmailService,
-    private readonly loginStampService: LoginStampService,
     private readonly registerFirstAccessService: RegisterFirstAccessService,
     private readonly registerEmailVerificationService: RegisterEmailVerificationService,
+    private readonly updateToLoginService: UpdateToLoginService,
   ) {}
 
   async create(newUser: CreateUserDto): Promise<UserDto> {
@@ -97,15 +97,15 @@ export class UserService {
     return await this.getUserWithPasswordByEmailService.execute(email);
   }
 
-  async loginStamp(id: string): Promise<UserDto> {
-    return await this.loginStampService.execute(id);
-  }
-
   async registerFirstAccess(id: string): Promise<UserDto> {
     return await this.registerFirstAccessService.execute(id);
   }
 
   async registerEmailVerification(id: string): Promise<UserDto> {
     return await this.registerEmailVerificationService.execute(id);
+  }
+
+  async updateToLogin(id: string): Promise<UserDto> {
+    return await this.updateToLoginService.execute(id);
   }
 }

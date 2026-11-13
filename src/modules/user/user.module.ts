@@ -25,11 +25,11 @@ import { SetMustChangePasswordService } from './services/set-must-change-passwor
 import { UpdatePasswordService } from './services/update-password.service';
 import { ResetLoginFailAttemptsService } from './services/reset-login-fail-attempts.service';
 import { GetUserWithPasswordByEmailService } from './services/get-user-with-password-by-email.service';
-import { LoginStampService } from './services/login-stamp.service';
 import { RegisterFirstAccessService } from './services/register-first-access.service';
 import { RegisterEmailVerificationService } from './services/register-email-verification.service';
 import { EmailModule } from '../../lib/resend/email.module';
 import { CompanyModule } from '../company/company.module';
+import { UpdateToLoginService } from './services/update-to-login.service';
 
 @Module({
   imports: [
@@ -61,9 +61,9 @@ import { CompanyModule } from '../company/company.module';
     UpdatePasswordService,
     ResetLoginFailAttemptsService,
     GetUserWithPasswordByEmailService,
-    LoginStampService,
     RegisterFirstAccessService,
     RegisterEmailVerificationService,
+    UpdateToLoginService,
     UserRepository,
     UserMapper,
   ],

@@ -14,7 +14,6 @@ export class FirstAccessService {
   ) {}
 
   async execute(userId: string, data: FirstAccessDto): Promise<void> {
-    await this.userService.findOneById(userId);
     const token = await this.checkTokenService.execute(data.token);
     this.checkMatchUserIds(userId, token.user_id);
     await this.userService.updatePassword(userId, {

@@ -32,8 +32,7 @@ export class LoginService {
     const session = await this.authRepository.createSession(
       this.buildSession(token, user),
     );
-    await this.userService.loginStamp(user.id);
-    await this.userService.resetLoginFailAttempts(user.id);
+    await this.userService.updateToLogin(user.id);
     return { ...session, raw_token: token };
   }
 
