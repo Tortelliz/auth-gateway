@@ -18,7 +18,6 @@ import { ForgotPasswordService } from './services/forgot-password.serivce';
 import { GenerateForgotPasswordTokenService } from './services/generate-forgot-password-token.service';
 import { EmailModule } from '../../lib/resend/email.module';
 import { CompanyModule } from '../company/company.module';
-import { CheckSessionTokenService } from './services/check-session-token.service';
 import { FirstAccessService } from './services/first-access.service';
 import { GenerateFirstAccessTokenService } from './services/generate-first-access-token.service';
 import { GenerateEmailVerificationTokenService } from './services/generate-email-verification-token.service';
@@ -31,6 +30,7 @@ import { FindAllUsersGuard } from './guards/find-all-users.guard';
 import { YourselfGuard } from './guards/yourself.guard';
 import { RoleModule } from '../role/role.module';
 import { RolesGuard } from './guards/roles.guard';
+import { CheckIsValidTokenGuard } from './guards/check-is-valid-token.guard';
 
 @Global()
 @Module({
@@ -54,7 +54,6 @@ import { RolesGuard } from './guards/roles.guard';
     FirstAccessService,
     GenerateFirstAccessTokenService,
     GenerateEmailVerificationTokenService,
-    CheckSessionTokenService,
     FindSessionByTokenService,
     AuthRepository,
     AuthGuard,
@@ -63,6 +62,7 @@ import { RolesGuard } from './guards/roles.guard';
     FindAllUsersGuard,
     YourselfGuard,
     RolesGuard,
+    CheckIsValidTokenGuard,
   ],
   exports: [AuthService, AuthGuard],
 })

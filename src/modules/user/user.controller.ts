@@ -40,8 +40,9 @@ export class UserController {
     @Cookies('session_token') token: string,
     @Body() user: CreateUserDto,
   ): Promise<{ user: UserDto; message: string }> {
-    await this.authGuard.roles.isStaff(token);
-    await this.authGuard.createUserPermissions(token, user.roles);
+    const validToken = await this.authGuard.checkIsValidToken(token);
+    await this.authGuard.roles.isStaff(validToken);
+    await this.authGuard.createUserPermissions(validToken, user.roles);
     return {
       user: await this.userService.create(user),
       message:
@@ -56,8 +57,9 @@ export class UserController {
     @Param('id', ParseUUIDPipe) id: string,
     @Body() user: UpdateUserDto,
   ): Promise<UserDto> {
-    await this.authGuard.roles.isViewer(token);
-    await this.authGuard.yourself(token, id);
+    const validToken = await this.authGuard.checkIsValidToken(token);
+    await this.authGuard.roles.isViewer(validToken);
+    this.authGuard.yourself(validToken, id);
     return await this.userService.update(id, user);
   }
 
@@ -68,8 +70,9 @@ export class UserController {
     @Param('id', ParseUUIDPipe) id: string,
     @Body() passwords: UpdatePasswordDto,
   ): Promise<UserDto> {
-    await this.authGuard.roles.isViewer(token);
-    await this.authGuard.yourself(token, id);
+    const validToken = await this.authGuard.checkIsValidToken(token);
+    await this.authGuard.roles.isViewer(validToken);
+    this.authGuard.yourself(validToken, id);
     return await this.userService.updatePassword(id, passwords);
   }
 
@@ -79,8 +82,9 @@ export class UserController {
     @Cookies('session_token') token: string,
     @Param('id', ParseUUIDPipe) id: string,
   ): Promise<UserDto> {
-    await this.authGuard.roles.isStaff(token);
-    await this.authGuard.deleteUserPermissions(token, id);
+    const validToken = await this.authGuard.checkIsValidToken(token);
+    await this.authGuard.roles.isStaff(validToken);
+    await this.authGuard.deleteUserPermissions(validToken, id);
     return await this.userService.deactivate(id);
   }
 
@@ -91,8 +95,9 @@ export class UserController {
     @Param('company_id', ParseUUIDPipe) companyId: string,
     @Query() pagination: PaginationRequestDTO,
   ): Promise<PaginationResponseDTO<UserDto[]>> {
-    await this.authGuard.roles.isStaff(token);
-    const res = await this.authGuard.findAllUsers(token);
+    const validToken = await this.authGuard.checkIsValidToken(token);
+    await this.authGuard.roles.isStaff(validToken);
+    const res = this.authGuard.findAllUsers(validToken);
     return await this.userService.findAll(
       companyId,
       pagination,
@@ -106,8 +111,9 @@ export class UserController {
     @Cookies('session_token') token: string,
     @Param('id', ParseUUIDPipe) id: string,
   ): Promise<UserDto> {
-    await this.authGuard.roles.isViewer(token);
-    await this.authGuard.yourself(token, id);
+    const validToken = await this.authGuard.checkIsValidToken(token);
+    await this.authGuard.roles.isViewer(validToken);
+    this.authGuard.yourself(validToken, id);
     return await this.userService.findOneById(id);
   }
 }

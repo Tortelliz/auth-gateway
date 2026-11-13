@@ -2,6 +2,7 @@ import { ForbiddenException, Injectable } from '@nestjs/common';
 import { RoleService } from '../../role/services/role.service';
 import { UserService } from '../../user/services/user.service';
 import { CheckSessionTokenService } from '../services/check-session-token.service';
+import { SessionEntity } from '../../../../generated/prisma/client';
 
 @Injectable()
 export class CreateUserPermissionsGuard {
@@ -11,8 +12,7 @@ export class CreateUserPermissionsGuard {
     private readonly checkSessionTokenService: CheckSessionTokenService,
   ) {}
 
-  async execute(rawToken: string, newUserRoleIds: string[]): Promise<void> {
-    const token = await this.checkSessionTokenService.execute(rawToken);
+  async execute(token: SessionEntity, newUserRoleIds: string[]): Promise<void> {
     const requesterUser = await this.userService.findOneById(token.user_id);
     const newUserRoles = await Promise.all(
       newUserRoleIds.map(async (roleId) => {

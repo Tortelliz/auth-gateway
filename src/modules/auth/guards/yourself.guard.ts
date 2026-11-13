@@ -1,5 +1,6 @@
 import { ForbiddenException, Injectable } from '@nestjs/common';
 import { CheckSessionTokenService } from '../services/check-session-token.service';
+import { SessionEntity } from '../../../../generated/prisma/client';
 
 @Injectable()
 export class YourselfGuard {
@@ -7,8 +8,7 @@ export class YourselfGuard {
     private readonly checkSessionTokenService: CheckSessionTokenService,
   ) {}
 
-  async execute(rawToken: string, targetUserId: string): Promise<void> {
-    const token = await this.checkSessionTokenService.execute(rawToken);
+  execute(token: SessionEntity, targetUserId: string): void {
     if (token.user_id !== targetUserId)
       throw new ForbiddenException(
         'This action is permitted only for yourself',

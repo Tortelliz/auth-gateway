@@ -1,16 +1,17 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
-import { AuthRepository } from '../auth.repository';
+import { FindSessionByTokenService } from '../services/find-session-by-token.service';
 import { SessionEntity } from '../../../../generated/prisma/client';
-import { hashToken } from '../../../utils/hash-token.util';
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime/client';
 
 @Injectable()
-export class CheckSessionTokenService {
-  constructor(private readonly authRepository: AuthRepository) {}
+export class CheckIsValidTokenGuard {
+  constructor(
+    private readonly findSessionByTokenService: FindSessionByTokenService,
+  ) {}
 
-  async execute(token: string): Promise<SessionEntity> {
-    this.checkIsNotNull(token);
-    const session = await this.getSession(token);
+  async execute(rawToken: string): Promise<SessionEntity> {
+    this.checkIsNotNull(rawToken);
+    const session = await this.getSession(rawToken);
     this.checkIsExpired(session);
     this.checkRevoked(session);
     return session;
@@ -18,7 +19,7 @@ export class CheckSessionTokenService {
 
   private async getSession(token: string): Promise<SessionEntity> {
     try {
-      return await this.authRepository.findSessionByToken(hashToken(token));
+      return await this.findSessionByTokenService.execute(token);
     } catch (error) {
       if (
         error instanceof PrismaClientKnownRequestError &&

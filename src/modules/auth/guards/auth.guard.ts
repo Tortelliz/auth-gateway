@@ -4,6 +4,8 @@ import { CreateUserPermissionsGuard } from './create-user-permissions.guard';
 import { DeleteUserPermissionsGuard } from './delete-user-permissions.guard';
 import { FindAllUsersGuard } from './find-all-users.guard';
 import { RolesGuard } from './roles.guard';
+import { SessionEntity } from '../../../../generated/prisma/client';
+import { CheckIsValidTokenGuard } from './check-is-valid-token.guard';
 
 @Injectable()
 export class AuthGuard {
@@ -13,37 +15,36 @@ export class AuthGuard {
     private readonly deleteUserPermissionsGuard: DeleteUserPermissionsGuard,
     private readonly findAllUsersGuard: FindAllUsersGuard,
     private readonly rolesGuard: RolesGuard,
+    private readonly checkIsValidTokenGuard: CheckIsValidTokenGuard,
   ) {}
 
-  async yourself(rawToken: string, targetUserId: string): Promise<void> {
-    return await this.yourselfGuard.execute(rawToken, targetUserId);
+  yourself(token: SessionEntity, targetUserId: string): void {
+    return this.yourselfGuard.execute(token, targetUserId);
   }
 
   async createUserPermissions(
-    rawToken: string,
+    token: SessionEntity,
     newUserRoleIds: string[],
   ): Promise<void> {
-    return await this.createUserPermissionsGuard.execute(
-      rawToken,
-      newUserRoleIds,
-    );
+    return await this.createUserPermissionsGuard.execute(token, newUserRoleIds);
   }
 
   async deleteUserPermissions(
-    rawToken: string,
+    token: SessionEntity,
     targetUserId: string,
   ): Promise<void> {
-    return await this.deleteUserPermissionsGuard.execute(
-      rawToken,
-      targetUserId,
-    );
+    return await this.deleteUserPermissionsGuard.execute(token, targetUserId);
   }
 
-  async findAllUsers(rawToken: string): Promise<{ user_id_to_omit: string }> {
-    return await this.findAllUsersGuard.execute(rawToken);
+  findAllUsers(token: SessionEntity): { user_id_to_omit: string } {
+    return this.findAllUsersGuard.execute(token);
   }
 
   get roles(): RolesGuard {
     return this.rolesGuard;
+  }
+
+  async checkIsValidToken(rawToken: string): Promise<SessionEntity> {
+    return await this.checkIsValidTokenGuard.execute(rawToken);
   }
 }

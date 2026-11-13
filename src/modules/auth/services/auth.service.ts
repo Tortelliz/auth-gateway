@@ -9,7 +9,6 @@ import {
 import { CheckTokenService } from './check-token.service';
 import { ForgotPasswordService } from './forgot-password.serivce';
 import { GenerateForgotPasswordTokenService } from './generate-forgot-password-token.service';
-import { CheckSessionTokenService } from './check-session-token.service';
 import { FirstAccessService } from './first-access.service';
 import { GenerateFirstAccessTokenService } from './generate-first-access-token.service';
 import { EmailVerificationService } from './email-verification.service';
@@ -26,7 +25,6 @@ export class AuthService {
     private readonly generateForgotPasswordTokenService: GenerateForgotPasswordTokenService,
     private readonly firstAccessService: FirstAccessService,
     private readonly generateFirstAccessTokenService: GenerateFirstAccessTokenService,
-    private readonly checkSessionTokenService: CheckSessionTokenService,
     private readonly emailVerificationService: EmailVerificationService,
     private readonly generateEmailVerificationTokenService: GenerateEmailVerificationTokenService,
     private readonly findSessionByTokenService: FindSessionByTokenService,
@@ -60,10 +58,6 @@ export class AuthService {
     return await this.checkTokenService.execute(token);
   }
 
-  async checkSessionToken(token: string): Promise<SessionEntity> {
-    return await this.checkSessionTokenService.execute(token);
-  }
-
   async emailVerification(
     userId: string,
     data: EmailVerificationDto,
@@ -73,9 +67,5 @@ export class AuthService {
 
   async generateEmailVerificationToken(email: string): Promise<void> {
     return await this.generateEmailVerificationTokenService.execute(email);
-  }
-
-  async findSessionByToken(token: string): Promise<SessionEntity> {
-    return await this.findSessionByTokenService.execute(token);
   }
 }
