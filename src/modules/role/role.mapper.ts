@@ -6,6 +6,7 @@ import { UpdateRoleDto } from './role.dto';
 export class RoleMapper {
   static fromEntityToUpdateDto(role: RoleEntity): UpdateRoleDto {
     return {
+      company_id: role.company_id,
       code: role.code,
       name: role.name,
       description: role.description,

@@ -20,7 +20,15 @@ export class FindAllDao {
     this.paginationService.checkFields(
       pagination,
       ['code', 'name', 'description'],
-      ['id', 'code', 'name', 'description', 'create_at', 'update_at'],
+      [
+        'id',
+        'company_id',
+        'code',
+        'name',
+        'description',
+        'create_at',
+        'update_at',
+      ],
     );
     const query = this.paginationService.buildToFind(pagination);
     const roles = await this.prismaService.roleEntity.findMany({

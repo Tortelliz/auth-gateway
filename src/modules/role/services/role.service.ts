@@ -10,6 +10,7 @@ import {
   PaginationResponseDTO,
 } from '../../../common/pagination/pagination.dto';
 import { FindByUserService } from './find-by-user.service';
+import { FindByCompanyService } from './find-by-company.service';
 
 @Injectable()
 export class RoleService {
@@ -20,6 +21,7 @@ export class RoleService {
     private readonly findAllService: FindAllService,
     private readonly findOneService: FindOneService,
     private readonly findByUserService: FindByUserService,
+    private readonly findByCompanyService: FindByCompanyService,
   ) {}
 
   async create(role: CreateRoleDto): Promise<RoleDto> {
@@ -46,5 +48,9 @@ export class RoleService {
 
   async findByUserId(userId: string): Promise<RoleDto[]> {
     return await this.findByUserService.execute(userId);
+  }
+
+  async findByCompanyId(companyId: string): Promise<RoleDto[]> {
+    return await this.findByCompanyService.execute(companyId);
   }
 }

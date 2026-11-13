@@ -10,6 +10,7 @@ import {
   PaginationResponseDTO,
 } from '../../../common/pagination/pagination.dto';
 import { FindByUserIdDao } from './find-by-user-id.dao';
+import { FindByCompanyIdDao } from './find-by-company-id.dao';
 
 @Injectable()
 export class RoleDao {
@@ -20,6 +21,7 @@ export class RoleDao {
     private readonly findAllDao: FindAllDao,
     private readonly findByIdDao: FindByIdDao,
     private readonly findByUserIdDao: FindByUserIdDao,
+    private readonly findByCompanyIdDao: FindByCompanyIdDao,
   ) {}
 
   async create(role: RoleEntity): Promise<RoleEntity> {
@@ -46,5 +48,9 @@ export class RoleDao {
 
   async findByUserId(userId: string): Promise<RoleEntity[]> {
     return await this.findByUserIdDao.execute(userId);
+  }
+
+  async findByCompanyId(companyId: string): Promise<RoleEntity[]> {
+    return await this.findByCompanyIdDao.execute(companyId);
   }
 }

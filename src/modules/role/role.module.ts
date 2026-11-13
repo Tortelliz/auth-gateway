@@ -18,9 +18,12 @@ import { RoleRepository } from './role.repository';
 import { RoleMapper } from './role.mapper';
 import { FindByUserIdDao } from './daos/find-by-user-id.dao';
 import { FindByUserService } from './services/find-by-user.service';
+import { CompanyModule } from '../company/company.module';
+import { FindByCompanyIdDao } from './daos/find-by-company-id.dao';
+import { FindByCompanyService } from './services/find-by-company.service';
 
 @Module({
-  imports: [PaginationModule, PrismaModule],
+  imports: [PaginationModule, PrismaModule, CompanyModule],
   controllers: [RoleController],
   providers: [
     RoleDao,
@@ -30,6 +33,7 @@ import { FindByUserService } from './services/find-by-user.service';
     FindAllDao,
     FindByIdDao,
     FindByUserIdDao,
+    FindByCompanyIdDao,
     RoleService,
     CreateService,
     UpdateService,
@@ -37,6 +41,7 @@ import { FindByUserService } from './services/find-by-user.service';
     FindAllService,
     FindOneService,
     FindByUserService,
+    FindByCompanyService,
     RoleRepository,
     RoleMapper,
   ],

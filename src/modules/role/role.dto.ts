@@ -22,6 +22,10 @@ export class CreateRoleDto {
   code: string;
   @IsString()
   @IsNotEmpty()
+  @IsUUID()
+  company_id: string;
+  @IsString()
+  @IsNotEmpty()
   @Length(3, 50)
   name: string;
   @IsString()
