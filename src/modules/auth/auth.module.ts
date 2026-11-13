@@ -24,10 +24,16 @@ import { GenerateFirstAccessTokenService } from './services/generate-first-acces
 import { GenerateEmailVerificationTokenService } from './services/generate-email-verification-token.service';
 import { EmailVerificationService } from './services/email-verification.service';
 import { FindSessionByTokenService } from './services/find-session-by-token.service';
+import { AuthGuard } from './guards/auth.guard';
+import { CreateUserPermissionsGuard } from './guards/create-user-permissions.guard';
+import { DeleteUserPermissionsGuard } from './guards/delete-user-permissions.guard';
+import { FindAllUsersGuard } from './guards/find-all-users.guard';
+import { SelfGuard } from './guards/self.guard';
+import { RoleModule } from '../role/role.module';
 
 @Global()
 @Module({
-  imports: [UserModule, PrismaModule, EmailModule, CompanyModule],
+  imports: [UserModule, PrismaModule, EmailModule, CompanyModule, RoleModule],
   controllers: [AuthController],
   providers: [
     AuthDao,
@@ -50,7 +56,12 @@ import { FindSessionByTokenService } from './services/find-session-by-token.serv
     CheckSessionTokenService,
     FindSessionByTokenService,
     AuthRepository,
+    AuthGuard,
+    CreateUserPermissionsGuard,
+    DeleteUserPermissionsGuard,
+    FindAllUsersGuard,
+    SelfGuard,
   ],
-  exports: [AuthService],
+  exports: [AuthService, AuthGuard],
 })
 export class AuthModule {}

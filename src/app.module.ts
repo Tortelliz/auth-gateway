@@ -10,7 +10,6 @@ import { CompanyModule } from './modules/company/company.module';
 import { UserModule } from './modules/user/user.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { EmailModule } from './lib/resend/email.module';
-import { GuardModule } from './common/guards/customs/guard.module';
 
 @Module({
   imports: [
@@ -43,7 +42,6 @@ import { GuardModule } from './common/guards/customs/guard.module';
     UserModule,
     AuthModule,
     EmailModule,
-    GuardModule,
   ],
   controllers: [AppController],
   providers: [AppService],

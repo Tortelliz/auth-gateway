@@ -1,16 +1,16 @@
 import { Injectable } from '@nestjs/common';
-import { SelfGuardService } from './self-guard.service';
-import { CreateUserPermissionsGuardService } from './create-user-permissions-guard.service';
-import { DeleteUserPermissionsGuardService } from './delete-user-permissions-guard.service';
-import { FindAllUsersGuardService } from './find-all-users-guard.service';
+import { SelfGuard } from './self.guard';
+import { CreateUserPermissionsGuard } from './create-user-permissions.guard';
+import { DeleteUserPermissionsGuard } from './delete-user-permissions.guard';
+import { FindAllUsersGuard } from './find-all-users.guard';
 
 @Injectable()
-export class GuardService {
+export class AuthGuard {
   constructor(
-    private readonly selfGuardService: SelfGuardService,
-    private readonly createUserPermissionsGuardService: CreateUserPermissionsGuardService,
-    private readonly deleteUserPermissionsGuardService: DeleteUserPermissionsGuardService,
-    private readonly findAllUsersGuardService: FindAllUsersGuardService,
+    private readonly selfGuardService: SelfGuard,
+    private readonly createUserPermissionsGuardService: CreateUserPermissionsGuard,
+    private readonly deleteUserPermissionsGuardService: DeleteUserPermissionsGuard,
+    private readonly findAllUsersGuardService: FindAllUsersGuard,
   ) {}
 
   async selfGuard(rawToken: string, targetUserId: string): Promise<void> {

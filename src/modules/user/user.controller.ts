@@ -11,7 +11,6 @@ import {
   Post,
   Put,
   Query,
-  UseGuards,
 } from '@nestjs/common';
 import { UserService } from './services/user.service';
 import {
@@ -26,25 +25,22 @@ import {
   PaginationRequestDTO,
   PaginationResponseDTO,
 } from '../../common/pagination/pagination.dto';
-import { ViewerGuard } from '../../common/guards/viewer.guard';
-import { StaffGuard } from '../../common/guards/staff.guard';
-import { GuardService } from '../../common/guards/customs/services/guard.service';
+import { AuthGuard } from '../auth/guards/auth.guard';
 
 @Controller('user')
 export class UserController {
   constructor(
     private readonly userService: UserService,
-    private readonly guardService: GuardService,
+    private readonly authGuard: AuthGuard,
   ) {}
 
   @Post()
-  @UseGuards(StaffGuard)
   @ApiDefaultResponse(UserWithMessageDto, false, HttpStatus.CREATED)
   async create(
     @Cookies('session_token') token: string,
     @Body() user: CreateUserDto,
   ): Promise<{ user: UserDto; message: string }> {
-    await this.guardService.createUserPermissionsGuard(token, user.roles);
+    await this.authGuard.createUserPermissionsGuard(token, user.roles);
     return {
       user: await this.userService.create(user),
       message:
@@ -53,49 +49,45 @@ export class UserController {
   }
 
   @Put(':id')
-  @UseGuards(ViewerGuard)
   @ApiDefaultResponse(UserDto)
   async update(
     @Cookies('session_token') token: string,
     @Param('id', ParseUUIDPipe) id: string,
     @Body() user: UpdateUserDto,
   ): Promise<UserDto> {
-    await this.guardService.selfGuard(token, id);
+    await this.authGuard.selfGuard(token, id);
     return await this.userService.update(id, user);
   }
 
   @Patch('update-password/:id')
-  @UseGuards(ViewerGuard)
   @ApiDefaultResponse(UserDto)
   async updatePassword(
     @Cookies('session_token') token: string,
     @Param('id', ParseUUIDPipe) id: string,
     @Body() passwords: UpdatePasswordDto,
   ): Promise<UserDto> {
-    await this.guardService.selfGuard(token, id);
+    await this.authGuard.selfGuard(token, id);
     return await this.userService.updatePassword(id, passwords);
   }
 
   @Delete(':id')
-  @UseGuards(StaffGuard)
   @ApiDefaultResponse(UserDto)
   async deactivate(
     @Cookies('session_token') token: string,
     @Param('id', ParseUUIDPipe) id: string,
   ): Promise<UserDto> {
-    await this.guardService.deleteUserPermissionsGuard(token, id);
+    await this.authGuard.deleteUserPermissionsGuard(token, id);
     return await this.userService.deactivate(id);
   }
 
   @Get('company/:company_id')
-  @UseGuards(StaffGuard)
   @ApiDefaultResponse(PaginationResponseDTO<UserDto[]>)
   async findAll(
     @Cookies('session_token') token: string,
     @Param('company_id', ParseUUIDPipe) companyId: string,
     @Query() pagination: PaginationRequestDTO,
   ): Promise<PaginationResponseDTO<UserDto[]>> {
-    const res = await this.guardService.findAllUsersGuard(token);
+    const res = await this.authGuard.findAllUsersGuard(token);
     return await this.userService.findAll(
       companyId,
       pagination,
@@ -104,13 +96,12 @@ export class UserController {
   }
 
   @Get(':id')
-  @UseGuards(ViewerGuard)
   @ApiDefaultResponse(UserDto)
   async findOneById(
     @Cookies('session_token') token: string,
     @Param('id', ParseUUIDPipe) id: string,
   ): Promise<UserDto> {
-    await this.guardService.selfGuard(token, id);
+    await this.authGuard.selfGuard(token, id);
     return await this.userService.findOneById(id);
   }
 }

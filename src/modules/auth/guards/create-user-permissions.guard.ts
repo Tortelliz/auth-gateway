@@ -1,10 +1,10 @@
 import { ForbiddenException, Injectable } from '@nestjs/common';
-import { RoleService } from '../../../../modules/role/services/role.service';
-import { UserService } from '../../../../modules/user/services/user.service';
-import { AuthService } from '../../../../modules/auth/services/auth.service';
+import { RoleService } from '../../../modules/role/services/role.service';
+import { UserService } from '../../../modules/user/services/user.service';
+import { AuthService } from '../../../modules/auth/services/auth.service';
 
 @Injectable()
-export class CreateUserPermissionsGuardService {
+export class CreateUserPermissionsGuard {
   constructor(
     private readonly roleService: RoleService,
     private readonly userService: UserService,

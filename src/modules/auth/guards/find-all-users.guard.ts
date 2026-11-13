@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
-import { AuthService } from '../../../../modules/auth/services/auth.service';
+import { AuthService } from '../../../modules/auth/services/auth.service';
 
 @Injectable()
-export class FindAllUsersGuardService {
+export class FindAllUsersGuard {
   constructor(private readonly authService: AuthService) {}
 
   async execute(rawToken: string): Promise<{ user_id_to_omit: string }> {
