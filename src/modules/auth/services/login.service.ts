@@ -7,9 +7,9 @@ import { SessionEntity } from '../../../../generated/prisma/client';
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime/client';
 import { generateUUIDUtil } from '../../../utils/generate-uuid.util';
 import { hashToken } from '../../../utils/hash-token.util';
-import { randomBytes } from 'node:crypto';
 import { ConfigService } from '@nestjs/config';
 import { UserDto } from '../../user/user.dto';
+import { jwtGenerateService } from '../../../lib/jsonwebtoken/jwt-generate.service';
 
 @Injectable()
 export class LoginService {
@@ -28,7 +28,7 @@ export class LoginService {
     this.checkMustChangePassword(user);
     await this.checkLoginFailAttempts(user);
     await this.checkMatchPassword(user.id, login.password, user.password);
-    const token = randomBytes(32).toString('hex');
+    const token = jwtGenerateService(user);
     const session = await this.authRepository.createSession(
       this.buildSession(token, user),
     );

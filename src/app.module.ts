@@ -33,6 +33,7 @@ import { EmailModule } from './lib/resend/email.module';
         SUPPORT_EMAIL: z.string(),
         DEV_SITE: z.string(),
         DB_SEEDS_RUN: z.enum(['true', 'false']),
+        JWT_SECRET: z.string(),
       }),
     }),
     PrismaModule,
