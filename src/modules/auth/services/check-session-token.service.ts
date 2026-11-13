@@ -9,6 +9,7 @@ export class CheckSessionTokenService {
   constructor(private readonly authRepository: AuthRepository) {}
 
   async execute(token: string): Promise<SessionEntity> {
+    this.checkIsNotNull(token);
     const session = await this.getSession(token);
     this.checkIsExpired(session);
     this.checkRevoked(session);
@@ -23,22 +24,26 @@ export class CheckSessionTokenService {
         error instanceof PrismaClientKnownRequestError &&
         error.code === 'P2025'
       )
-        throw new UnauthorizedException('Invalid token');
+        throw new UnauthorizedException('Invalid auth token');
       throw error;
     }
+  }
+
+  private checkIsNotNull(token: string): void {
+    if (!token) throw new UnauthorizedException('Auth token is required');
   }
 
   private checkIsExpired(session: SessionEntity): void {
     if (new Date() >= session.expires_at)
       throw new UnauthorizedException(
-        `Token expired at ${session.expires_at.toLocaleString()}`,
+        `Auth token expired at ${session.expires_at.toLocaleString()}`,
       );
   }
 
   private checkRevoked(session: SessionEntity): void {
     if (session.revoked && session.revoked_at)
       throw new UnauthorizedException(
-        `Token revoked at ${session.revoked_at.toLocaleString()}`,
+        `Auth token revoked at ${session.revoked_at.toLocaleString()}`,
       );
   }
 }

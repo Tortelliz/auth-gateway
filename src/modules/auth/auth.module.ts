@@ -28,8 +28,9 @@ import { AuthGuard } from './guards/auth.guard';
 import { CreateUserPermissionsGuard } from './guards/create-user-permissions.guard';
 import { DeleteUserPermissionsGuard } from './guards/delete-user-permissions.guard';
 import { FindAllUsersGuard } from './guards/find-all-users.guard';
-import { SelfGuard } from './guards/self.guard';
+import { YourselfGuard } from './guards/yourself.guard';
 import { RoleModule } from '../role/role.module';
+import { RolesGuard } from './guards/roles.guard';
 
 @Global()
 @Module({
@@ -60,7 +61,8 @@ import { RoleModule } from '../role/role.module';
     CreateUserPermissionsGuard,
     DeleteUserPermissionsGuard,
     FindAllUsersGuard,
-    SelfGuard,
+    YourselfGuard,
+    RolesGuard,
   ],
   exports: [AuthService, AuthGuard],
 })
