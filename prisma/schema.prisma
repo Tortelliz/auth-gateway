@@ -21,6 +21,7 @@ model CompanyEntity {
   updated_at DateTime?             @db.Timestamptz()
   address    CompanyAddressEntity?
   users      UserEntity[]
+  roles      RoleEntity[]
 
   @@index([id, code])
   @@map("company")
@@ -72,6 +73,8 @@ model UserEntity {
 
 model RoleEntity {
   id          String           @id @db.Uuid
+  company_id  String           @db.Uuid
+  company     CompanyEntity    @relation(fields: [company_id], references: [id], onDelete: Cascade)
   code        String           @unique @db.VarChar(15)
   name        String           @db.VarChar(50)
   description String?          @db.VarChar(255)
