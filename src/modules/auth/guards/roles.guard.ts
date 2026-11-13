@@ -6,10 +6,10 @@ import { SessionEntity } from '../../../../generated/prisma/client';
 export class RolesGuard {
   constructor(private readonly userService: UserService) {}
 
-  async isAdmin(token: SessionEntity): Promise<void> {
+  async isDev(token: SessionEntity): Promise<void> {
     const requestUser = await this.userService.findOneById(token.user_id);
-    if (!requestUser.roles.some((item) => item.role.code === 'admin'))
-      throw new UnauthorizedException('Admin role is missing');
+    if (!requestUser.roles.some((item) => item.role.code === 'dev'))
+      throw new UnauthorizedException('Dev role is missing');
   }
 
   async isStaff(token: SessionEntity): Promise<void> {

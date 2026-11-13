@@ -13,7 +13,6 @@ import { FirstAccessService } from './first-access.service';
 import { GenerateFirstAccessTokenService } from './generate-first-access-token.service';
 import { EmailVerificationService } from './email-verification.service';
 import { GenerateEmailVerificationTokenService } from './generate-email-verification-token.service';
-import { FindSessionByTokenService } from './find-session-by-token.service';
 
 @Injectable()
 export class AuthService {
@@ -27,14 +26,13 @@ export class AuthService {
     private readonly generateFirstAccessTokenService: GenerateFirstAccessTokenService,
     private readonly emailVerificationService: EmailVerificationService,
     private readonly generateEmailVerificationTokenService: GenerateEmailVerificationTokenService,
-    private readonly findSessionByTokenService: FindSessionByTokenService,
   ) {}
 
   async login(login: LoginDto): Promise<SessionEntity & { raw_token: string }> {
     return await this.loginService.execute(login);
   }
 
-  async logout(token: string): Promise<void> {
+  async logout(token: SessionEntity): Promise<void> {
     return await this.logoutService.execute(token);
   }
 

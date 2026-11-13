@@ -21,11 +21,13 @@ import { ParsePasswordTokenPipe } from '../../common/pipes/parse-password-token.
 import { ParseEmailPipe } from '../../common/pipes/parse-email.pipe';
 import { HttpAdapterHost } from '@nestjs/core';
 import { ApiDefaultResponse } from '../../lib/swagger/api-response.decorator';
+import { AuthGuard } from './guards/auth.guard';
 
 @Controller('auth')
 export class AuthController {
   constructor(
     private readonly authService: AuthService,
+    private readonly authGuard: AuthGuard,
     private readonly adapterHost: HttpAdapterHost,
   ) {}
 
@@ -57,7 +59,8 @@ export class AuthController {
   async logout(
     @Cookies('session_token') token: string,
   ): Promise<{ message: string }> {
-    await this.authService.logout(token);
+    const validToken = await this.authGuard.checkIsValidToken(token);
+    await this.authService.logout(validToken);
     return {
       message: 'Logout successfully',
     };

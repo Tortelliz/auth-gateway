@@ -1,18 +1,13 @@
 import { Injectable } from '@nestjs/common';
 import { AuthRepository } from '../auth.repository';
 import { SessionEntity } from '../../../../generated/prisma/client';
-import { CheckSessionTokenService } from './check-session-token.service';
 
 @Injectable()
 export class LogoutService {
-  constructor(
-    private readonly authRepository: AuthRepository,
-    private readonly checkSessionTokenService: CheckSessionTokenService,
-  ) {}
+  constructor(private readonly authRepository: AuthRepository) {}
 
-  async execute(token: string): Promise<void> {
-    const session = await this.checkSessionTokenService.execute(token);
-    await this.authRepository.updateSession(session.id, this.build(session));
+  async execute(token: SessionEntity): Promise<void> {
+    await this.authRepository.updateSession(token.id, this.build(token));
   }
 
   private build(session: SessionEntity): SessionEntity {

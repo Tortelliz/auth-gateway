@@ -27,8 +27,11 @@ export class PrismaSeeds implements OnModuleInit {
     const isEmpty = await this.checkEmptyTables();
     if (isEmpty) {
       const company = await this.createCompany();
-      const role = await this.createRole(company.id);
-      await this.createUser(company.id, role.id);
+      const roles = await this.createRole(company.id);
+      await this.createUser(
+        company.id,
+        roles.map((item) => item.id),
+      );
       this.logger.warn(
         'The seeds have been applied to the database, please verify',
       );
@@ -52,23 +55,43 @@ export class PrismaSeeds implements OnModuleInit {
     });
   }
 
-  private async createRole(companyId: string): Promise<RoleEntity> {
-    return await this.prismaService.roleEntity.create({
-      data: {
-        id: generateUUIDUtil(),
-        company_id: companyId,
-        code: 'admin',
-        name: 'Administrator',
-        description: 'Grafcet devs',
-        created_at: new Date(),
-        updated_at: null,
-      },
+  private async createRole(companyId: string): Promise<RoleEntity[]> {
+    return await this.prismaService.roleEntity.createManyAndReturn({
+      data: [
+        {
+          id: generateUUIDUtil(),
+          company_id: companyId,
+          code: 'dev',
+          name: 'Developer',
+          description: 'Grafcet devs',
+          created_at: new Date(),
+          updated_at: null,
+        },
+        {
+          id: generateUUIDUtil(),
+          company_id: companyId,
+          code: 'staff',
+          name: 'Staff',
+          description: 'Client staffs',
+          created_at: new Date(),
+          updated_at: null,
+        },
+        {
+          id: generateUUIDUtil(),
+          company_id: companyId,
+          code: 'viewer',
+          name: 'Viewer',
+          description: 'System view only',
+          created_at: new Date(),
+          updated_at: null,
+        },
+      ],
     });
   }
 
   private async createUser(
     companyId: string,
-    roleId: string,
+    roleIds: string[],
   ): Promise<UserEntity> {
     const now = new Date();
     const user = await this.prismaService.userEntity.create({
@@ -91,15 +114,19 @@ export class PrismaSeeds implements OnModuleInit {
         last_login_at: null,
       },
     });
-    await this.prismaService.userRoleEntity.create({
-      data: {
-        id: generateUUIDUtil(),
-        user_id: user.id,
-        role_id: roleId,
-        created_at: new Date(),
-        updated_at: null,
-      },
-    });
+    await Promise.all(
+      roleIds.map(async (roleId) => {
+        await this.prismaService.userRoleEntity.create({
+          data: {
+            id: generateUUIDUtil(),
+            user_id: user.id,
+            role_id: roleId,
+            created_at: new Date(),
+            updated_at: null,
+          },
+        });
+      }),
+    );
     return user;
   }
 
